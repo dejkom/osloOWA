@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <persistence-unit name="my_persistence_unit" transaction-type="JTA">
+        <jta-data-source>prsql02_jndi</jta-data-source>
+        <class>com.odelowebapp.entity.ESDdata</class>
+        <class>com.odelowebapp.entity.ESDdevice</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        <properties/>
+    </persistence-unit>
+    
+    <resources>
+        
+        <jdbc-resource enabled="true" jndi-name="prsql02_jndi" object-type="user" pool-name="OWA_TEST_prsql02"/>
+        <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="com.microsoft.sqlserver.jdbc.SQLServerDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="microsoft_sql_OWA_talendPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
+            <property name="serverName" value="prsql02"/>
+            <property name="portNumber" value="1433"/>
+            <property name="databaseName" value="OWA_TEST"/>
+            <property name="User" value="talend"/>
+            <property name="Password" value="odelo628"/>
+            <property name="URL" value="jdbc:sqlserver://prsql02:1433;databaseName=OWA"/>
+            <property name="driverClass" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+        </jdbc-connection-pool>
+        
+       
+    </resources>
+</persistence>

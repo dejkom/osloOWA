@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSAssetCopyCreateDlg" widgetVar="ASSAssetCopyCreateDialog"  modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateASSAssetTitle}">
+            <h:form id="ASSAssetCopyCreateForm">
+                <h:panelGroup id="display">
+                    <p:scrollPanel style="width:700px;height:600px" >
+                        <p:panelGrid id="pg" columns="2" style="width: 100%" rendered="#{aSSAssetController.selected != null}">
+                            <!--
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_IDAsset}" for="IDAsset" />
+                            <p:inputText id="IDAsset" value="#{aSSAssetController.selected.IDAsset}" title="#{bundle.CreateASSAssetTitle_IDAsset}" required="true" requiredMessage="#{bundle.CreateASSAssetRequiredMessage_IDAsset}"/>
+                            -->
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetDescription}" for="assetDescription" />
+                            <p:inputText id="assetDescription" value="#{aSSAssetController.kopija.assetDescription}" title="#{bundle.CreateASSAssetTitle_assetDescription}" />
+                            
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetSerialNumber}" for="assetSerialNumber" />
+                            <p:inputText id="assetSerialNumber" value="#{aSSAssetController.kopija.assetSerialNumber}" title="#{bundle.CreateASSAssetTitle_assetSerialNumber}" />
+                            
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetComment}" for="assetComment" />
+                            <p:inputTextarea  id="assetComment" rows="4" cols="42" value="#{aSSAssetController.kopija.assetComment}" title="#{bundle.CreateASSAssetTitle_assetComment}" />
+                            
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetReturn}" for="assetReturn" />
+                            <p:selectBooleanCheckbox id="assetReturn" value="#{aSSAssetController.kopija.assetReturn}" >
+                                <p:ajax update="pg" />
+                            </p:selectBooleanCheckbox>
+                                
+                            <!--    
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetDeleted}" for="assetDeleted" />
+                            <p:selectBooleanCheckbox id="assetDeleted" value="#{aSSAssetController.kopija.assetDeleted}" />
+                            -->
+                                                        
+                            <!--
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetUpdated}" for="assetUpdated" />
+                            <p:calendar id="assetUpdated" pattern="dd.MM.yyyy HH:mm:ss" value="#{aSSAssetController.selected.assetUpdated}" title="#{bundle.EditASSAssetTitle_assetUpdated}"  showOn="button"/>
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetUpdatedUser}" for="assetUpdatedUser" />
+                            <p:inputText id="assetUpdatedUser" value="#{aSSAssetController.selected.assetUpdatedUser}" title="#{bundle.CreateASSAssetTitle_assetUpdatedUser}" />
+                            -->
+                            
+
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetExpireDays}" for="assetExpireDays" rendered="#{aSSAssetController.kopija.assetReturn}"/>
+                            <p:spinner id="assetExpireDays" min="0" value="#{aSSAssetController.kopija.assetExpireDays}" title="#{bundle.CreateASSAssetTitle_assetExpireDays}" rendered="#{aSSAssetController.kopija.assetReturn}"/>
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetExpireMonths}" for="assetExpireMonths" rendered="#{aSSAssetController.kopija.assetReturn}"/>
+                            <p:spinner id="assetExpireMonths" min="0" value="#{aSSAssetController.kopija.assetExpireMonths}" title="#{bundle.CreateASSAssetTitle_assetExpireMonths}" rendered="#{aSSAssetController.kopija.assetReturn}"/>
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetExpireYears}" for="assetExpireYears" rendered="#{aSSAssetController.kopija.assetReturn}"/>
+                            <p:spinner id="assetExpireYears" min="0" value="#{aSSAssetController.kopija.assetExpireYears}" title="#{bundle.CreateASSAssetTitle_assetExpireYears}" rendered="#{aSSAssetController.kopija.assetReturn}"/>
+
+                            
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetMinimumQuantityWarning}" for="assetMinimumQuantityWarning" />
+                            <p:spinner id="assetMinimumQuantityWarning" value="#{aSSAssetController.kopija.assetMinimumQuantityWarning}" title="#{bundle.CreateASSAssetTitle_assetMinimumQuantityWarning}" />
+                            
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_assetMinimumQuantityCritical}" for="assetMinimumQuantityCritical" />
+                            <p:spinner id="assetMinimumQuantityCritical" value="#{aSSAssetController.kopija.assetMinimumQuantityCritical}" title="#{bundle.CreateASSAssetTitle_assetMinimumQuantityCritical}" />
+                            
+                            
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_IDAssetParent}" for="IDAssetParent" />
+                            <p:selectOneMenu id="IDAssetParent" value="#{aSSAssetController.kopija.IDAssetParent}" >
+                                <f:selectItem itemLabel="Izberite starša" itemValue="#{null}"/>
+                                <f:selectItems value="#{aSSAssetController.itemsAvailableSelectOne}"
+                                               var="IDAssetParentItem"
+                                               itemValue="#{IDAssetParentItem}"
+                                               itemLabel="#{IDAssetParentItem.assetDescription}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_IDAssetLocation}" for="IDAssetLocation" />
+                            <p:selectOneMenu id="IDAssetLocation" value="#{aSSAssetController.kopija.IDAssetLocation}" required="true" requiredMessage="#{bundle.EditASSAssetRequiredMessage_IDAssetLocation}">
+                                <f:selectItems value="#{aSSLocationController.itemsAvailableSelectOne}"
+                                               var="IDAssetLocationItem"
+                                               itemValue="#{IDAssetLocationItem}"
+                                               itemLabel="#{IDAssetLocationItem.locationDescription}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="#{bundle.CreateASSAssetLabel_IDAssetType}" for="IDAssetType" />
+                            <p:selectOneMenu id="IDAssetType" value="#{aSSAssetController.kopija.IDAssetType}" required="true" requiredMessage="#{bundle.EditASSAssetRequiredMessage_IDAssetType}">
+                                <f:selectItems value="#{aSSTypeController.itemsAvailableSelectOne}"
+                                               var="IDAssetTypeItem"
+                                               itemValue="#{IDAssetTypeItem}"
+                                               itemLabel="#{IDAssetTypeItem.typeDescription}"/>
+                            </p:selectOneMenu>
+
+                    </p:panelGrid>
+                    </p:scrollPanel>
+                    <p:commandButton actionListener="#{aSSAssetController.createKopija()}" value="#{bundle.Save}" update="display,:ASSAssetListForm:datalist,:growl" onclick="ASSAssetCopyCreateDialog.hide()"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ASSAssetCopyCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

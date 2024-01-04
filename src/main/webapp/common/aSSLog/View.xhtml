@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSLogViewDlg" widgetVar="ASSLogViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewASSLogTitle}">
+            <h:form id="ASSLogViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSLogController.selected != null}">
+                        <h:outputText value="#{bundle.ViewASSLogLabel_IDLog}"/>
+                        <h:outputText value="#{aSSLogController.selected.IDLog}" title="#{bundle.ViewASSLogTitle_IDLog}"/>
+                        <h:outputText value="#{bundle.ViewASSLogLabel_logTimestamp}"/>
+                        <h:outputText value="#{aSSLogController.selected.logTimestamp}" title="#{bundle.ViewASSLogTitle_logTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewASSLogLabel_logExternalID}"/>
+                        <h:outputText value="#{aSSLogController.selected.logExternalID}" title="#{bundle.ViewASSLogTitle_logExternalID}"/>
+                        <h:outputText value="#{bundle.ViewASSLogLabel_logComment}"/>
+                        <h:outputText value="#{aSSLogController.selected.logComment}" title="#{bundle.ViewASSLogTitle_logComment}"/>
+                        <h:outputText value="#{bundle.ViewASSLogLabel_logQuantity}"/>
+                        <h:outputText value="#{aSSLogController.selected.logQuantity}" title="#{bundle.ViewASSLogTitle_logQuantity}"/>
+                        <h:outputText value="#{bundle.ViewASSLogLabel_IDLogAsset}"/>
+                        <h:outputText value="#{aSSLogController.selected.IDLogAsset}" title="#{bundle.ViewASSLogTitle_IDLogAsset}"/>
+                        <h:outputText value="#{bundle.ViewASSLogLabel_IDLogStatus}"/>
+                        <h:outputText value="#{aSSLogController.selected.IDLogStatus}" title="#{bundle.ViewASSLogTitle_IDLogStatus}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ASSLogViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

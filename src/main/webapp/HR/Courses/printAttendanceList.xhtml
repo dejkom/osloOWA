@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
+
+    <h:head>
+
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title>INSPINIA | Invoice Print</title>
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.css"/>
+
+        <h:outputStylesheet library="css" name="animate.css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+
+        <style type="text/css">
+            body .ui-chkbox .ui-chkbox-box.ui-state-active {
+                border-color: transparent !important;
+                background: white !important;
+                color: black !important;
+            }
+
+            body .ui-chkbox .ui-chkbox-box.ui-state-default {
+                border-color: transparent !important;
+                background: white !important;
+                color: black !important;
+            }
+        </style>
+
+    </h:head>
+
+    <h:body class="white-bg">
+        <div class="wrapper wrapper-content p-xl">
+            <div class="ibox-content p-xl" style="border-color:white !important; font-size: 25px !important">
+                <div class="row">
+                    <div class="col-6">
+                        <address>
+                            <strong>odelo Slovenija d.o.o.</strong><br/>
+                            Tovarniška cesta 12<br/>
+                            SI - 3312 Prebold<br/>
+                        </address>
+                    </div>
+
+
+                    <div class="col-6 text-right">
+                        <div class="row" style="float:right">
+                            <h:graphicImage class="pull-right" name="img/odelo_report_1.png" alt="" style="height: 120px; float:right"/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div class="col-6">
+                        <p>
+                            <span><strong>Naziv izobraževanja:</strong> 
+                                <h:outputText value="(#{printAttendanceListBean.offering.courseOfferingID}) #{printAttendanceListBean.offering.courseID.courseTitle}"/>
+                            </span>
+                        </p>
+
+                        <!--
+                        <p>
+                            <span><strong>Opis izobraževanja:</strong> 
+                                <h:outputText value="#{printAttendanceListBean.offering.courseID.courseDescription}"/>
+                            </span>
+                        </p>
+                        -->
+
+                        <p>
+                            <span><strong>Datum izobraževanja:</strong> 
+                                <h:outputText value="#{printAttendanceListBean.offering.courseDate}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                                </h:outputText>
+                            </span>
+                        </p>
+
+
+                    </div>
+                    <div class="col-6 text-right">
+                        <p>
+                            <span><strong>Izobraževalec: </strong> <h:outputText value="#{printAttendanceListBean.offering.instructorID.lastname} #{printAttendanceListBean.offering.instructorID.firstname}" /></span><br/>
+                        </p>
+
+                        <p>
+                            <span><strong>Lokacija: </strong> <h:outputText value="#{printAttendanceListBean.offering.meetingroomString}"/></span><br/>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="table-responsive m-t">                    
+                    <table class="table invoice-table">
+                        <thead>
+                            <tr>
+                                <th>Zaposleni</th>
+                                <th>Komentar</th>
+                                <th>Timestamp</th>
+                                <th>Udeležen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--
+                            <tr>
+                                <td><div><strong>500</strong></div>
+                                    <small>This is material 500</small></td>
+                                <td>0</td>
+                            </tr>
+                            -->
+
+
+                            <c:forEach var="att" items="${printAttendanceListBean.allAttendancesForOffering}" varStatus="loop" >
+
+                                <tr>
+                                    <td>
+                                        <div>
+                                            ${printAttendanceListBean.vrnjeniUserjiMap.get(att.codeksID).lastname} ${printAttendanceListBean.vrnjeniUserjiMap.get(att.codeksID).firstname}
+                                            <!--<strong>${att.codeksID}</strong> - <small>${vADCODEKSUsersController.getVADCODEKSUsers(att.codeksID).lastname} ${vADCODEKSUsersController.getVADCODEKSUsers(att.codeksID).firstname}</small>-->
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div>
+                                            ${att.comment}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <!--<div> ${att.timestamp}</div>-->
+                                        <div><h:outputText value="${att.timestamp}">
+                                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                                            </h:outputText></div>
+                                    </td>
+
+<td><!--<strong>${att.wasAttended}</strong>--> <p:selectBooleanCheckbox value="${att.wasAttended}" style="background-color: red"/></td>
+                                </tr>
+
+                            </c:forEach> 
+
+
+                        </tbody>                       
+                    </table>
+                    <br/>
+                </div><!-- /table-responsive -->
+
+                <div class="well m-t">
+                    <span><strong>Opis izobraževanja:</strong> 
+                        <h:outputText value="#{printAttendanceListBean.offering.courseID.courseDescription}"/>
+                    </span>
+                </div>
+
+
+                <div class="well m-t">
+                    <strong>Prosto polje (razlaga, daljša navodila):</strong>
+                    <br/>
+                    <h:outputText value="#{printAttendanceListBean.offering.courseID.courseNotes}"/>
+                    <br/>
+                    <br/>
+                </div>
+
+                <div class="well m-t">
+                    <strong>Info:</strong>
+                    <br/>
+                    Seznam je bil natisnjen iz osloWebApp portala. Če mislite da je seznam nepopoln ali napačen prosim kontaktirajte administratorja sistema za izobraževanja (HR).
+                    <br/>
+                    <br/>
+                    This list was printed from osloWebApp portal. If you think that this list is incomplete please contact Education System key-user.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Mainly scripts -->
+        <!--
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        -->
+
+        <!-- Custom and plugin javascript -->
+        <!--
+        <script src="js/inspinia.js"></script>
+        -->
+        <script type="text/javascript">
+            window.print();
+        </script>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/osloTemplateBasic.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Courses"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            HR - Tipi izobraževanj (Course Types)
+        </ui:define>
+
+        <ui:define name="PageHeaderDescription">
+
+        </ui:define>
+
+        <ui:define name="breadcrumb">
+            <li class="active">HR Course Types</li>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" life="3000" />
+            <h:form id="HRCourseTypeListForm">
+                    <p:dataTable id="datalist" value="#{hRCourseTypeController.items}" var="item"
+                                 selectionMode="single" selection="#{hRCourseTypeController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.courseTypeID}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column style="width: 110px">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTypeTitle_courseTypeID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseTypeID}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Naziv tipa izobraževanja"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseTypeTitle}"/>
+                        </p:column>
+                        <p:column style="width: 100px">
+                            <f:facet name="header">
+                                <h:outputText value="Aktiven"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.active}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Starš (nadtip)"/>
+                            </f:facet>
+                            <h:outputText value="(#{item.parent.courseTypeID}) #{item.parent.courseTypeTitle}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCourse.Create}" actionListener="#{hRCourseTypeController.prepareCreate}" update=":HRCourseTypeCreateForm" oncomplete="PF('HRCourseTypeCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRCourse.View}" update=":HRCourseTypeViewForm" oncomplete="PF('HRCourseTypeViewDialog').show()" disabled="#{empty hRCourseTypeController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCourse.Edit}" update=":HRCourseTypeEditForm" oncomplete="PF('HRCourseTypeEditDialog').show()" disabled="#{empty hRCourseTypeController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCourse.Delete}" actionListener="#{hRCourseTypeController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseTypeController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

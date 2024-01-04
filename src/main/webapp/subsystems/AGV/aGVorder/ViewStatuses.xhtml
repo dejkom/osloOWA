@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <style type="text/css">
+            .timeline {
+                list-style-type: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .li {
+                transition: all 200ms ease-in;
+            }
+
+            .timestamp {
+                margin-bottom: 20px;
+                padding: 0px 40px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-weight: 100;
+            }
+
+            .status {
+                padding: 0px 40px;
+                display: flex;
+                justify-content: center;
+                border-top: 2px solid #D6DCE0;
+                position: relative;
+                transition: all 200ms ease-in;
+            }
+            .status h4 {
+                font-weight: 600;
+                margin-top: 10px;
+            }
+            .status:before {
+                content: &quot;&quot;;
+                width: 25px;
+                height: 25px;
+                background-color: white;
+                border-radius: 25px;
+                border: 1px solid #ddd;
+                position: absolute;
+                top: -15px;
+                left: 42%;
+                transition: all 200ms ease-in;
+            }
+
+            .li.complete .status {
+                border-top: 2px solid #66DC71;
+            }
+            .li.complete .status:before {
+                background-color: #66DC71;
+                border: none;
+                transition: all 200ms ease-in;
+            }
+            .li.complete .status h4 {
+                color: #66DC71;
+                margin-top: 10px;
+            }
+
+            @media (min-device-width: 320px) and (max-device-width: 700px) {
+                .timeline {
+                    list-style-type: none;
+                    display: block;
+                }
+
+                .li {
+                    transition: all 200ms ease-in;
+                    display: flex;
+                    width: inherit;
+                }
+
+                .timestamp {
+                    width: 100px;
+                }
+
+                .status:before {
+                    left: -8%;
+                    top: 30%;
+                    transition: all 200ms ease-in;
+                }
+            }
+
+        </style>
+
+        <p:dialog id="AGVorderViewStatusesDlg" widgetVar="AGVorderViewStatusesDialog" width="60%" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.ViewAGVorderStatusesTitle}">
+            <h:form id="AGVorderViewStatusesForm">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Current status:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <span class="label label-primary">
+                                        <h:outputText value="#{aGVorderController.selected.statusId.statusName}"/>
+                                    </span>
+                                </dd>
+                            </div>
+                        </dl>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Created by:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.userFLName}"/>
+                                </dd>
+                            </div>
+                        </dl>
+
+
+                    </div>
+                    <div class="col-lg-6" id="cluster_info">
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Ordered From:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.placeFrom.placeName}"/>
+                                </dd>
+                            </div>
+                        </dl>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Ordered To:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.placeTo.placeName}"/>
+                                </dd>
+                            </div>
+                        </dl>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Quantity:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.quantity}"/>
+                                </dd>
+                            </div>
+                        </dl>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Material:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.materialId}"/>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+                <p:divider align="center">Calculations</p:divider>    
+                <div class="row">
+                    <div class="col-lg-6">
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Last Updated:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.modifiedTimestamp}" title="#{bundleAGV.ViewAGVorderTitle_modifiedTimestamp}">
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                                    </h:outputText>
+                                </dd>
+                            </div>
+                        </dl>
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Created:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">                                
+                                <dd class="mb-1">
+                                    <h:outputText value="#{aGVorderController.selected.createdTimestamp}" title="#{bundleAGV.ViewAGVorderTitle_createdTimestamp}">
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                                    </h:outputText>                                   
+                                </dd>
+                            </div>
+                        </dl>
+
+
+                    </div>
+                    <div class="col-lg-6">
+                        <dl class="row mb-0">
+                            <div class="col-sm-4 text-sm-right">
+                                <dt>Total order duration:</dt>
+                            </div>
+                            <div class="col-sm-8 text-sm-left">
+                                <dd class="mb-1">                                       
+                                    <h:outputText value="#{aGVorderController.selected.getDurationBetween(aGVorderController.selected.modifiedTimestamp, aGVorderController.selected.createdTimestamp)} seconds"/>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                <p:divider />
+
+                <div class="row" style="display: block; margin-top: 50px">
+                    <center>
+                        <ul class="timeline" id="timeline">
+                            <c:forEach var="cat" varStatus="loop" items="#{aGVstatusLogController.getStatusesOfOrder(aGVorderController.selected)}" >
+
+                                <li class="li">
+                                    <div class="timestamp">
+                                        <span class="author">${cat.person}</span>
+                                        <span class="date">
+                                            <h:outputText value="${cat.timestamp}">
+                                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                                            </h:outputText>
+                                        </span>
+                                    </div>
+                                    <div class="status">
+                                        <h4> ${cat.status} </h4>
+                                    </div>
+                                </li>
+                            </c:forEach> 
+                        </ul>      
+                    </center>
+                </div>
+
+                <div class="row ui-fluid">
+                    <p:commandButton value="#{bundleAGV.Close}" rendered="false" onclick="AGVorderViewDialog.hide()"/>
+                </div>
+
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVorderViewDlg" widgetVar="AGVorderViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.ViewAGVorderTitle}">
+            <h:form id="AGVorderViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVorderController.selected != null}">
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_orderId}"/>
+                        <h:outputText value="#{aGVorderController.selected.orderId}" title="#{bundleAGV.ViewAGVorderTitle_orderId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_materialId}"/>
+                        <h:outputText value="#{aGVorderController.selected.materialId}" title="#{bundleAGV.ViewAGVorderTitle_materialId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_createdTimestamp}"/>
+                        <h:outputText value="#{aGVorderController.selected.createdTimestamp}" title="#{bundleAGV.ViewAGVorderTitle_createdTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_modifiedTimestamp}"/>
+                        <h:outputText value="#{aGVorderController.selected.modifiedTimestamp}" title="#{bundleAGV.ViewAGVorderTitle_modifiedTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_quantity}"/>
+                        <h:outputText value="#{aGVorderController.selected.quantity}" title="#{bundleAGV.ViewAGVorderTitle_quantity}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_orderTypeId}"/>
+                        <h:outputText value="#{aGVorderController.selected.orderTypeId}" title="#{bundleAGV.ViewAGVorderTitle_orderTypeId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_placeTo}"/>
+                        <h:outputText value="#{aGVorderController.selected.placeTo}" title="#{bundleAGV.ViewAGVorderTitle_placeTo}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_placeFrom}"/>
+                        <h:outputText value="#{aGVorderController.selected.placeFrom}" title="#{bundleAGV.ViewAGVorderTitle_placeFrom}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVorderLabel_statusId}"/>
+                        <h:outputText value="#{aGVorderController.selected.statusId}" title="#{bundleAGV.ViewAGVorderTitle_statusId}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleAGV.Close}" onclick="AGVorderViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

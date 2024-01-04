@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title>Obiskovalec_#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.visitId}_#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.guest}</title>
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.css"/>
+
+        <h:outputStylesheet library="css" name="animate.css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+
+    </h:head>
+
+    <h:body class="white-bg">
+        <div class="wrapper wrapper-content p-xl">
+            <div class="row" style="border-bottom: 1px solid #e7eaec">
+                <div class="col-sm-4">
+                    <address>
+                        <strong>odelo Slovenija d.o.o.</strong><br/>
+                        Tovarniška cesta 12<br/>
+                        SI - 3312 Prebold<br/>
+                    </address>
+                </div>
+
+                <div class="col-sm-4">
+                    <h3 style="text-align: center">Guest book</h3>
+                </div>
+
+                <div class="col-sm-4 text-right">
+                    <div class="row" style="float:right">
+                        <h:graphicImage class="pull-right" name="img/odelo_report_1.png" alt="" style="height: 50px; float:right"/>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="row" style="float:right">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive m-t" style=" overflow: hidden;">
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-4"><strong>Date:</strong> <h3 style="display:inline-block;font-weight: 400">
+                            <h:outputText value="#{vCodeksObiskovalciController.selected.timeIn}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </h3></div>
+
+
+                    <div style="text-align: center" class="col-sm-4"><strong>Time of arrival:</strong><h3 style="display:inline-block;font-weight: 400">
+                            <h:outputText value="#{vCodeksObiskovalciController.selected.timeIn}" >
+                                <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </h3></div>
+                    <div class="col-sm-4 text-right"><strong>Time of departure:</strong><h3 style="display:inline-block;font-weight: 400"> Not set </h3></div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-12"><strong>First name and Last name:</strong> <h3 style="display:inline-block;font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.guest}"/></h3></div>
+
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-12"><strong>Company:</strong> <h3 style="display:inline-block;font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.company}"/></h3></div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-12"><strong>Purpose of visit:</strong> <h3 style="display:inline-block; font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.reason}"/></h3></div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-12"><strong>Contact person at odelo Slovenija d.o.o.:</strong><h3 style="display:inline-block;font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.foruser}"/></h3></div>
+                </div>
+
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col-sm-12"><p:selectBooleanCheckbox style="margin-left: 5px" value="#{vCodeksObiskovalciController.potrjujemSeznanjenost}" itemLabel="I confirm that I am familiar with the Safety Information for Visitors"/></div>
+                </div>
+
+                <div class="row" style="margin-bottom: 20px">
+                    <div class="col-sm-12">
+
+                        <strong>Visitor's signature:</strong> 
+
+                        <div class="row" style="margin-top: 50px">
+                            __________________________________________________________________________
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div><!-- /table-responsive -->
+
+            <!--
+            <div class="text-right">
+                <button class="btn btn-primary"><i class="fa fa-save"></i> Shrani</button>
+            </div>
+            -->
+
+            <div class="well m-t">
+                <p>
+                    The fulfilled data on the blank form is, for the purpose of safety of people or safety of property and assurance of entry or exit control into or out of business premises, collected as a part of access to business premises records. The data will be saved for 1 year or until fulfillment of the purpose for which they were collected (for example, until the conclusion of the court proceedings).
+                </p>
+                <p>
+                    The request for access to personal data, correction, deletion, processing restriction, data transfer or processing of a contract may be addressed to the e-mail address info@odelo.si at any time. This e-mail address is also the contact of the personal data operator, which is odelo Slovenia d.o.o., Tovarniška cesta 12, 3312 Prebold. An appeal against the decision of the controller of the individual request, to whom  the personal data apply, can be filed with the supervisory authority. 
+                </p>
+                <p>
+                    More information about the personal data protection policy of odelo Slovenija doo, Tovarniška cesta 12, 3312 Prebold is also available at www.odelo.si.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Mainly scripts -->
+        <!--
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        -->
+
+        <!-- Custom and plugin javascript -->
+        <!--
+        <script src="js/inspinia.js"></script>
+        -->
+        <script type="text/javascript">
+            window.print();
+        </script>
+
+    </h:body>
+
+</html>

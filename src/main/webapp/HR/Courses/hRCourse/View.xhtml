@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseViewDlg" widgetVar="HRCourseViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.ViewHRCourseTitle}">
+            <h:form id="HRCourseViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseController.selected != null}">
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseLabel_courseID}"/>
+                        <h:outputText value="#{hRCourseController.selected.courseID}" title="#{bundleHRCourse.ViewHRCourseTitle_courseID}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseLabel_courseTitle}"/>
+                        <h:outputText value="#{hRCourseController.selected.courseTitle}" title="#{bundleHRCourse.ViewHRCourseTitle_courseTitle}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseLabel_courseDescription}"/>
+                        <h:outputText value="#{hRCourseController.selected.courseDescription}" title="#{bundleHRCourse.ViewHRCourseTitle_courseDescription}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseLabel_duration}"/>
+                        <h:outputText value="#{hRCourseController.selected.duration}" title="#{bundleHRCourse.ViewHRCourseTitle_duration}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseLabel_primaryInstructors}"/>
+                        <h:outputText value="#{hRCourseController.selected.primaryInstructors}" title="#{bundleHRCourse.ViewHRCourseTitle_primaryInstructors}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseLabel_courseTypeID}"/>
+                        <h:outputText value="#{hRCourseController.selected.courseTypeID.courseTypeTitle}" title="#{bundleHRCourse.ViewHRCourseTitle_courseTypeID}"/>
+                    </p:panelGrid> 
+                    <p:panelGrid columns="1" rendered="#{hRCourseController.selected != null}">
+                        #{bundleHRCourse.FileAttachments}:
+                        <ui:repeat id="uir" value="#{hRCourseController.selected.fileattachments}" var="photo" varStatus="status">
+
+                            <div class="file-box">
+                                <div class="file">
+                                    <a href="/osloWebApp#{photo.itemFileAttachmentSrc}" target="_blank">
+                                        <span class="corner"></span>
+
+                                        <div class="icon">
+                                            <p:graphicImage alt="image" height="64px" width="64px" library="img" name="#{photo.thumbnailImageSrc}.png"/>
+                                        </div>
+                                        <div class="file-name" style="overflow: hidden">
+                                            <h:outputText id="fname2" value = "#{photo.title}" />
+                                            <br/>
+                                            <small><h:outputText id="cdate2" value = "#{photo.creationdate}" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" /></h:outputText></small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </ui:repeat>
+                        
+                        
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRCourse.Close}" onclick="PF('HRCourseViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

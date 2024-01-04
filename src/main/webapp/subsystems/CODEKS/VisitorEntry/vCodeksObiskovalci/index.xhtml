@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Najavljeni obiskovalci
+
+            <style type="text/css">
+                .table-responsive{
+                    display: block;
+                    width: 100%;
+                    overflow-x: hidden;
+                }
+
+                iframe{
+                    height: 100vh;
+                    width: 100%;
+                }
+
+                .greenRow {
+                    background-color: #54a90a !important;
+                    background-image: none !important;
+                    color: #ffffff !important;
+                }
+
+            </style>
+
+            <script type="text/javascript">
+
+                function printDiv(divName) {
+                    var printContents = document.getElementById(divName).innerHTML;
+                    var originalContents = document.body.innerHTML;
+                    document.body.innerHTML = printContents;
+                    window.print();
+                    document.body.innerHTML = originalContents;
+                }
+
+                function openWin(id) {
+                    //var divText = document.getElementById(id).innerHTML;
+                    //console.log('LOG:'+divText);
+                    //myWindow=window.open(divText,'','width=800,height=600');
+                    var divText = document.getElementById(id).innerHTML;
+                    var myWindow = window.open('', '', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,width=800,height=600');
+                    var doc = myWindow.document;
+                    doc.open();
+                    doc.write(divText);
+                    doc.querySelector('iframe').style.width = '100%';
+                    doc.querySelector('iframe').style.height = '100vh';
+                    doc.close();
+                }
+            </script>
+
+            <script src="https://mfpembedcdnweu.azureedge.net/mfpembedcontweu/Embed.js" type="text/javascript"></script>
+            <link rel="stylesheet" type="text/css" href="https://mfpembedcdnweu.azureedge.net/mfpembedcontweu/Embed.css" />
+            <script type = "text/javascript" >
+                function renderSurvey(parentElementId, FirstName, LastName, locale, visitID, purpose) {
+                    var se = new SurveyEmbed("MwBzODf4LkSUXc8ilmG5pgX8iyIc74NAned2Z1g3o6dUM09NTDEzRkw4NDhQRTVOTjZDNFVHQThYVS4u", "https://customervoice.microsoft.com/", "https://mfpembedcdnweu.azureedge.net/mfpembedcontweu/", "true");
+                    var context = {"First Name": FirstName, "Last Name": LastName, "locale": locale, "visitID": visitID, "purpose": purpose, };
+                    se.renderInline(parentElementId, context);
+                }
+            </script>
+
+
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+
+
+                function handleOpen(event) {
+                    console.log('Openning ', event);
+                }
+
+                function handleClose(code, channel, event) {
+                    console.log('Handle close: ' + code, channel, event);
+                    if (code == -1) {
+                        console.log('Websockets not supported by client')
+                    } else if (code == 1000) { // Normal close (as result of expired session or view)
+                        console.log('Normal close, will try to reconnect');
+                    } else {
+                        // Abnormal close reason (as result of an error)
+                        alert('Error during the reconnect! Please refresh WebPage')
+                    }
+                }
+
+                function handleRECEPVISITChannelMessage(message, event) {
+
+                }
+
+                function handleMessage(message, channelName, event) {
+                    if (channelName === 'Reception_Visitor_channel') {
+                        //console.log('handleMessage - CLOCK ', event);
+                        handleRECEPVISITChannelMessage(message, event);
+                    } else {
+                        alert('Unhandled channel: ' + channelName);
+                    }
+                }
+
+
+
+            </script>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage visitors
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="VCodeksObiskovalciListForm">
+                <p:panel header="">
+                    <p:dataTable id="datalist" value="#{vCodeksObiskovalciController.items}" var="item"
+                                 selectionMode="single" selection="#{vCodeksObiskovalciController.selected}"
+                                 paginator="true"
+                                 rowStyleClass="#{item.prisotnost eq 'Da' ? 'greenRow' : null}"
+                                 rowKey="#{item.VCodeksObiskovalciPK.rowKeyDean}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <f:facet name="header">
+                            <div>
+                                <p:commandButton id="toggler" type="button" value="Stolpci" style="float:right" icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="datalist" trigger="toggler"/>
+                            </div>
+                        </f:facet>
+
+                        <!--
+                        <p:ajax event="contextMenu"  update="VCodeksObiskovalciListForm:cm" oncomplete="cm.show()" />
+                        -->
+
+                        <!--
+                        <p:ajax event="rowSelect"   update="viewButton :VCodeksObiskovalciViewPrintForm :VCodeksObiskovalciListForm:dialog1 :form2:display" />
+                        <p:ajax event="rowUnselect" update="viewButton :VCodeksObiskovalciViewPrintForm"/>
+                        -->
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_visitId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.VCodeksObiskovalciPK.visitId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_timeIn}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.timeIn}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_datum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datum}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_timeOut}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.timeOut}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_company}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.company}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_foruser}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.foruser}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_reason}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reason}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_prisotnost}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prisotnost}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_najavljen}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.najavljen}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_guest}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.VCodeksObiskovalciPK.guest}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_guestCompany}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.guestCompany}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleCodeksObiskovalci.ListVCodeksObiskovalciTitle_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="Time of leaving company"/>
+                            </f:facet>
+                            <h:outputText value="#{item.timeOut}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Izpolnjenih obrazcev"/>
+                            </f:facet>
+                            <h:outputText value="#{vCodeksObiskovalciController.isSignedStatus(item.VCodeksObiskovalciPK.visitId)}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="viewButton"   icon="fa fa-search" actionListener="#{vCodeksObiskovalciController.pridobiPodpisIzBaze}" value="#{bundleCodeksObiskovalci.View}" update=":VCodeksObiskovalciViewPrintFilledForm" oncomplete="PF('VCodeksObiskovalciViewPrintFilledDialog').show()" />
+                            <p:commandButton id="refreshButton" icon="fa fa-refresh" actionListener="#{vCodeksObiskovalciController.refresh}" value="Osveži" update="datalist" />
+                        </f:facet>
+                    </p:dataTable>
+
+                    <p:contextMenu id="cm" for="datalist" style="width:300px">
+                        <p:menuitem value="1. Obvesti naročnika o prihodu gosta" actionListener="#{vCodeksObiskovalciController.dogodekObPrihoduGosta}" oncomplete="PF('dlg2').show()" update=":form2:display"/>
+                        <p:menuitem value="2. Wacom podpisovanje" actionListener="#{vCodeksObiskovalciController.testPushMessaging()}"/>
+                        <p:menuitem value="3. Naročnik sprejme gosta" oncomplete="PF('dlg3').show()" actionListener="#{vCodeksObiskovalciController.narocnikSprejmeGosta()}" update=":form3:display"/>
+                        <p:menuitem value="4. Zabeleži odhod gosta"  actionListener="#{vCodeksObiskovalciController.zabeleziOdhodGosta()}" update="datalist"/>
+
+                        <p:menuitem value="Anketa - Carbon Footprint" oncomplete="PF('dlg7').show()" update=":form7:display" style="display: none"/>
+
+                        <p:menuitem value="Anketa - Carbon Footprint Nov" actionListener="#{vCodeksObiskovalciController.novaAnketaPokazi}" update=":form8" style="display: none"/>
+                        <p:menuitem value="Anketa - Carbon Footprint Nov IF" actionListener="#{vCodeksObiskovalciController.novaAnketaPokaziIF}" update=":form8" style="display: none"/>
+
+                        <p:menuitem value="Anketa - Carbon Footprint Tablica" actionListener="#{vCodeksObiskovalciController.novaAnketaPokaziAIO}"/>
+
+                        <p:menuitem value="Generiraj obrazec za tisk" onclick="document.title = 'Obiskovalec_#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.visitId}_#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.guest}'" oncomplete="PF('dlg6').show()" update=":VCodeksObiskovalciListForm:dialog1"/>
+
+                        <p:menuitem value="Izberi povezane najave" disabled="true" actionListener="#{vCodeksObiskovalciController.izberiPovezaneNajave}" update=":VCodeksObiskovalciListForm:datalist growl"/>
+                    </p:contextMenu>
+
+                </p:panel>
+
+
+                <p:dialog id="dialog1"  widgetVar="ex" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/vCodeksObiskovalci/printVisitorTemplate_SI.xhtml"
+                            name="someName" id="someId" scrolling="auto" width="900"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+                <p:dialog id="dialog5"  widgetVar="ex5" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/vCodeksObiskovalci/printVisitorTemplate_EN.xhtml"
+                            name="someName" id="someId" scrolling="auto" width="900"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+
+            </h:form>
+
+            <p:dialog header="Izbira jezika obrazca" id="dialog6" widgetVar="dlg6" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form6">
+                    <h:panelGroup id="display">
+                        <div class="row" style="display: none">
+                            <div class="col-md-12">
+                                Izberite jezik v katerem bo generiran obrazec.
+                            </div>
+                        </div>                     
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4"><p:commandButton  value="Slovenščina" style="width: 100%" onclick="PF('dlg6').hide(); PF('ex').show()" /></div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><p:commandButton value="Angleščina" style="width: 100%" onclick="PF('dlg6').hide(); PF('ex5').show()" /></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Izbira načina reševanja ankete" id="dialog7" widgetVar="dlg7" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form7">
+                    <h:panelGroup id="display">
+                        <div class="row" style="display: none">
+                            <div class="col-md-12">
+                                Izberite način reševanja ankete.
+                            </div>
+                        </div>                     
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4"><p:commandButton  value="Posreduj na mail gosta" style="width: 100%" onclick="PF('dlg7').hide();PF('dlg7_1').show();" /></div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><p:commandButton value="Reši na recepciji" style="width: 100%" onclick="PF('dlg7').hide();PF('dlg7_2').show();" /></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Naslov za posredovanje ankete" id="dialog7_1" widgetVar="dlg7_1" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form7_1">
+                    <h:panelGroup id="display">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h:outputLabel for="akmailin" value="Vpišite email naslov gosta:"/>
+                                <p:inputText id="akmailin" widgetVar="myInputakmail" value="#{vCodeksObiskovalciController.anketaMailGost}" style="width:100%"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small>Email naslov se ne shrani v nobeno odelo zbirko podatkov. Na vpisan email bo posredovana izključno povezava do ankete.</small>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12"><p:commandButton  value="Shrani" actionListener="#{vCodeksObiskovalciController.sendMailAnketa()}" style="width: 100%" onclick="PF('dlg7_1').hide();" /></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Carbon Footprint Survey" id="dialog7_2" widgetVar="dlg7_2" minHeight="40" width="660" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form7_2">
+                    <h:panelGroup id="display">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <iframe width="640px" height="480px" src="https://forms.office.com/Pages/ResponsePage.aspx?id=MwBzODf4LkSUXc8ilmG5pgX8iyIc74NAned2Z1g3o6dURFAxQVpRSlRXNEYwT1owSVlWSEw1MFNJNS4u&amp;embed=true" frameborder="0" marginwidth="0" marginheight="0" style="border: none; max-width:100%; max-height:100vh" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true"> </iframe>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12"><p:commandButton  value="Zapri" style="width: 100%" onclick="PF('dlg7_2').hide();" /></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Anketa o ogljičnem odtisu nova" id="dialog8" widgetVar="dlg8" height="600" minHeight="400" width="800" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form8">
+                    <div id="surveyDiv" style="height: 100vh"></div>
+
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Obvesti naročnika o prihodu gosta" id="dialog2" widgetVar="dlg2" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form2">
+                    <h:panelGroup id="display">
+                        <div class="row" style="display: none">
+                            <div class="col-md-12">
+                                Iz tega okna lahko sprožite Email ali SMS obvestilo
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                Prejemnik obvestila: <h:outputText value="#{vCodeksObiskovalciController.selected.foruser}" />
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4"><p:commandButton  value="Email" style="width: 100%" actionListener="#{vCodeksObiskovalciController.sendMail()}" oncomplete="PF('dlg2').hide()" disabled="#{!vCodeksObiskovalciController.hasMail}"/></div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><p:commandButton value="SMS" style="width: 100%" actionListener="#{vCodeksObiskovalciController.sendSMS}" oncomplete="PF('dlg2').hide()" disabled="#{!vCodeksObiskovalciController.hasMobile}"/></div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Sprejem gosta z RFID kljuckom" id="dialog3" widgetVar="dlg3" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form3">
+                    <h:panelGroup id="display">
+                        <p:defaultCommand target="submitButton" />
+                        <div class="row" style="display: none">
+                            <div class="col-md-12">
+                                Sprejem gosta naročnik (ali drug prevzemnik) potrdi s svojim RFID ključkom
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                Naročnik: <h:outputText value="#{vCodeksObiskovalciController.selected.foruser}" />
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px">
+                            <div class="col-md-6"><p:inputText id="rfidin" widgetVar="myInput" value="#{vCodeksObiskovalciController.rfidKey}" style="width:100%"/></div>
+
+                            <div class="col-md-5"><p:commandButton id="submitButton" actionListener="#{vCodeksObiskovalciController.sprejmiObiskovalca()}" oncomplete="PF('dlg3').hide()" ajax="true"  value="Shrani" style="width:100%" /></div>
+                        </div>
+
+
+
+
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Odhod gosta" id="dialog4" widgetVar="dlg4" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form4">
+                    <h:panelGroup id="display">
+                        <p class="p-m-0">Na tem oknu bo mogoče potrditi odhod gosta</p>
+                        <br/>
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <ui:include src="View.xhtml"/>
+            <ui:include src="ViewPrint.xhtml"/>
+            <ui:include src="ViewPrintFilled.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

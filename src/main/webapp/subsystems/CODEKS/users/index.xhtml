@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            CODEKS Users
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage Codeks Users
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="UsersListForm">
+                <p:dataTable id="datalist" value="#{usersController.items}" var="item"
+                             selectionMode="single" selection="#{usersController.selected}"
+                             paginator="true" paginatorPosition="bottom"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+                    <!--
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                    -->
+                    <p:ajax event="rowSelect"   update="viewButton"/>
+                    <p:ajax event="rowUnselect" update="viewButton"/>
+
+                    <f:facet name="header">
+                        <div class="p-d-flex p-jc-between p-ai-center">
+                            List of Codeks Users
+
+                            <div>
+                                <p:commandButton id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="datalist" trigger="toggler"/>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_deleted}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.deleted}" disabled="true"/>
+                    </p:column>
+                    <p:column filterBy="#{item.lastname}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_lastname}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastname}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.firstname}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_firstname}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.firstname}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_memo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.memo}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_picture}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.picture}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_companyId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.companyId}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.departmentId}" filterMatchMode="exact">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_departmentId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.departmentId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_subunitId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.subunitId}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.externalId}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_externalId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.externalId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_exportId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.exportId}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.card}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_card}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.card}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_cardProtected}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cardProtected}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_pin}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.pin}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_personalId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.personalId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_code}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.code}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_validTill}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.validTill}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_useKeypad}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.useKeypad}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_follow}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.follow}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_hide}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.hide}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_master}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.master}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_linkCode}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.linkCode}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_blocked}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.blocked}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_dynamicAccess}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dynamicAccess}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_lastEventId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastEventId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_lastEventType}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastEventType}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_lastEventPlaceId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastEventPlaceId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_lastEventTime}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastEventTime}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_isTimeAttendance}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.isTimeAttendance}" disabled="true"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_isLoginAllowed}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.isLoginAllowed}" disabled="true"/>
+                    </p:column>
+                    <p:column filterBy="#{item.username}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_username}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.username}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.password}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_password}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.password}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_language}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.language}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.email}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_email}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.email}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_cardType}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cardType}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_TAStartDate}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.TAStartDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_calendarId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.calendarId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_validFrom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.validFrom}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_lostCard}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.lostCard}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_mobileCard}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.mobileCard}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_editOwnTA}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.editOwnTA}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_editOwnYearData}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.editOwnYearData}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_processOwnAbsences}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.processOwnAbsences}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_processOwnPermits}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.processOwnPermits}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_customField1}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.customField1}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_customField2}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.customField2}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_customField3}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.customField3}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_viewOwnTimeAndAttendance}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.viewOwnTimeAndAttendance}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_allowPlaceReservations}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.allowPlaceReservations}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_allowGuests}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.allowGuests}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_isAlternativeActionActive}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.isAlternativeActionActive}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_userReferenceId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.userReferenceId}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_paysForLunch}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.paysForLunch}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_card3ProKeyStatus}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.card3ProKeyStatus}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_card3ProKeyStatusChangedAt}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.card3ProKeyStatusChangedAt}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_FDAnnounceVisitors}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.FDAnnounceVisitors}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_FDProccessOwnVisitorAnnounces}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.FDProccessOwnVisitorAnnounces}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_editOwnUserEditableStatistics}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.editOwnUserEditableStatistics}" disabled="true"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleCodeks.ListUsersTitle_automaticLunchOrdering}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.automaticLunchOrdering}" disabled="true"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <!--
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleCodeks.Create}" actionListener="#{usersController.prepareCreate}" update=":UsersCreateForm" oncomplete="PF('UsersCreateDialog').show()"/>
+                        -->
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleCodeks.View}" update=":UsersViewForm" oncomplete="PF('UsersViewDialog').show()" disabled="#{empty usersController.selected}"/>
+                        <!--
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleCodeks.Edit}" update=":UsersEditForm" oncomplete="PF('UsersEditDialog').show()" disabled="#{empty usersController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleCodeks.Delete}" actionListener="#{usersController.destroy}" update=":growl,datalist" disabled="#{empty usersController.selected}"/>
+                        -->
+                    </f:facet>
+                </p:dataTable>
+                
+                <p:contextMenu for="datalist" style="width: 350px">
+                    <p:menuitem value="Pokaži uporabnikova izobraževanja" action="#{usersController.showUsersHRCourses}"  icon="pi pi-search"/>
+                </p:contextMenu>
+                
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+>
+
+<h:head>
+
+</h:head>
+
+<h:body>
+	<h2>Value is stored in a view scoped bean</h2>
+	Session ID: <h:outputText value="#{session.id}" />
+	<br />
+	<h:panelGroup layout="block">
+		Test string current value 
+		<h:outputText
+			value="#{empty testViewBean.testString ? 'empty' : testViewBean.testString}" />
+	</h:panelGroup>
+
+
+	<h:form>
+		<h:panelGrid columns="2">
+
+			<h:outputLabel for="testString" value="Test String Value" />
+			<h:inputText id="testString" required="true"
+				value="#{testViewBean.testString}" />
+
+		</h:panelGrid>
+		<h:commandButton value="Submit" action="#{testViewBean.submit}" />
+
+	</h:form>
+
+	<h:link value="Return to index page" outcome="index" />
+</h:body>
+</html>

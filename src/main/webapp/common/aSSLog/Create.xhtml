@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSLogCreateDlg" widgetVar="ASSLogCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateASSLogTitle}">
+            <h:form id="ASSLogCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSLogController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_IDLog}" for="IDLog" />
+                        <p:inputText id="IDLog" value="#{aSSLogController.selected.IDLog}" title="#{bundle.CreateASSLogTitle_IDLog}" required="true" requiredMessage="#{bundle.CreateASSLogRequiredMessage_IDLog}"/>
+                        -->
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_logTimestamp}" for="logTimestamp" />
+                        <p:calendar id="logTimestamp" pattern="dd.MM.yyyy HH:mm:ss" value="#{aSSLogController.selected.logTimestamp}" title="#{bundle.EditASSLogTitle_logTimestamp}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_logExternalID}" for="logExternalID" />
+                        <p:inputText id="logExternalID" value="#{aSSLogController.selected.logExternalID}" title="#{bundle.CreateASSLogTitle_logExternalID}" />
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_logComment}" for="logComment" />
+                        <p:inputText id="logComment" value="#{aSSLogController.selected.logComment}" title="#{bundle.CreateASSLogTitle_logComment}" />
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_logQuantity}" for="logQuantity" />
+                        <p:inputText id="logQuantity" value="#{aSSLogController.selected.logQuantity}" title="#{bundle.CreateASSLogTitle_logQuantity}" />
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_IDLogAsset}" for="IDLogAsset" />
+                        <p:selectOneMenu id="IDLogAsset" value="#{aSSLogController.selected.IDLogAsset}" required="true" requiredMessage="#{bundle.EditASSLogRequiredMessage_IDLogAsset}">
+                            <f:selectItems value="#{aSSAssetController.itemsAvailableSelectOne}"
+                                           var="IDLogAssetItem"
+                                           itemValue="#{IDLogAssetItem}"
+                                           itemLabel="(#{IDLogAssetItem.IDAsset}) #{IDLogAssetItem.assetDescription}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundle.CreateASSLogLabel_IDLogStatus}" for="IDLogStatus" />
+                        <p:selectOneMenu id="IDLogStatus" value="#{aSSLogController.selected.IDLogStatus}" >
+                            <f:selectItems value="#{aSSStatusController.itemsAvailableSelectOne}"
+                                           var="IDLogStatusItem"
+                                           itemValue="#{IDLogStatusItem}"
+                                           itemLabel="(#{IDLogStatusItem.IDStatus}) #{IDLogStatusItem.statusDescription}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aSSLogController.create}" value="#{bundle.Save}" update="display,:ASSLogListForm:datalist,:growl" oncomplete="handleSubmit(args,'ASSLogCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ASSLogCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

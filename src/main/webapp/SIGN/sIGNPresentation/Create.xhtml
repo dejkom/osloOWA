@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SIGNPresentationCreateDlg" widgetVar="SIGNPresentationCreateDialog" modal="true" resizable="false" minimizable="false" maximizable="false"  appendTo="@(body)" header="Dodaj" width="60vw" height="60vh">
+            <div class="p-text-center">
+                <i class="pi pi-spinner loading-icon" aria-hidden="true"></i>
+            </div>
+            <h:form id="SIGNPresentationCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sIGNPresentationController.selected != null}" style="margin-bottom: 5px;">
+                        <p:outputLabel value="Ime" for="name" />
+                        <p:inputText required="required" id="name" value="#{sIGNPresentationController.selected.name}" title="#{bundleSIGN.CreateSIGNPresentationTitle_name}" />
+                    </p:panelGrid>
+                    <p:fileUpload value="#{sIGNPresentationController.files}" multiple="true" mode="advanced" skinSimple="true" listener="#{sIGNPresentationController.handleFileUploadPresentation}"  label="Dodaj datoteko" uploadLabel="Naloži" cancelLabel="Prekliči" accept=".jpg,.png,.jpeg,.bmp,.mp4,.wma,.wmv,.webm,.pdf"/>
+                    <p:commandButton actionListener="#{sIGNPresentationController.create()}" value="Dodaj" update="display,:SIGNPresentationListForm:datalist,:growl" oncomplete="handleSubmit(args,'SIGNPresentationCreateDialog');"/>
+                    <p:commandButton value="Prekliči" onclick="SIGNPresentationCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

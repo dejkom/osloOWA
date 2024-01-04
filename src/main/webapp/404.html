@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head lang="sl">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+        <title>Napaka 404</title>
+    </head>
+    <style>
+        body {
+            font-family: Arial;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .errorlabel{
+            font-weight: 900;
+            font-size: 450%;
+            margin: 0;
+            left: 5%;
+            top:2.5%;
+        }
+
+    </style>
+    <body>
+        <div style="width: 100vw; height: 100vh;">
+            <h1 class="errorlabel">Spletno mesto ne obstaja</h1>
+            <img src="http://10.36.64.16:7070/osloWebApp/Presentations/error__image.gif"/>
+        </div>
+        <script>
+            window.onload = (event) => {
+                setTimeout(refreshWindow, 5000);
+            };
+            function refreshWindow() {
+                window.location.reload(true);
+                console.log("Refreshing page");
+                setTimeout(refreshWindow, 5000);
+            }
+        </script>
+    </body>
+</html>

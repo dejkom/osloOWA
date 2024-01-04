@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FinishedOSECtableEditDlg" widgetVar="FinishedOSECtableEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecSpea.EditFinishedOSECtableTitle}">
+            <h:form id="FinishedOSECtableEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{finishedOSECtableController.selected != null}">
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{finishedOSECtableController.selected.id}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_id}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitSN}" for="unitSN" />
+                        <p:inputText id="unitSN" value="#{finishedOSECtableController.selected.unitSN}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitSN}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_unitSN}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_firstTestDatetime}" for="firstTestDatetime" />
+                        <p:calendar id="firstTestDatetime" pattern="MM/dd/yyyy HH:mm:ss" value="#{finishedOSECtableController.selected.firstTestDatetime}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_firstTestDatetime}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_firstTestDatetime}" showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitLN}" for="unitLN" />
+                        <p:inputText id="unitLN" value="#{finishedOSECtableController.selected.unitLN}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitLN}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_unitLN}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitName}" for="unitName" />
+                        <p:inputText id="unitName" value="#{finishedOSECtableController.selected.unitName}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitName}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_unitName}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitType}" for="unitType" />
+                        <p:inputText id="unitType" value="#{finishedOSECtableController.selected.unitType}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitType}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitID}" for="unitID" />
+                        <p:inputText id="unitID" value="#{finishedOSECtableController.selected.unitID}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitID}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_unitID}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitPN}" for="unitPN" />
+                        <p:inputText id="unitPN" value="#{finishedOSECtableController.selected.unitPN}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitPN}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitPanel}" for="unitPanel" />
+                        <p:inputText id="unitPanel" value="#{finishedOSECtableController.selected.unitPanel}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitPanel}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_unitIndex}" for="unitIndex" />
+                        <p:inputText id="unitIndex" value="#{finishedOSECtableController.selected.unitIndex}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_unitIndex}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_unitIndex}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_stationName}" for="stationName" />
+                        <p:inputText id="stationName" value="#{finishedOSECtableController.selected.stationName}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_stationName}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_stationName}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_stationOS}" for="stationOS" />
+                        <p:inputText id="stationOS" value="#{finishedOSECtableController.selected.stationOS}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_stationOS}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_testDatetime}" for="testDatetime" />
+                        <p:calendar id="testDatetime" pattern="MM/dd/yyyy HH:mm:ss" value="#{finishedOSECtableController.selected.testDatetime}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_testDatetime}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_testDatetime}" showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{finishedOSECtableController.selected.status}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_status}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_remark}" for="remark" />
+                        <p:inputText id="remark" value="#{finishedOSECtableController.selected.remark}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_remark}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_processID}" for="processID" />
+                        <p:inputText id="processID" value="#{finishedOSECtableController.selected.processID}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_processID}" required="true" requiredMessage="#{bundleOsecSpea.EditFinishedOSECtableRequiredMessage_processID}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_operatorName}" for="operatorName" />
+                        <p:inputText id="operatorName" value="#{finishedOSECtableController.selected.operatorName}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_operatorName}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_prenosVBaan}" for="prenosVBaan" />
+                        <p:selectBooleanCheckbox id="prenosVBaan" value="#{finishedOSECtableController.selected.prenosVBaan}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_sprostilVBaan}" for="sprostilVBaan" />
+                        <p:inputText id="sprostilVBaan" value="#{finishedOSECtableController.selected.sprostilVBaan}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_sprostilVBaan}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_sprostilTimestamp}" for="sprostilTimestamp" />
+                        <p:calendar id="sprostilTimestamp" pattern="MM/dd/yyyy HH:mm:ss" value="#{finishedOSECtableController.selected.sprostilTimestamp}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_sprostilTimestamp}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditFinishedOSECtableLabel_prenosVBaanTimestamp}" for="prenosVBaanTimestamp" />
+                        <p:calendar id="prenosVBaanTimestamp" pattern="MM/dd/yyyy HH:mm:ss" value="#{finishedOSECtableController.selected.prenosVBaanTimestamp}" title="#{bundleOsecSpea.EditFinishedOSECtableTitle_prenosVBaanTimestamp}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{finishedOSECtableController.update}" value="#{bundleOsecSpea.Save}" update="display,:FinishedOSECtableListForm:datalist,:growl" oncomplete="handleSubmit(args, 'FinishedOSECtableEditDialog');"/>
+                    <p:commandButton value="#{bundleOsecSpea.Cancel}" onclick="FinishedOSECtableEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

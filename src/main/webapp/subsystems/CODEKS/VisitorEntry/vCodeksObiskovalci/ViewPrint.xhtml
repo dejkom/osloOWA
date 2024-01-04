@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:composition>
+        <script type="text/javascript">
+            //for the first time the page is loaded
+            jQuery(document).ready(function () {
+                onLoadFunction();
+            });
+
+            //to load the script after you reload your page with ajax
+            jQuery(document).on("pfAjaxComplete", function () {
+                onLoadFunction();
+            });
+
+            //your code you handle with
+            function onLoadFunction() {
+                jQuery('.ui-widget-overlay').click(function () {
+                    PF('VCodeksObiskovalciViewPrintDialog').hide();
+                });
+            }
+        </script>
+
+        <p:dialog id="VCodeksObiskovalciViewPrintDlg" widgetVar="VCodeksObiskovalciViewPrintDialog" fitViewport="true" modal="true"  width="850px" style="position: absolute; height: 500px; max-height: 500px" blockScroll="true" showHeader="false" closeOnEscape="false" closable="false" resizable="false" appendTo="@(body)">
+            <h:form id="VCodeksObiskovalciViewPrintForm">
+                <p:scrollPanel mode="native" style="width:100%;height:500px" >
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox-content p-xl">
+                            <div class="row" style="border-bottom: 1px solid #e7eaec">
+                                <div class="col-sm-4">
+                                    <address>
+                                        <strong>odelo Slovenija d.o.o.</strong><br/>
+                                        Tovarniška cesta 12<br/>
+                                        SI - 3312 Prebold<br/>
+                                    </address>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <h3 style="text-align: center">Registracija obiskovalca</h3>
+                                </div>
+
+                                <div class="col-sm-4 text-right">
+                                    <div class="row" style="float:right">
+                                        <h:graphicImage class="pull-right" name="img/odelo_report_1.png" alt="" style="height: 50px; float:right"/>
+                                    </div>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <div class="row" style="float:right">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive m-t">
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-4"><strong>Datum:</strong> <h3 style="display:inline-block;font-weight: 400">
+                                            <h:outputText value="#{vCodeksObiskovalciController.selected.timeIn}" >
+                                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" />
+                                            </h:outputText>
+                                        </h3></div>
+
+
+                                    <div style="text-align: center" class="col-sm-4"><strong>Čas prihoda:</strong><h3 style="display:inline-block;font-weight: 400">
+                                            <h:outputText value="#{vCodeksObiskovalciController.selected.timeIn}" >
+                                                <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana" />
+                                            </h:outputText>
+                                        </h3></div>
+                                    <div class="col-sm-4 text-right"><strong>Čas odhoda:</strong><h3 style="display:inline-block;font-weight: 400"> Ni določen </h3></div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-12"><strong>Priimek in ime obiskovalca:</strong> <h3 style="display:inline-block;font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.guest}"/></h3></div>
+
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-12"><strong>Podjetje:</strong> <h3 style="display:inline-block;font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.company}"/></h3></div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-12"><strong>Namen obiska:</strong> <h3 style="display:inline-block; font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.reason}"/></h3></div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-12"><strong>Kontaktna oseba v podjetju odelo Slovenija d.o.o.:</strong><h3 style="display:inline-block;font-weight: 400"><h:outputText value="#{vCodeksObiskovalciController.selected.foruser}"/></h3></div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-12">
+                                        <p:selectBooleanCheckbox style="margin-left: 5px" required="true" requiredMessage="Strinjati se morate z varnostnimi informacijami za obiskovalce." value="#{vCodeksObiskovalciController.potrjujemSeznanjenost}" itemLabel="Potrjujem, da sem seznanjen z varnostnimi informacijami za obiskovalce">
+                                            <f:validator validatorId="omnifaces.RequiredCheckboxValidator" />
+                                        </p:selectBooleanCheckbox>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-bottom: 10px">
+                                    <div class="col-sm-12">
+
+                                        <strong>Podpis obiskovalca:</strong> 
+
+                                        <div class="row">
+                                            <p:signature style="width:900px;height:150px"  widgetVar="sig" value="#{vCodeksObiskovalciController.podpisValue}" required="true" requiredMessage="Podpis je zahtevan podatek! Prosim podpišite dokument na podpisnem polju." guideline="true"/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div><!-- /table-responsive -->
+
+                            <!--
+                            <div class="text-right">
+                                <button class="btn btn-primary"><i class="fa fa-save"></i> Shrani</button>
+                            </div>
+                            -->
+
+                            <div class="well m-t">
+                                <p>
+                                    Izpolnjeni podatki na obrazcu se zaradi varnosti ljudi ali premoženja in zagotavljanja nadzora vstopa ali izstopa v ali iz službenih oz. poslovnih prostorov zbirajo kot del evidence dostopa v službene oz. poslovne prostore. Hranili se bodo 1 leto oz. do izpolnitve namena, zaradi katerega so bili zbrani (npr. do zaključka sodnega postopka).
+                                </p>
+                                <p>
+                                    Na elektronski naslov info@odelo.si se lahko kadarkoli naslovi tudi zahtevo po dostopu do osebnih podatkov, popravku, izbrisu, omejitvi obdelave, prenosu podatkov ali pa ugovor obdelavi. Ta elektronski naslov je tudi kontakt upravljavca osebnih podatkov, ki je odelo Slovenija d.o.o., Tovarniška cesta 12, 3312 Prebold. Pritožbo zoper odločitev upravljavca o zahtevi posameznika, na katerega se nanašajo osebni podatki, je mogoče vložiti na nadzorni organ. 
+                                </p>
+                                <p>
+                                    Več informacij o politiki varovanja osebnih podatkov, na katere se nanašajo osebni podatki, odelo Slovenija d.o.o., Tovarniška cesta 12, 3312 Prebold je dostopnih tudi na www.odelo.si.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h:panelGroup id="display">
+                    <p:commandButton actionListener="#{vCodeksObiskovalciController.podpisObiskovalca}" update="display :growl" style="width: 100%;color: #fff;background-color: #1ab394; border-color: #1ab394;" ajax="true" value="Shrani" onsuccess="" oncomplete="if (!args.validationFailed){PF('VCodeksObiskovalciViewPrintDialog').hide()}" />
+                </h:panelGroup>
+                    <br/>
+                    <div class="row">
+                        <br/>
+                        <br/>
+                    </div>
+            </p:scrollPanel>
+                
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

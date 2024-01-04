@@ -1,0 +1,547 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            #{msg['UserProfile']}
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+                <div class="wrapper">
+                    <div class="row animated fadeInRight">
+                        <div class="col-md-3">
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>#{msg['EmployeeData']}</h5>
+                                </div>
+                                <div>
+                                    <div class="ibox-content no-padding border-left-right">
+                                        <center><h:graphicImage alt="image" class="img-fluid"  library="img" name="default_profile.png" style="margin: 30px; width: 200px"/></center>
+                                    </div>
+                                    <div class="ibox-content profile-content">
+                                        <h3><strong><h:outputText value="#{profileOdeloBean.userByCodeksId.lastname}"/> <h:outputText value=" #{profileOdeloBean.userByCodeksId.firstname}"/></strong></h3>
+
+                                        <h:panelGroup layout="block" rendered="#{homeController.mail.length()>1}"> 
+                                            <hr/>
+                                            <p><strong><i class="fa fa-envelope"> </i>#{msg['Mail']}</strong><br/>
+                                                <a href="mailto:#{homeController.mail}"><h:outputText value=" #{homeController.mail}"/></a></p>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block" rendered="#{homeController.mobilephone.length()>1}"> 
+                                            <hr/>
+                                            <p><strong><i class="fa fa-mobile-screen"></i>#{msg['MobilePhone']}</strong><br/>
+                                                #{homeController.mobilephone} </p>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block" rendered="#{homeController.telephone.length()>1}"> 
+                                            <hr/>
+                                            <p><strong><i class="fa fa-phone"> </i>#{msg['Telephone']}</strong><br/>
+                                                #{homeController.telephone} </p>
+                                        </h:panelGroup>
+
+                                        <h:panelGroup layout="block" rendered="#{homeController.jobtitle.length()>1}"> 
+                                            <hr/>
+                                            <p><strong><i class="fa fa-graduation-cap"> </i>#{msg['JobTitle']}</strong><br/>
+                                                #{homeController.jobtitle} </p>
+                                        </h:panelGroup>
+                                        <!--
+                                        <h5>
+                                            O meni
+                                        </h5>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
+                                        </p>
+                                        -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-9">
+
+
+                            <div class="ibox ">
+                                <div class="ibox-title">
+                                    <h5>#{msg['OdeloEducations']}</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                        <a class="close-link">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content table-responsive">
+                                    <div class="panel-body">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h5 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed" aria-expanded="false">Opravljena izobraževanja</a>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse in collapse" style="">
+                                                    <div class="panel-body">
+
+
+                                                        <table class="table table-hover no-margins">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Naziv</th>
+                                                                    <th><i class="fa fa-calendar-o"></i> Datum</th>
+                                                                    <th><i class="fa fa-info"></i> Udeležba</th>
+                                                                    <th><i class="fa fa-info"></i> Vprašalnik</th>
+                                                                    <th><i class="fa fa-graduation-cap"></i> Predavatelj</th>
+                                                                    <th><i class="fa fa-graduation-cap"></i> DatumAnketa</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <c:forEach var="att" items="#{profileOdeloBean.allAttendancesForPersonMap.get('izpolnjeno')}"  varStatus="status" >
+
+
+                                                                    <tr>
+                                                                        <td><small>${att.courseOfferingID.courseID.courseTitle}</small></td>
+                                                                        <td><h:outputText value="${att.courseOfferingID.courseDate}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                                        <td>
+
+                                                                            <c:if test="${att.wasAttended}">
+                                                                                <span class="label label-success">Da</span>
+                                                                            </c:if>
+                                                                            <c:if test="${!att.wasAttended}">
+                                                                                <span class="label label-danger">Ne</span>
+                                                                            </c:if>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <c:if test="${empty att.tsAnketa and att.wasAttended}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                    <span class="label label-danger">Izpolnite</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${!empty att.tsAnketa}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                    <span class="label label-success">Izpolnjeno</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${empty att.tsAnketa and !att.wasAttended}">
+                                                                                <span class="label label-default">Ni udeležbe</span>                                                      
+                                                                            </c:if>
+                                                                            <!--
+                                                                            <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                <span class="label label-danger">Ni rešen</span>
+                                                                            </a>
+                                                                            -->
+                                                                        </td>
+
+                                                                        <td>${att.courseOfferingID.instructorID.lastname} ${att.courseOfferingID.instructorID.firstname}</td>
+
+                                                                        <td><h:outputText value="${att.tsAnketa}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                                    </tr>
+
+                                                                </c:forEach>   
+                                                            </tbody>
+
+                                                        </table>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false">Neudeležena izobraževanja</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse" style="">
+                                                    <div class="panel-body">
+
+
+                                                        <table class="table table-hover no-margins">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Naziv</th>
+                                                                    <th><i class="fa fa-calendar-o"></i> Datum</th>
+                                                                    <th><i class="fa fa-info"></i> Udeležba</th>
+                                                                    <th><i class="fa fa-info"></i> Vprašalnik</th>
+                                                                    <th><i class="fa fa-graduation-cap"></i> Predavatelj</th>
+                                                                    <th><i class="fa fa-link"></i></th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <c:forEach var="att" items="#{profileOdeloBean.allAttendancesForPersonMap.get('neznanaudelezba')}"  varStatus="status" >
+
+
+                                                                    <tr>
+                                                                        <td><small>${att.courseOfferingID.courseID.courseTitle}</small></td>
+                                                                        <td><h:outputText value="${att.courseOfferingID.courseDate}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                                        <td>
+
+                                                                            <c:if test="${att.wasAttended}">
+                                                                                <span class="label label-success">Da</span>
+                                                                            </c:if>
+                                                                            <c:if test="${!empty att.tsAnketa and !att.wasAttended}">
+                                                                                <span class="label label-danger">Ni udeležbe</span>
+                                                                            </c:if>
+                                                                            <c:if test="${empty att.tsAnketa and !att.wasAttended}">
+                                                                                <span class="label label-default">Neznana udeležba</span>                                                      
+                                                                            </c:if>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <c:if test="${empty att.tsAnketa and att.wasAttended}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                    <span class="label label-danger">Izpolnite</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${!empty att.tsAnketa}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                    <span class="label label-success">Izpolnjeno</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${empty att.tsAnketa and !att.wasAttended}">
+                                                                                <span class="label label-default">Ni udeležbe</span>                                                      
+                                                                            </c:if>
+                                                                            <!--
+                                                                            <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                <span class="label label-danger">Ni rešen</span>
+                                                                            </a>
+                                                                            -->
+                                                                        </td>
+
+                                                                        <td>${att.courseOfferingID.instructorID.lastname} ${att.courseOfferingID.instructorID.firstname}</td>
+
+                                                                        <td>
+                                                                            <c:if test = "${profileOdeloBean.isExternalEducation(att.courseOfferingID.courseID)}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/selfRegisterExternalCourse.xhtml?attid=${att.attendanceID}">
+                                                                                    <span class="label label-success">Potrdite udeležbo</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                </c:forEach>   
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed" aria-expanded="false">Izobraževanja z nerešenimi vprašalniki</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse">
+                                                    <div class="panel-body">
+
+
+                                                        <table class="table table-hover no-margins">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Naziv</th>
+                                                                    <th><i class="fa fa-calendar"></i> Datum</th>
+                                                                    <th><i class="fa fa-info"></i> Udeležba</th>
+                                                                    <th><i class="fa fa-info"></i> Vprašalnik</th>
+                                                                    <th><i class="fa fa-graduation-cap"></i> Predavatelj</th>
+                                                                    <th><i class="fa fa-calendar"></i> DatumAnketa</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <c:forEach var="att" items="#{profileOdeloBean.allAttendancesForPersonMap.get('izpolnite')}"  varStatus="status" >
+
+
+                                                                    <tr>
+                                                                        <td><small>${att.courseOfferingID.courseID.courseTitle}</small></td>
+                                                                        <td><h:outputText value="${att.courseOfferingID.courseDate}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                                        <td>
+
+                                                                            <c:if test="${att.wasAttended}">
+                                                                                <span class="label label-success">Da</span>
+                                                                            </c:if>
+                                                                            <c:if test="${!att.wasAttended}">
+                                                                                <span class="label label-danger">Ne</span>
+                                                                            </c:if>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <c:if test="${empty att.tsAnketa and att.wasAttended}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                    <span class="label label-danger">Izpolnite</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${!empty att.tsAnketa}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                    <span class="label label-success">Izpolnjeno</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${empty att.tsAnketa and !att.wasAttended}">
+                                                                                <span class="label label-default">Ni udeležbe</span>                                                      
+                                                                            </c:if>
+                                                                            <!--
+                                                                            <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                                <span class="label label-danger">Ni rešen</span>
+                                                                            </a>
+                                                                            -->
+                                                                        </td>
+
+                                                                        <td>${att.courseOfferingID.instructorID.lastname} ${att.courseOfferingID.instructorID.firstname}</td>
+
+                                                                        <td><h:outputText value="${att.tsAnketa}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                                    </tr>
+
+                                                                </c:forEach>   
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed" aria-expanded="false">Ocenitev učinkovitosti izobraževanja</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseFour" class="panel-collapse">
+                                                    <div class="panel-body">
+
+
+                                                        <table class="table table-hover no-margins">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Naziv</th>
+                                                                    <th><i class="fa fa-calendar"></i> Datum Izobraževanja</th>
+                                                                    <th><i class="fa fa-circle-user"></i> Udeleženec</th>
+                                                                    <th><i class="fa fa-info"></i> Ocenitev izobraževanja</th>
+                                                                    <th><i class="fa fa-info"></i> Ocenitev učinkovitosti</th>
+                                                                    <th><i class="fa fa-calendar"></i> Začetek ankete</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                <c:forEach var="att" items="#{profileOdeloBean.findStatusOfQuestionnaires}"  varStatus="status" >
+                                                                    
+                                                                    <c:if test="${!(att[0].questionnaire2Status.equals('Not Solved')&amp;&amp; !profileOdeloBean.isButtonUcinkovitostEnabled(att[0].questionnaire2FromTS))}">
+                                                                    <tr>
+                                                                        <td><small>${att[0].courseTitle}</small></td>
+                                                                        <td>
+                                                                            <h:outputText value="${att[1].courseDate}" >
+                                                                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                                                            </h:outputText>
+                                                                        </td>
+                                                                        <td>
+                                                                            #{profileOdeloBean.mapZaposlenih.get(att[0].codeksID).firstname} #{profileOdeloBean.mapZaposlenih.get(att[0].codeksID).lastname}
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <c:if test="${att[0].questionnaire1Status.equals('Solved')}">
+                                                                                <span class="label label-success">Opravljena</span>
+                                                                            </c:if>
+                                                                            <c:if test="${att[0].questionnaire1Status.equals('Not Solved')}">
+                                                                                <span class="label label-danger">Ni opravljena</span>
+                                                                            </c:if>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <c:if test="${att[0].questionnaire2Status.equals('Solved')}">
+                                                                                <span class="label label-success">Opravljena</span>
+                                                                            </c:if>
+                                                                            <c:if test="${att[0].questionnaire2Status.equals('Not Solved')&amp;&amp; !profileOdeloBean.isButtonUcinkovitostEnabled(att[0].questionnaire2FromTS)}">
+                                                                                <a  href="#" onclick="alert('Ni še minilo 3 mesece od izobraževanja')">
+                                                                                    <span class="label">Ni opravljena</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                            <c:if test="${att[0].questionnaire2Status.equals('Not Solved') &amp;&amp; profileOdeloBean.isButtonUcinkovitostEnabled(att[0].questionnaire2FromTS)}">
+                                                                                <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevUcinkovitostiIzobrazevanja.xhtml?coid=${att[1].courseOfferingID}&amp;uid=${att[0].codeksID}">
+                                                                                    <span class="label label-danger">Rešite ocenitev</span>
+                                                                                </a>
+                                                                            </c:if>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <h:outputText value="${att[0].questionnaire2FromTS}" >
+                                                                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                                                            </h:outputText>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </c:if>
+                                                                    
+                                                                </c:forEach>                                                                   
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <!--
+                            <div class="ibox collapsed">
+                                <div class="ibox-title">
+                                    <h5>#{msg['OdeloEducations']}</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                        <a class="close-link">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content table-responsive">
+                                    <table class="table table-hover no-margins">
+                                        <thead>
+                                            <tr>
+                                                <th>Naziv</th>
+                                                <th><i class="fa fa-calendar-o"></i> Datum</th>
+                                                <th><i class="fa fa-info"></i> Udeležba</th>
+                                                <th><i class="fa fa-info"></i> Vprašalnik</th>
+                                                <th><i class="fa fa-graduation-cap"></i> Predavatelj</th>
+                                                <th><i class="fa fa-graduation-cap"></i> DatumAnketa</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <c:forEach var="att" items="#{profileOdeloBean.allAttendancesForPerson}"  varStatus="status" >
+
+
+                                                <tr>
+                                                    <td><small>${att.courseOfferingID.courseID.courseTitle}</small></td>
+                                                    <td><h:outputText value="${att.courseOfferingID.courseDate}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                    <td>
+
+                                                        <c:if test="${att.wasAttended}">
+                                                            <span class="label label-success">Da</span>
+                                                        </c:if>
+                                                        <c:if test="${!att.wasAttended}">
+                                                            <span class="label label-danger">Ne</span>
+                                                        </c:if>
+                                                    </td>
+
+                                                    <td>
+                                                        <c:if test="${empty att.tsAnketa and att.wasAttended}">
+                                                            <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                <span class="label label-danger">Izpolnite</span>
+                                                            </a>
+                                                        </c:if>
+                                                        <c:if test="${!empty att.tsAnketa}">
+                                                            <a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevIzobrazevanja.xhtml?coid=${att.courseOfferingID.courseOfferingID}&amp;uid=#{profileOdeloBean.userByCodeksId.externalId}">
+                                                                <span class="label label-success">Izpolnjeno</span>
+                                                            </a>
+                                                        </c:if>
+                                                        <c:if test="${empty att.tsAnketa and !att.wasAttended}">
+                                                            <span class="label label-default">Ni udeležbe</span>                                                      
+                                                        </c:if>
+                                                    </td>
+
+                                                    <td>${att.courseOfferingID.instructorID.lastname} ${att.courseOfferingID.instructorID.firstname}</td>
+
+                                                    <td><h:outputText value="${att.tsAnketa}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                </tr>
+
+                                            </c:forEach>   
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                            -->
+
+
+                            <div class="ibox collapsed">
+                                <div class="ibox-title">
+                                    <h5>Osnovna sredstva</h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>                               
+                                        <a class="close-link">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-content table-responsive">
+                                    <table class="table table-hover no-margins">
+                                        <thead>
+                                            <tr>
+                                                <th>Sredstvo</th>
+                                                <th> Datum izposoje</th>
+                                                <th> Dovoljeno trajanje izposoje (dni)</th>
+                                                <th> Operacija</th>
+                                                <!--<th> Preostanek</th>-->
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <c:forEach var="sre" items="#{profileOdeloBean.izposojenaSredstva}"  varStatus="status" >
+
+                                                <tr>
+                                                    <td>${sre.sredstvo.assetDescription}</td>
+                                                    <td><h:outputText value="${sre.logTimestamp}"><f:convertDateTime dateStyle="full" pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></td>
+                                                    <td>${sre.assetExpireDays}</td>
+                                                    <td>${sre.status.statusDescription}</td>
+                                                    <!--<td></td>-->
+                                                    <!--<td><h:outputText value="${sre.dateWhenMustBeReturned}"><f:convertDateTime dateStyle="full" pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></td>       -->                                        
+                                                    <!--<td>${sre.printDifference(now, sre.dateWhenMustBeReturned)}</td>-->                                                
+                                                </tr>
+
+                                            </c:forEach>   
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+            </h:form>
+        </ui:define>
+
+
+    </ui:composition>
+</html>
+
+
+
+
+

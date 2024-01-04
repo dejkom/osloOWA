@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Courses - Instructors Work Log
+
+            <script type="text/javascript">
+                var currentEvent;
+
+                $(document).ready(function () {
+                    PrimeFaces.widget.ContextMenu.prototype.show = function (e) {
+                        //hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if (e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                                left = e.pageX,
+                                top = e.pageY,
+                                width = this.jq.outerWidth(),
+                                height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if ((left + width) > (win.width()) + win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if ((top + height) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if (this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                            'top': top,
+                            'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+
+            <style type="text/css">
+                body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+                    background: #c5dced;
+                    color: #495057;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage Instructor work log data
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="HRCourseInstructorsWorkLogListForm">
+                <p:dataTable id="datalist" value="#{hRCourseInstructorsWorkLogController.items}" var="item"
+                             selectionMode="single" selection="#{hRCourseInstructorsWorkLogController.selected}"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_courseOfferingID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.courseOfferingID}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_codeksID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.codeksID}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_firstname}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.firstname}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_lastname}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lastname}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_duration}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.duration}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_timestamp}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.timestamp}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCIWL.ListHRCourseInstructorsWorkLogTitle_comment}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.comment}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCIWL.Create}" actionListener="#{hRCourseInstructorsWorkLogController.prepareCreate}" update=":HRCourseInstructorsWorkLogCreateForm" oncomplete="PF('HRCourseInstructorsWorkLogCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRCIWL.View}" update=":HRCourseInstructorsWorkLogViewForm" oncomplete="PF('HRCourseInstructorsWorkLogViewDialog').show()" disabled="#{empty hRCourseInstructorsWorkLogController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCIWL.Edit}" update=":HRCourseInstructorsWorkLogEditForm" oncomplete="PF('HRCourseInstructorsWorkLogEditDialog').show()" disabled="#{empty hRCourseInstructorsWorkLogController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCIWL.Delete}" actionListener="#{hRCourseInstructorsWorkLogController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseInstructorsWorkLogController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>            
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

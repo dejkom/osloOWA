@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UsersViewDlg" widgetVar="UsersViewDialog" modal="true" resizable="false" height="60em" appendTo="@(body)" header="#{bundleCodeks.ViewUsersTitle}">
+            <h:form id="UsersViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{usersController.selected != null}">
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_id}"/>
+                        <h:outputText value="#{usersController.selected.id}" title="#{bundleCodeks.ViewUsersTitle_id}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_deleted}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.deleted}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_lastname}"/>
+                        <h:outputText value="#{usersController.selected.lastname}" title="#{bundleCodeks.ViewUsersTitle_lastname}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_firstname}"/>
+                        <h:outputText value="#{usersController.selected.firstname}" title="#{bundleCodeks.ViewUsersTitle_firstname}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_memo}"/>
+                        <h:outputText value="#{usersController.selected.memo}" title="#{bundleCodeks.ViewUsersTitle_memo}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_picture}"/>
+                        <h:outputText value="#{usersController.selected.picture}" title="#{bundleCodeks.ViewUsersTitle_picture}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_companyId}"/>
+                        <h:outputText value="#{usersController.selected.companyId}" title="#{bundleCodeks.ViewUsersTitle_companyId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_departmentId}"/>
+                        <h:outputText value="#{usersController.selected.departmentId}" title="#{bundleCodeks.ViewUsersTitle_departmentId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_subunitId}"/>
+                        <h:outputText value="#{usersController.selected.subunitId}" title="#{bundleCodeks.ViewUsersTitle_subunitId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_externalId}"/>
+                        <h:outputText value="#{usersController.selected.externalId}" title="#{bundleCodeks.ViewUsersTitle_externalId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_exportId}"/>
+                        <h:outputText value="#{usersController.selected.exportId}" title="#{bundleCodeks.ViewUsersTitle_exportId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_card}"/>
+                        <h:outputText value="#{usersController.selected.card}" title="#{bundleCodeks.ViewUsersTitle_card}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_cardProtected}"/>
+                        <h:outputText value="#{usersController.selected.cardProtected}" title="#{bundleCodeks.ViewUsersTitle_cardProtected}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_pin}"/>
+                        <h:outputText value="#{usersController.selected.pin}" title="#{bundleCodeks.ViewUsersTitle_pin}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_personalId}"/>
+                        <h:outputText value="#{usersController.selected.personalId}" title="#{bundleCodeks.ViewUsersTitle_personalId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_code}"/>
+                        <h:outputText value="#{usersController.selected.code}" title="#{bundleCodeks.ViewUsersTitle_code}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_validTill}"/>
+                        <h:outputText value="#{usersController.selected.validTill}" title="#{bundleCodeks.ViewUsersTitle_validTill}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_useKeypad}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.useKeypad}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_follow}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.follow}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_hide}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.hide}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_master}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.master}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_linkCode}"/>
+                        <h:outputText value="#{usersController.selected.linkCode}" title="#{bundleCodeks.ViewUsersTitle_linkCode}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_blocked}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.blocked}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_dynamicAccess}"/>
+                        <h:outputText value="#{usersController.selected.dynamicAccess}" title="#{bundleCodeks.ViewUsersTitle_dynamicAccess}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_lastEventId}"/>
+                        <h:outputText value="#{usersController.selected.lastEventId}" title="#{bundleCodeks.ViewUsersTitle_lastEventId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_lastEventType}"/>
+                        <h:outputText value="#{usersController.selected.lastEventType}" title="#{bundleCodeks.ViewUsersTitle_lastEventType}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_lastEventPlaceId}"/>
+                        <h:outputText value="#{usersController.selected.lastEventPlaceId}" title="#{bundleCodeks.ViewUsersTitle_lastEventPlaceId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_lastEventTime}"/>
+                        <h:outputText value="#{usersController.selected.lastEventTime}" title="#{bundleCodeks.ViewUsersTitle_lastEventTime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_isTimeAttendance}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.isTimeAttendance}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_isLoginAllowed}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.isLoginAllowed}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_username}"/>
+                        <h:outputText value="#{usersController.selected.username}" title="#{bundleCodeks.ViewUsersTitle_username}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_password}"/>
+                        <h:outputText value="#{usersController.selected.password}" title="#{bundleCodeks.ViewUsersTitle_password}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_language}"/>
+                        <h:outputText value="#{usersController.selected.language}" title="#{bundleCodeks.ViewUsersTitle_language}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_email}"/>
+                        <h:outputText value="#{usersController.selected.email}" title="#{bundleCodeks.ViewUsersTitle_email}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_cardType}"/>
+                        <h:outputText value="#{usersController.selected.cardType}" title="#{bundleCodeks.ViewUsersTitle_cardType}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_TAStartDate}"/>
+                        <h:outputText value="#{usersController.selected.TAStartDate}" title="#{bundleCodeks.ViewUsersTitle_TAStartDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_calendarId}"/>
+                        <h:outputText value="#{usersController.selected.calendarId}" title="#{bundleCodeks.ViewUsersTitle_calendarId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_validFrom}"/>
+                        <h:outputText value="#{usersController.selected.validFrom}" title="#{bundleCodeks.ViewUsersTitle_validFrom}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_lostCard}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.lostCard}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_mobileCard}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.mobileCard}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_editOwnTA}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.editOwnTA}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_editOwnYearData}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.editOwnYearData}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_processOwnAbsences}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.processOwnAbsences}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_processOwnPermits}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.processOwnPermits}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_customField1}"/>
+                        <h:outputText value="#{usersController.selected.customField1}" title="#{bundleCodeks.ViewUsersTitle_customField1}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_customField2}"/>
+                        <h:outputText value="#{usersController.selected.customField2}" title="#{bundleCodeks.ViewUsersTitle_customField2}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_customField3}"/>
+                        <h:outputText value="#{usersController.selected.customField3}" title="#{bundleCodeks.ViewUsersTitle_customField3}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_viewOwnTimeAndAttendance}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.viewOwnTimeAndAttendance}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_allowPlaceReservations}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.allowPlaceReservations}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_allowGuests}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.allowGuests}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_isAlternativeActionActive}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.isAlternativeActionActive}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_userReferenceId}"/>
+                        <h:outputText value="#{usersController.selected.userReferenceId}" title="#{bundleCodeks.ViewUsersTitle_userReferenceId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_paysForLunch}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.paysForLunch}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_card3ProKeyStatus}"/>
+                        <h:outputText value="#{usersController.selected.card3ProKeyStatus}" title="#{bundleCodeks.ViewUsersTitle_card3ProKeyStatus}"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_card3ProKeyStatusChangedAt}"/>
+                        <h:outputText value="#{usersController.selected.card3ProKeyStatusChangedAt}" title="#{bundleCodeks.ViewUsersTitle_card3ProKeyStatusChangedAt}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_FDAnnounceVisitors}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.FDAnnounceVisitors}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_FDProccessOwnVisitorAnnounces}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.FDProccessOwnVisitorAnnounces}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_editOwnUserEditableStatistics}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.editOwnUserEditableStatistics}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewUsersLabel_automaticLunchOrdering}"/>
+                        <p:selectBooleanCheckbox value="#{usersController.selected.automaticLunchOrdering}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleCodeks.Close}" onclick="UsersViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

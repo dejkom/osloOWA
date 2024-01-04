@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseTypeCreateDlg" widgetVar="HRCourseTypeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateHRCourseTypeTitle}">
+            <h:form id="HRCourseTypeCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseTypeController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseTypeLabel_courseTypeID}" for="courseTypeID" />
+                        <p:inputText id="courseTypeID" value="#{hRCourseTypeController.selected.courseTypeID}" title="#{bundleHRCourse.CreateHRCourseTypeTitle_courseTypeID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseTypeRequiredMessage_courseTypeID}"/>
+                        -->
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseTypeLabel_courseTypeTitle}" for="courseTypeTitle" />
+                        <p:inputText id="courseTypeTitle" value="#{hRCourseTypeController.selected.courseTypeTitle}" title="#{bundleHRCourse.CreateHRCourseTypeTitle_courseTypeTitle}" />
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseTypeLabel_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{hRCourseTypeController.selected.active}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseTypeRequiredMessage_active}"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.sendSurveyByMail}" for="ss" />
+                        <p:selectBooleanCheckbox id="ss" value="#{hRCourseTypeController.selected.sendSurveyByMail}" disabled="false"/> 
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseTypeLabel_parent}" for="parent" />
+                        <p:selectOneMenu id="parent" value="#{hRCourseTypeController.selected.parent}" >
+                            <f:selectItem itemLabel="#{bundleHRCourse.NoParent}" itemValue="#{null}" />
+                            <f:selectItems value="#{hRCourseTypeController.itemsAvailableSelectOne}"
+                                           var="parentItem"
+                                           itemValue="#{parentItem}" itemLabel="#{parentItem.courseTypeTitle}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseTypeController.create}" value="#{bundleHRCourse.Save}" update="display,:HRCourseTypeListForm:datalist,:growl" onclick="PF('HRCourseTypeCreateDialog').hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PF('HRCourseTypeCreateDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Ordering Portal - Place
+
+            <script type="text/javascript">
+                var currentEvent;
+
+                $(document).ready(function() {
+                    PrimeFaces.widget.ContextMenu.prototype.show = function(e) {
+                        //hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if(e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                        left = e.pageX,
+                        top = e.pageY,
+                        width = this.jq.outerWidth(),
+                        height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if((left + width) > (win.width())+ win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if((top + height ) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if(this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                                'top': top,
+                                'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage AGV Places
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="AGVplaceListForm">
+                <p:panel header="">
+                    <p:dataTable id="datalist" value="#{aGVplaceController.items}" var="item"
+                                 selectionMode="single" selection="#{aGVplaceController.selected}"
+                                 paginator="true" rowIndexVar="rowId" 
+                                 rowKey="#{item.placeId}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton AGVplaceListForm:cm"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="contextMenu" oncomplete="PF('cm').show(currentEvent);" update="AGVplaceListForm:cm"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVplaceTitle_placeId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.placeId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVplaceTitle_placeName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.placeName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVplaceTitle_disabled}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.disabled}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVplaceTitle_chanel}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.chanel}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVplaceTitle_coordinates}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.coordinates}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleAGV.Create}" actionListener="#{aGVplaceController.prepareCreate}" update=":AGVplaceCreateForm" oncomplete="PF('AGVplaceCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleAGV.View}" update=":AGVplaceViewForm" oncomplete="PF('AGVplaceViewDialog').show()" disabled="#{empty aGVplaceController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleAGV.Edit}" update=":AGVplaceEditForm" oncomplete="PF('AGVplaceEditDialog').show()" disabled="#{empty aGVplaceController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleAGV.Delete}" actionListener="#{aGVplaceController.destroy}" update=":growl,datalist" disabled="#{empty aGVplaceController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+
+                    <p:contextMenu id="cm" widgetVar="cm" for="datalist">
+                        <p:menuitem includeViewParams="true" value="Go to Place" icon="pi pi-search" url="/osloWebApp/faces/subsystems/AGV/stationAGV_oblika2.xhtml">
+                            <f:param name="placeId" value="#{aGVplaceController.selected.placeId}" />
+                        </p:menuitem>
+                    </p:contextMenu>
+
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

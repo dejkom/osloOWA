@@ -1,0 +1,320 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <li>
+        <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label">#{msg['Applications']} </span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a6" aria-expanded="true" style="">
+            <li>
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-taxi"></i>AGV <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a6_1" aria-expanded="false" style="height: 0px;">
+
+                    <li>
+                        <a href="#" id="damian" aria-expanded="false">#{msg['MainTables']}<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" id="a6_1_1" aria-expanded="false" style="height: 0px;">
+                            <li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVcatalog/index.xhtml">Catalog</a></li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVmaterial/index.xhtml">Material</a></li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVorder/index.xhtml">Order</a></li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVorderType/index.xhtml">Order Type</a></li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVplace/index.xhtml">Place</a></li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVstatus/index.xhtml">Status</a></li>
+                                <li><a href="/osloWebApp/faces/subsystems/AGV/aGVstatusLog/index.xhtml">Status Log</a></li>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGV_oblika2.xhtml?placeId=1">--Test Station line--</a></li>
+                    <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGV_oblika2.xhtml?placeId=2">--Test Station warehouse--</a></li>
+                    <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGV_oblika2.xhtml?placeId=3">--Test Station ELP--</a></li>
+                    
+                    <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGV_oblika2.xhtml?placeId=8">--ELP Skladišče EMB--</a></li>
+                    <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGV_oblika2.xhtml?placeId=9">--H7 Skladišče EMB--</a></li>
+                    <!--
+                    <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGVprintListOfMaterials.xhtml?placeId=1">Print materials 1</a></li>
+                    -->
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-wrench"></i>Evidenca sredstev<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a6_2" aria-expanded="false" style="height: 0px;">
+                    <li>
+                        <a href="#" id="damian" aria-expanded="false">#{msg['MainTables']}<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" id="a6_2_1" aria-expanded="false" style="height: 0px;">
+                            <li>
+                                <li><a href="/osloWebApp/faces/common/aSSAsset/indexPublic.xhtml">ASS Asset</a></li>
+                                <li><a href="/osloWebApp/faces/common/aSSLog/indexPublic.xhtml">ASS Log</a></li>
+                                <li><a href="/osloWebApp/faces/common/aSSLocation/indexPublic.xhtml">ASS Location</a></li>
+                                <li><a href="/osloWebApp/faces/common/aSSStatus/indexPublic.xhtml">ASS Status</a></li>
+                                <li><a href="/osloWebApp/faces/common/aSSType/indexPublic.xhtml">ASS Type</a></li>
+                            </li>
+                        </ul>
+
+                        <li><a href="/osloWebApp/faces/common/evidenca/it/indexPublic.xhtml">Manipulacija sredstev</a></li>
+
+                    </li>
+
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-address-card"></i>#{msg['HRSystems']}<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a6_3" aria-expanded="false" style="height: 0px;">
+                    
+                    <li><a href="/osloWebApp/faces/HR/Courses/instructorsCourses.xhtml"><i class="fa fa-chalkboard-user"></i> #{msg['instructorsCourses_Header']} </a></li>
+
+
+                    <li>
+                        <a href="#" id="damian" aria-expanded="false"><i class="fa fa-user-graduate"></i>#{msg['HRCourse_Educations']} <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li>
+
+                                <h:panelGroup id="display" rendered="#{homeController.isRoleCheck('OWA_EDUCATIONS_ADMIN')}">  
+                                <li>
+                                    <a href="#" id="damian" aria-expanded="true">#{msg['MainTables']} <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse" aria-expanded="true" style="">
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourse/index.xhtml">#{msg['HRCourse_Courses']}</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourse/indexLazy.xhtml">#{msg['HRCourse_Courses']} - hitri</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseInstructor/index.xhtml">#{msg['HRCourse_Lecturer']}</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseHRCourseInstructor/index.xhtml">#{msg['HRCourse_LecturerCourseLink']}</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseOffering/index.xhtml">#{msg['HRCourse_CourseOffering']}</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseOffering/indexLazy.xhtml">#{msg['HRCourse_CourseOffering']} - hitri</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseAttendance/index.xhtml">#{msg['HRCourse_Attendances']}</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseAttendance/indexLazy.xhtml">#{msg['HRCourse_Attendances']} - hitri</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseType/index.xhtml">#{msg['HRCourse_TypesOfCourses']}</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/index.xhtml">#{msg['HRCourse_QuestionnaireAnswers']}</a></li>                                        
+                                        <li><a href="/osloWebApp/faces/HR/Courses/izvedbaIzobrazevanjaZaNazaj.xhtml">#{msg['HRCourse_RegistrationOfParticipants']} Zgodovina</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/hRCourseInstructorsWorkLog/index.xhtml">#{msg['HRCourse_Lecturer']} Work Log</a></li>
+                                        <li><a href="/osloWebApp/faces/HR/Courses/posljiOpomnikJutri.xhtml">Eksterna Jutri</a></li>
+                                    </ul>
+                                </li>
+                                </h:panelGroup>
+                                <!--<li><a href="/osloWebApp/faces/HR/Courses/instructorsCourses.xhtml">#{msg['instructorsCourses_Header']}</a></li>-->
+                                <li><a href="/osloWebApp/faces/HR/Courses/quickInternalCourseOffering.xhtml">#{msg['HRCourse_prepareRecordSheet']}</a></li>
+                                <li><a href="/osloWebApp/faces/HR/Courses/izvedbaIzobrazevanjaNov.xhtml">#{msg['HRCourse_RegistrationOfParticipants']}</a></li>
+                                <li><a href="/osloWebApp/faces/HR/Courses/izvedbaIzobrazevanjaNovTablet.xhtml">#{msg['HRCourse_RegistrationOfParticipants']}-Tablet</a></li>
+                                <li><a href="/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml">Navodila</a></li>
+                                <!--<li><a href="/osloWebApp/faces/HR/Courses/selfRegisterExternalCourse.xhtml?attid=15210">Samoregistracija</a></li>-->
+                                <li><a href="/osloWebApp/faces/HR/Courses/qsTopicCourses.xhtml">Izobraževanja QS teme</a></li>
+                                
+
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="#" id="damian" aria-expanded="false"><i class="fa fa-users"></i>Codeks<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" id="a6_3_1" aria-expanded="false" style="height: 0px;">
+                            <li>
+                                <a href="/osloWebApp/faces/subsystems/CODEKS/departments/index.xhtml">#{msg['Departments']}</a>
+                            </li>
+                            <li>
+                                <a href="/osloWebApp/faces/subsystems/CODEKS/users/index.xhtml">#{msg['Users']}</a>
+                            </li>
+                            <li>
+                                <a href="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/vCodeksObiskovalci/index.xhtml">#{msg['Visitors']}</a>
+                            </li>
+                            <li>
+                                <a href="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/hRVisitLog/index.xhtml">#{msg['Visitors']} Log</a>
+                            </li>
+                            <li>
+                                <a href="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/vCodeksObiskovalci/indexAIO.xhtml">#{msg['Visitors']} WACOM</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li>
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-circle-exclamation"></i>Odredbe<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a6_3" aria-expanded="false" style="height: 0px;">
+                    <li>
+
+                        <li><a href="/osloWebApp/faces/HR/Courses/instructorsCommandments.xhtml">Moje odredbe</a></li>
+                        <li><a href="/osloWebApp/faces/HR/Courses/izvedbaOdredbeNov.xhtml">Izvedba odredbe</a></li>
+                        <li><a href="/osloWebApp/faces/HR/Courses/izvedbaOdredbeNovTablet.xhtml">Izvedba odredbe-Tablet</a></li>
+
+                    </li>
+
+                </ul>
+            </li>
+
+                </ul>
+            </li>
+
+        </ul>
+    </li> 
+    
+    
+    
+    <li>
+        <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">HR</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a3">
+            <li><a href="/osloWebApp/faces/HR/hRSignProfNazivi/index.xhtml">Šifrant nazivov delovnih mest</a></li>
+        </ul>
+    </li>
+    
+    
+    <li>
+        <a href="/osloWebApp/faces/SIGN/sIGNTelevision/index.xhtml"><i class="fa fa-th-large"></i> <span class="nav-label">HR Displays</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a2">
+            <li><a href="/osloWebApp/faces/SIGN/sIGNTelevision/index.xhtml">Televizije</a></li>
+            <li><a href="/osloWebApp/faces/SIGN/sIGNPresentation/index.xhtml">Prezentacije</a></li>
+            <li><a href="/osloWebApp/faces/SIGN/sIGNAlert/index.xhtml">Obvestila</a></li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#" aria-expanded="false"><i class="fa fa-desktop"></i> <span class="nav-label">IT</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a5" aria-expanded="false" style="height: 0px;">           
+            <li><a href="/osloWebApp/faces/IT/index.xhtml">Predstavitvena stran</a></li>
+            <!--
+            <li><a href="/osloWebApp/faces/IT/open/IPWhite.xhtml">White collar</a></li>
+            <li><a href="/osloWebApp/faces/IT/open/IPBlue.xhtml">Blue collar</a></li>
+            -->
+            <li><a href="/osloWebApp/faces/IT/open/standardEquipment.xhtml">Standardna oprema</a></li>
+            <li><a href="/osloWebApp/faces/common/oWANotification/index.xhtml">Notifications</a></li>
+            
+            
+            <li><a href="/osloWebApp/faces/IT/secured.xhtml">Zaščitena Stran</a></li>     
+            <li><a href="/osloWebApp/faces/IT/open/odeloAI.xhtml">odelo AI</a></li>
+            
+            <!--
+            <li><a href="/osloWebApp/faces/common/questionnaire/index.xhtml">Questionnaire</a></li>
+            <li><a href="/osloWebApp/faces/common/question/index.xhtml">Question</a></li>
+            <li><a href="/osloWebApp/faces/HR/Courses/hRCourseAnswer/ocenitevUcinkovitostiIzobrazevanja.xhtml?coid=2655&amp;uid=667">Ocenitev ucinkovitosti</a></li>
+            -->
+            <li class="">
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-database"></i>DB Views<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a5_1" aria-expanded="false" style="height: 0px;">
+                    <li>
+                        <li><a href="/osloWebApp/faces/HR/vADCODEKSUsers/index.xhtml">(V)ADCodeksUsers</a></li>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-television"></i>OEE Displays<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a5_2" aria-expanded="false" style="height: 0px;">
+                    <li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/index.xhtml">PROD DISPLAY Websockets</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/tableView.xhtml">PROD DISPLAY Tabela</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/tableViewNew.xhtml">PROD DISPLAY Tabela z grafi</a></li>
+                        <!--
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/listView2.xhtml">PROD DISPLAY List2</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/gridView.xhtml">PROD DISPLAY Grid</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/singleView.xhtml?wc=11010001">PROD DISPLAY Single</a></li>
+                        -->
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/singleViewGauges.xhtml?wc=11010001">PROD DISPLAY G Single</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/onLayout.xhtml">onLayout Prebold</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/onLayoutEdit.xhtml">onLayout Prebold Editor</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/onLayoutCres.xhtml">onLayout Cresnjevci</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/onLayoutEditCres.xhtml">onLayout Cresnjevci Editor</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/onLayoutPRSG.xhtml">onLayout Prebold SG</a></li>
+                        <li><a href="/osloWebApp/faces/PRO/ProductionDisplays/onLayoutEditPRSG.xhtml">onLayout Prebold SG Editor</a></li>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" id="damian" aria-expanded="false"><i class="fa fa-users"></i>Jan work<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" id="a5_3" aria-expanded="false" style="height: 0px;">
+                    <li>
+                        <li><a href="/osloWebApp/faces/common/eNGASmeters/indexPublic.xhtml">EN GAS Meters</a></li>
+                        <li><a href="/osloWebApp/faces/common/eNTRANSmeters/indexPublic.xhtml">EN TRANS Meters</a></li>
+                        <li><a href="/osloWebApp/faces/common/eNALSmeters/indexPublic.xhtml">EN ALS Meters</a></li>
+                        <li><a href="/osloWebApp/faces/common/usersDirectory.xhtml">Imenik zaposlenih</a></li>
+                        <li><a href="/osloWebApp/faces/common/qLIKreportList/indexPublic.xhtml">QLIK Mails</a></li>
+                    </li>
+
+
+                </ul>
+            </li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#" aria-expanded="false"><i class="fa fa-sitemap"></i> <span class="nav-label">#{msg['Organization']}</span><span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a1" aria-expanded="false" style="height: 0px;">
+            <li><a href="/osloWebApp/faces/common/usersDirectory.xhtml">#{msg['EmployeeDirectory']}</a></li>
+            <li><a href="/osloWebApp/faces/Organization/pravilniki.xhtml">#{msg['InternalRegulations']}</a></li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#"><i class="fa fa-lightbulb"></i> <span class="nav-label">OSEC</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a4">
+            <li><a href="/osloWebApp/faces/OSEC/oSECKontrolaJoblog/index.xhtml">SPEA2SAP JobLog</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/finishedOSECtable/index.xhtml">SPEA2SAP Transfered</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/tempOSECtable/index.xhtml">SPEA2SAP Temp Table</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/oSECLine/index.xhtml">OSEC Line - šifrant</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/oSECMachine/index.xhtml">OSEC Machine - šifrant</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/oSECloginLog/index.xhtml">OSEC Prijave operaterjev - šifrant</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/oSECDowntimeReasons/index.xhtml">OSEC Downtime Reasons - šifrant</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/oSECDowntime/index.xhtml">OSEC Downtime - vsi</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/oSECDowntime/indexUnconfirmed.xhtml">OSEC Downtime - nepotrjeni</a></li>
+            <!--
+            <li><a href="/osloWebApp/faces/OSEC/downtimeEntryForm.xhtml?line=1">OSEC Downtime - vnos</a></li>
+            <li><a href="/osloWebApp/faces/OSEC/downtimeEntryForm2.xhtml?line=1">OSEC Downtime - test</a></li>
+            -->
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#"><i class="fa fa-list-check"></i> <span class="nav-label">PM</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a3">
+            <li><a href="/osloWebApp/faces/PM/cONEbitProfit/index.xhtml">Ebit Profit datatable</a></li>
+            <li><a href="/osloWebApp/faces/PM/cONPSReport/index.xhtml">PS Report datatable</a></li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#"><i class="fa fa-money-bill-1"></i> <span class="nav-label">#{msg['Purchasing']}</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a3">
+            <li><a href="/osloWebApp/faces/PUR/EBV_price_check.xhtml">EBV price check</a></li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#"><i class="fa fa-weight-scale"></i> <span class="nav-label">QS</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a3">
+            <li><a href="/osloWebApp/faces/QS/qSmain/index.xhtml">QS Main</a></li>
+            <li><a href="/osloWebApp/faces/QS/qSoverview/index.xhtml">QS Overview</a></li>
+            <li><a href="/osloWebApp/faces/QS/qSLogTable/index.xhtml">QS Reclamation CRUD</a></li>
+            <li><a href="/osloWebApp/faces/QS/qSmain/qsSelectBoxTest.xhtml">SelectBox test</a></li>
+        </ul>
+    </li>
+    
+    <li>
+        <a href="#"><i class="fa fa-euro-sign"></i> <span class="nav-label">#{msg['Sales']}</span> <span class="fa arrow"></span></a>
+        <ul class="nav nav-second-level collapse" id="a3">
+            <li><a href="/osloWebApp/faces/PRC/bmwXMLdownload.xhtml">BMW XML Download (old)</a></li>
+            <li><a href="/osloWebApp/faces/PRC/bmwXMLdownload2DB.xhtml">BMW XML Download (new)</a></li>
+            <!--
+            <li><a href="/osloWebApp/faces/PRC/pRCbase/index.xhtml">PRC Base</a></li>
+            <li><a href="/osloWebApp/faces/PRC/pRCdata/index.xhtml">PRC Data</a></li>
+            -->
+            <li><a href="/osloWebApp/faces/PRC/pRCContract/index.xhtml">PRC Contract</a></li>
+            <li><a href="/osloWebApp/faces/PRC/pRCContractdetail/index.xhtml">PRC Contract Detail</a></li>
+            <li><a href="/osloWebApp/faces/PRC/pRCRik/index.xhtml">PRC RIK</a></li>
+        </ul>
+    </li>
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+
+    
+    
+
+
+</html>

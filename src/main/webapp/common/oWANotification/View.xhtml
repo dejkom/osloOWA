@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OWANotificationViewDlg" widgetVar="OWANotificationViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleNotifications.ViewOWANotificationTitle}">
+            <h:form id="OWANotificationViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oWANotificationController.selected != null}">
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_id}"/>
+                        <h:outputText value="#{oWANotificationController.selected.id}" title="#{bundleNotifications.ViewOWANotificationTitle_id}"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_title}"/>
+                        <h:outputText value="#{oWANotificationController.selected.title}" title="#{bundleNotifications.ViewOWANotificationTitle_title}"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_notificationContent}"/>
+                        <h:outputText value="#{oWANotificationController.selected.notificationContent}" title="#{bundleNotifications.ViewOWANotificationTitle_notificationContent}"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_isPinBoardNotification}"/>
+                        <p:selectBooleanCheckbox value="#{oWANotificationController.selected.isPinBoardNotification}" disabled="true"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_isToastNotification}"/>
+                        <p:selectBooleanCheckbox value="#{oWANotificationController.selected.isToastNotification}" disabled="true"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_visibleFrom}"/>
+                        <h:outputText value="#{oWANotificationController.selected.visibleFrom}" title="#{bundleNotifications.ViewOWANotificationTitle_visibleFrom}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_visibleTo}"/>
+                        <h:outputText value="#{oWANotificationController.selected.visibleTo}" title="#{bundleNotifications.ViewOWANotificationTitle_visibleTo}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_createdDateTime}"/>
+                        <h:outputText value="#{oWANotificationController.selected.createdDateTime}" title="#{bundleNotifications.ViewOWANotificationTitle_createdDateTime}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_creator}"/>
+                        <h:outputText value="#{oWANotificationController.selected.creator}" title="#{bundleNotifications.ViewOWANotificationTitle_creator}"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_linkURL}"/>
+                        <h:outputText value="#{oWANotificationController.selected.linkURL}" title="#{bundleNotifications.ViewOWANotificationTitle_linkURL}"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_showArea}"/>
+                        <h:outputText value="#{oWANotificationController.selected.showArea}" title="#{bundleNotifications.ViewOWANotificationTitle_showArea}"/>
+                        <h:outputText value="#{bundleNotifications.ViewOWANotificationLabel_severityStyle}"/>
+                        <h:outputText value="#{oWANotificationController.selected.severityStyle}" title="#{bundleNotifications.ViewOWANotificationTitle_severityStyle}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleNotifications.Close}" onclick="OWANotificationViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

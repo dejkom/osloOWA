@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCdataViewDlg" widgetVar="PRCdataViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC.ViewPRCdataTitle}">
+            <h:form id="PRCdataViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCdataController.selected != null}">
+                        <h:outputText value="#{bundlePRC.ViewPRCdataLabel_id}"/>
+                        <h:outputText value="#{pRCdataController.selected.id}" title="#{bundlePRC.ViewPRCdataTitle_id}"/>
+                        
+                        <h:outputText value="Product"/>
+                        <h:outputText value="#{pRCdataController.selected.product}" title="Product"/>
+                        
+                        <h:outputText value="#{bundlePRC.ViewPRCdataLabel_type}"/>
+                        <h:outputText value="#{pRCdataController.selected.type}" title="#{bundlePRC.ViewPRCdataTitle_type}"/>
+                        
+                        <h:outputText value="#{bundlePRC.ViewPRCdataLabel_value}"/>
+                        <h:outputText value="#{pRCdataController.selected.value}" title="#{bundlePRC.ViewPRCdataTitle_value}"/>
+                        <h:outputText value="#{bundlePRC.ViewPRCdataLabel_dateFrom}"/>
+                        <h:outputText value="#{pRCdataController.selected.dateFrom}" title="#{bundlePRC.ViewPRCdataTitle_dateFrom}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC.ViewPRCdataLabel_dateTo}"/>
+                        <h:outputText value="#{pRCdataController.selected.dateTo}" title="#{bundlePRC.ViewPRCdataTitle_dateTo}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC.ViewPRCdataLabel_deleted}"/>
+                        <p:selectBooleanCheckbox value="#{pRCdataController.selected.deleted}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundlePRC.Close}" onclick="PRCdataViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

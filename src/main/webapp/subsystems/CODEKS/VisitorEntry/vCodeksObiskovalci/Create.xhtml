@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VCodeksObiskovalciCreateDlg" widgetVar="VCodeksObiskovalciCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle}">
+            <h:form id="VCodeksObiskovalciCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{vCodeksObiskovalciController.selected != null}">
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_visitId}" for="visitId" />
+                        <p:inputText id="visitId" value="#{vCodeksObiskovalciController.selected.visitId}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_visitId}" required="true" requiredMessage="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciRequiredMessage_visitId}"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_timeIn}" for="timeIn" />
+                        <p:calendar id="timeIn" pattern="MM/dd/yyyy HH:mm:ss" value="#{vCodeksObiskovalciController.selected.timeIn}" title="#{bundleCodeksObiskovalci.EditVCodeksObiskovalciTitle_timeIn}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_datum}" for="datum" />
+                        <p:calendar id="datum" pattern="MM/dd/yyyy" value="#{vCodeksObiskovalciController.selected.datum}" title="#{bundleCodeksObiskovalci.EditVCodeksObiskovalciTitle_datum}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_timeOut}" for="timeOut" />
+                        <p:calendar id="timeOut" pattern="MM/dd/yyyy HH:mm:ss" value="#{vCodeksObiskovalciController.selected.timeOut}" title="#{bundleCodeksObiskovalci.EditVCodeksObiskovalciTitle_timeOut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_company}" for="company" />
+                        <p:inputText id="company" value="#{vCodeksObiskovalciController.selected.company}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_company}" />
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_foruser}" for="foruser" />
+                        <p:inputText id="foruser" value="#{vCodeksObiskovalciController.selected.foruser}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_foruser}" required="true" requiredMessage="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciRequiredMessage_foruser}"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_reason}" for="reason" />
+                        <p:inputText id="reason" value="#{vCodeksObiskovalciController.selected.reason}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_reason}" />
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_prisotnost}" for="prisotnost" />
+                        <p:inputText id="prisotnost" value="#{vCodeksObiskovalciController.selected.prisotnost}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_prisotnost}" required="true" requiredMessage="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciRequiredMessage_prisotnost}"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_najavljen}" for="najavljen" />
+                        <p:inputText id="najavljen" value="#{vCodeksObiskovalciController.selected.najavljen}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_najavljen}" required="true" requiredMessage="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciRequiredMessage_najavljen}"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_guest}" for="guest" />
+                        <p:inputText id="guest" value="#{vCodeksObiskovalciController.selected.guest}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_guest}" required="true" requiredMessage="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciRequiredMessage_guest}"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_guestCompany}" for="guestCompany" />
+                        <p:inputText id="guestCompany" value="#{vCodeksObiskovalciController.selected.guestCompany}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_guestCompany}" required="true" requiredMessage="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciRequiredMessage_guestCompany}"/>
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{vCodeksObiskovalciController.selected.status}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_status}" />
+                        <p:outputLabel value="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{vCodeksObiskovalciController.selected.name}" title="#{bundleCodeksObiskovalci.CreateVCodeksObiskovalciTitle_name}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vCodeksObiskovalciController.create}" value="#{bundleCodeksObiskovalci.Save}" update="display,:VCodeksObiskovalciListForm:datalist,:growl" oncomplete="handleSubmit(args,'VCodeksObiskovalciCreateDialog');"/>
+                    <p:commandButton value="#{bundleCodeksObiskovalci.Cancel}" onclick="VCodeksObiskovalciCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

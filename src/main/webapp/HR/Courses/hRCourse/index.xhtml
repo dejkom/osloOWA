@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Courses - Course
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+
+                body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+                    background: #c5dced;
+                    color: #495057;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="#{bundleHRCourse.HRCourseSubtitle}"/>
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="HRCourseListForm">
+                <p:panel header="">
+                    <p:dataTable id="datalist" value="#{hRCourseController.items}" var="item" widgetVar="carsTable1"
+                                 selectionMode="single" selection="#{hRCourseController.selected}"
+                                 paginator="true"
+                                 multiViewState="true"
+                                 stripedRows="true"
+                                 rowKey="#{item.courseID}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50,#{hRCourseController.items.size()}"
+                                 >
+
+                        <f:facet name="header">
+                            <div class="flex justify-content-between align-items-center">
+                                <div>
+                                    <p:commandButton id="toggler" type="button" value="#{bundleHRCourse.Columns}" icon="pi pi-align-justify"/>
+                                    <p:columnToggler datasource="datalist" trigger="toggler" >
+                                        <p:ajax />
+                                    </p:columnToggler>
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton" listener="#{hRCourseController.fileUploadAction}"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column  filterBy="#{item.courseID}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_courseID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseID}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.courseTitle}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_courseTitle}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseTitle}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_courseDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseDescription}"/>
+                        </p:column>
+                        <p:column  filterBy="#{item.duration}" sortBy="#{item.duration}" filterMatchMode="exact">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_duration} [min]"/>
+                            </f:facet>
+                            <h:outputText value="#{item.duration}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.NotesManuals}"/>
+                            </f:facet>
+                            <h:outputText value="#{fn:substring(item.courseNotes, 0, 100)}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.primaryInstructors}" filterMatchMode="contains" visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_primaryInstructors}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.primaryInstructors}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.courseTypeID.courseTypeTitle}" filterMatchMode="contains">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('carsTable1').filter()" styleClass="custom-filter" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="#{bundleHRCourse.ChooseFilter}" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{hRCourseTypeController.itemsAvailableSelectOne}" var="opt" itemLabel="#{opt.courseTypeTitle}" itemValue="#{opt.courseTypeTitle}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_courseTypeID}"/>                               
+                            </f:facet>
+                            <h:outputText value="#{item.courseTypeID.courseTypeTitle}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseTitle_courseTypeID}"/>                               
+                            </f:facet>
+                            <h:outputText value="#{item.courseTypeID.courseTypeID}"/>
+                        </p:column>
+
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.selfRegistrationColumn}"/>                               
+                            </f:facet>
+                            <p:selectBooleanCheckbox id="selfRegistration" disabled="true" value="#{item.selfRegistration}"/>
+                        </p:column>
+                        
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.qsTopic}"/>                               
+                            </f:facet>
+                            <p:selectBooleanCheckbox id="qsTopic" disabled="true" value="#{item.qsTopic}"/>
+                        </p:column>
+
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.educationAssesmentRequiredColumn}"/>                               
+                            </f:facet>
+                            <p:selectBooleanCheckbox id="eduAss" disabled="true" value="#{item.educationAssesmentRequired}"/>
+                        </p:column>
+
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.performanceEvaluationRequiredColumn}"/>                               
+                            </f:facet>
+                            <p:selectBooleanCheckbox id="perfReq" disabled="true" value="#{item.performanceEvaluationRequired}"/>
+                        </p:column>
+
+                        <p:column  filterBy="#{item.HRCourseOfferingList.size()}" filterMatchMode="exact">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.numberOfOfferings}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.HRCourseOfferingList.size()}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCourse['Create']}" actionListener="#{hRCourseController.prepareCreate}" update=":HRCourseCreateForm" oncomplete="PF('HRCourseCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRCourse.View}" update=":HRCourseViewForm" oncomplete="PF('HRCourseViewDialog').show()" disabled="#{empty hRCourseController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCourse.Edit}" update=":HRCourseEditForm" oncomplete="PF('HRCourseEditDialog').show()" disabled="#{empty hRCourseController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCourse.Delete}" actionListener="#{hRCourseController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+
+                <p:contextMenu for="datalist" style="width: 350px">
+                    <p:menuitem value="#{bundleHRCourse.FileAttachments}" action="#{hRCourseController.fileUploadAction}" update=":HRCourseAttachmentsViewForm" oncomplete="PF('HRCourseAttachmentsViewDialog').show()"  icon="pi pi-search"/>
+                    <p:menuitem value="#{bundleHRCourse.ShowPerformances}" action="#{hRCourseController.showIzvedbeButtonAction}" update=":HRCourseShowIzvedbeViewForm" oncomplete="PF('HRCourseShowIzvedbeViewDialog').show()"  icon="pi pi-search"/>
+                    <p:menuitem value="#{bundleHRCourse.AllAttendances}" action="#{hRCourseController.showVsiUdelezenciButtonAction}" update=":HRCourseShowAllAttendeesViewForm" oncomplete="PF('HRCourseAllAttendeesViewDlg').show()"  icon="pi pi-search"/>
+                </p:contextMenu>
+
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+            <p:dialog id="HRCourseAttachmentsViewDlg" widgetVar="HRCourseAttachmentsViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Datotečne priloge">
+                <h:form id="HRCourseAttachmentsViewForm">
+                    <h:panelGroup id="display">
+
+                        <ui:repeat value="#{hRCourseController.selected.fileattachments}" var="photo" varStatus="status">
+                            <!--<p:graphicImage value="/#{photo.itemFileAttachmentSrc}" alt="#{photo.alt}" style="cursor: pointer" onclick="rc([{'name': 'index', 'value': #{status.index}}])" />-->
+                            <!--<p:graphicImage alt="image" height="128px" width="128px" library="img" name="#{photo.thumbnailImageSrc}.png"/>-->
+
+                            <div class="file-box">
+                                <div class="file">
+                                    <a href="/osloWebApp#{photo.itemFileAttachmentSrc}" target="_blank">
+                                        <span class="corner"></span>
+
+                                        <div class="icon">
+                                            <p:graphicImage alt="image" height="64px" width="64px" library="img" name="#{photo.thumbnailImageSrc}.png"/>
+                                        </div>
+                                        <div class="file-name">
+                                            <h:outputText id="fname" value = "#{photo.title}" />
+                                            <br/>
+                                            <small><h:outputText id="cdate" value = "#{photo.creationdate}" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </ui:repeat>
+
+                        <br/>
+                        <p:commandButton value="#{bundleHRCourse.Close}" style="float: right" onclick="PF('HRCourseAttachmentsViewDialog').hide()"/>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="HRCourseIzvedbeViewDlg" widgetVar="HRCourseShowIzvedbeViewDialog" modal="false" resizable="true" width="70%"  height="600px"  appendTo="@(body)" header="Izvedbe izbranega izobraževanja">
+                <h:form id="HRCourseShowIzvedbeViewForm">
+
+
+                    <p:dataTable var="izvedba" value="#{hRCourseController.selected.HRCourseOfferingList}" widgetVar="parentTable" scrollRows="200" scrollable="true" style="height: 500px; overflow-x: hidden !important;"
+                                 rowKey="#{izvedba.courseOfferingID}" lazy="false" rowStatePreserved="true" sortBy="#{izvedba.courseOfferingID}">
+
+                        <p:column style="width:2rem">
+                            <p:rowToggler/>
+                        </p:column>
+
+                        <p:column headerText="Izvedba">
+                            <h:outputText value="(#{izvedba.courseOfferingID}) - " />
+                            <h:outputText value="#{izvedba.courseDate}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Lokacija">
+                            <h:outputText value="#{izvedba.meetingroomString}" />
+                        </p:column>
+
+                        <p:column headerText="Prijavljenih">
+                            <span class="customer-badge status-warning">#{izvedba.HRCourseAttendanceList.size()} (udeleženih:#{izvedba.HRCourseAttendanceList.stream().filter(c -> c.wasAttended.equals(true)).count()})</span>
+                        </p:column>
+
+                        <p:column headerText="Datum" sortBy="#{izvedba.courseDate}" sortOrder="desc">
+                            <h:outputText value="#{izvedba.courseDate}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:rowExpansion>
+                            <div class="product">
+                                <p:dataTable value="#{izvedba.HRCourseAttendanceList}" widgetVar="childTable" var="att" emptyMessage="Ne najdem udeležb za izbrano izvedbo.">
+                                    <p:column headerText="Codeks ID" rendered="false">
+                                        <h:outputText value="#{att.codeksID}" />
+                                    </p:column>
+
+                                    <p:column headerText="Priimek Ime" sortBy="#{hRCourseController.vrnjeniUserjiMap.get(att.codeksID).lastname} #{hRCourseController.vrnjeniUserjiMap.get(att.codeksID).firstname}" filterMatchMode="contains" filterBy="#{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).lastname} #{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).firstname}">
+                                        <!--
+                                        <h:outputText value="#{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).lastname} #{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).firstname}" />
+                                        -->
+                                        <h:outputText value="#{hRCourseController.vrnjeniUserjiMap.get(att.codeksID).lastname} #{hRCourseController.vrnjeniUserjiMap.get(att.codeksID).firstname}" />
+                                    </p:column>
+
+                                    <p:column headerText="Timestamp">
+                                        <h:outputText value="#{att.timestamp}">
+                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="Se je udeležil?" sortBy="#{att.wasAttended}" sortOrder="asc">
+                                        <p:selectBooleanCheckbox value="#{att.wasAttended}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:rowExpansion>
+
+                    </p:dataTable>
+
+                    <br/>
+                    <p:commandButton value="#{bundleHRCourse.Close}" style="float: right" onclick="PF('HRCourseShowIzvedbeViewDialog').hide()"/>
+
+                </h:form>
+            </p:dialog>
+
+
+            <p:dialog id="HRCourseAllAttendeesViewDlg" widgetVar="HRCourseAllAttendeesViewDlg" modal="false" resizable="true" width="70%"  height="600px"  appendTo="@(body)" header="Vse udeležbe izbranega izobraževanja">
+                <h:form id="HRCourseShowAllAttendeesViewForm">
+                    <p:dataTable value="#{hRCourseController.allAtt}" widgetVar="childTable" var="att" emptyMessage="Ne najdem udeležb za izbrano izobraževanje.">
+                        <p:column headerText="Codeks ID" rendered="false">
+                            <h:outputText value="#{att.codeksID}" />
+                        </p:column>
+
+                        <p:column headerText="Priimek Ime" sortBy="#{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).lastname} #{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).firstname}" filterMatchMode="contains" filterBy="#{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).lastname} #{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).firstname}">
+                            <h:outputText value="#{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).lastname} #{hRCourseController.usersEJB.findUserByCodeksId(att.codeksID).firstname}" />
+                        </p:column>
+
+                        <p:column headerText="Številka izvedbe" filterBy="#{att.courseOfferingID.courseOfferingID}" >
+                            <h:outputText value="#{att.courseOfferingID.courseOfferingID}" />                                   
+                        </p:column>
+
+                        <p:column headerText="Datum izvedbe">
+                            <h:outputText value="#{att.courseOfferingID.courseDate}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Lokacija izvedbe" filterBy="#{att.courseOfferingID.meetingroomString}" filterMatchMode="contains">
+                            <h:outputText value="#{att.courseOfferingID.meetingroomString}" />
+                        </p:column>
+
+                        <p:column headerText="Timestamp">
+                            <h:outputText value="#{att.timestamp}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Se je udeležil?" sortBy="#{att.wasAttended}" sortOrder="asc">
+                            <p:selectBooleanCheckbox value="#{att.wasAttended}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <p:commandButton value="#{bundleHRCourse.Close}" style="float: right" onclick="PF('HRCourseAllAttendeesViewDlg').hide()"/>
+
+                </h:form>
+            </p:dialog>
+
+
+
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

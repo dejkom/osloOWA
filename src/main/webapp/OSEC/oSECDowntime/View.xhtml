@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECDowntimeViewDlg" widgetVar="OSECDowntimeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.ViewOSECDowntimeTitle}">
+            <h:form id="OSECDowntimeViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECDowntimeController.selected != null}">
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_downtimeID}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.downtimeID}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_downtimeID}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_date}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.date}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_date}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_shift}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.shift}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_shift}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_duration}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.duration}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_duration}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_startD}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.startD}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_startD}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_endD}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.endD}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_endD}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_workOrder}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.workOrder}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_workOrder}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_plannedUnplanned}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.plannedUnplanned}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_plannedUnplanned}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_comment}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.comment}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_comment}"/>
+                        <!--
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_machineIDfk}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.machineIDfk}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_machineIDfk}"/>
+                        -->
+                        
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_reasonIDfk}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.reasonIDfk}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_reasonIDfk}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeLabel_OSECMachine}"/>
+                        <h:outputText value="#{oSECDowntimeController.selected.OSECMachine}" title="#{bundleOSECZastoji.ViewOSECDowntimeTitle_OSECMachine}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOSECZastoji.Close}" onclick="OSECDowntimeViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundleNotifications.ListOWANotificationTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="OWANotificationListForm">
+                <p:panel header="#{bundleNotifications.ListOWANotificationTitle}">
+                    <p:dataTable id="datalist" value="#{oWANotificationController.items}" var="item"
+                                 selectionMode="single" selection="#{oWANotificationController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_title}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.title}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_notificationContent}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.notificationContent}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_isPinBoardNotification}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.isPinBoardNotification}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_isToastNotification}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.isToastNotification}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_visibleFrom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.visibleFrom}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_visibleTo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.visibleTo}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_createdDateTime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.createdDateTime}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_creator}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.creator}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_linkURL}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.linkURL}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_showArea}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.showArea}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleNotifications.ListOWANotificationTitle_severityStyle}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.severityStyle}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleNotifications.Create}" actionListener="#{oWANotificationController.prepareCreate}" update=":OWANotificationCreateForm" oncomplete="PF('OWANotificationCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleNotifications.View}" update=":OWANotificationViewForm" oncomplete="PF('OWANotificationViewDialog').show()" disabled="#{empty oWANotificationController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleNotifications.Edit}" update=":OWANotificationEditForm" oncomplete="PF('OWANotificationEditDialog').show()" disabled="#{empty oWANotificationController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleNotifications.Delete}" actionListener="#{oWANotificationController.destroy}" update=":growl,datalist" disabled="#{empty oWANotificationController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,263 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            <h:form id="formh">
+                Production Display - <h:outputText value="List of workcenters"/> <h:outputText style="float: right" id="tor" value="#{prodDisplayDataGetterBean.timeOfDataReload}"> <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" /></h:outputText>
+            </h:form>
+            <style type="text/css">
+                .pending {
+                    background-color: #EDEDED !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .submitted {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .student_avatar_header {
+                    width: 100px;
+                    height: 100px;
+                    position: absolute;
+                    left: 10px;
+                    top: 20px;
+                    /*border-radius: 250px;*/
+                    z-index: 9998;
+                    box-shadow: 2px 2px 12px #008abc;
+                    cursor: move;
+                }
+
+                .outsideWrapper {
+                    width:1420px;
+                    height:684px;
+                    border:1px solid blue;
+                }
+                .insideWrapper {
+                    width:100%;
+                    height:100%;
+                    position:relative;
+                }
+                .coveredImage {
+                    width:100%;
+                    height:100%;
+                    position:absolute;
+                    top:0px;
+                    left:0px;
+                }
+                .canvas {
+                    width:100%;
+                    height:100%;
+                    position:absolute;
+                    top:0px;
+                    left:0px;
+                }
+
+
+
+
+
+                * {
+                    padding: 0;
+                    margin: 0;
+                    /* overflow: hidden; */
+                }
+
+                .wrap {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 5%;
+                    height: 100vh;
+                    position: relative;
+                    z-index: 2;
+
+                }
+
+                .wrap div {
+                    box-shadow: 2px 2px 6px -2px rgba(0,0,0,0.75);
+                }
+
+                .wrap2 {
+                    padding: 0 5%;
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    top: 0;
+                    left: 0;
+                    z-index: 1;
+                    background-color: 'white'
+                }
+
+                #mycanvas {
+                    display: block;
+                    box-sizing: border-box;
+                    border: 1px solid hsl(259, 100%, 65%)
+                }
+                #mycanvas2 {
+                    display: block;
+                    box-sizing: border-box;
+                }
+
+                .pointer {
+                    cursor: pointer;
+                }
+
+                li.pass {
+                    color: green
+                }
+
+                li.fail {
+                    color: red
+                }
+
+                #container{
+                    background: url("#{resource['img/layout-blank.png']}");
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                }
+                
+                #menu {
+                    display: none;
+                    position: absolute;
+                    width: 60px;
+                    background-color: white;
+                    box-shadow: 0 0 5px grey;
+                    border-radius: 3px;
+                }
+
+                #menu button {
+                    width: 100%;
+                    background-color: white;
+                    border: none;
+                    margin: 0;
+                    padding: 10px;
+                }
+
+                #menu button:hover {
+                    background-color: lightgray;
+                }
+            </style>
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+
+                function handleOpen(event) {
+                    console.log('Openning ', event);
+                }
+
+                function handleClose(code, channel, event) {
+                    console.log('Handle close: ' + code, channel, event);
+                    if (code == -1) {
+                        console.log('Websockets not supported by client')
+                    } else if (code == 1000) { // Normal close (as result of expired session or view)
+                        console.log('Normal close, will try to reconnect');
+                    } else {
+                        // Abnormal close reason (as result of an error)
+                        alert('Error during the reconnect! Please refresh WebPage')
+                    }
+                }
+
+                function handleMessage(message, channelName, event) {
+                    if (channelName === 'PROIDisplaysChannel') {
+                        //console.log('handleMessage - AGVchannel ', event);
+                        refresh(message, event);
+                    } else {
+                        alert('Unhandled channel: ' + channelName);
+                    }
+                }
+
+                function refresh(message, event) {
+                    const obj = JSON.parse(message);
+                    ion.sound.play("button_tiny");
+                    PF('PROIgrowl').renderMessage({summary: "Message from server", detail: obj.message + "", severity: obj.severity});
+                    //updateDataView();
+                    location.reload();
+                    //document.getElementById('form:buttonRead').click();
+                }
+
+            </script>
+
+            <h:outputScript library="js"  name="konvaScript.js"/>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <!--<o:socket channel="PROIDisplaysChannel" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose" />-->
+            <h:form id="form">
+                <p:growl id="PROIgrowl" widgetVar="PROIgrowl" showDetail="true" life="5000" sticky="false"/>     
+
+                <p:remoteCommand name="myRemote" actionListener="#{prodDisplayOnLayoutBean.savingJSONComplete()}"/>
+                <p:commandButton type="button" id="button" value="Add new shape" style="margin-bottom: 15px; display:none"/> 
+                <p:commandButton id="buttonSave" value="Save to JSON" style="margin: 15px"/> 
+                <p:commandButton type="button" id="buttonRead" value="Read from JSON" style="margin: 15px"/> 
+                <h:inputText id="propertyId" value="#{prodDisplayOnLayoutBean.jsonStatic}" style="display:none"/>
+                <h:inputHidden id="jsonfrommap"  value="#{prodDisplayOnLayoutBean.mapJSON}"/>
+                <h:inputHidden id="jsonforsaving" value="#{prodDisplayOnLayoutBean.jsonForSaving}"/>
+                <p:commandButton type="button" id="buttonAddDialog" onclick="$('#myModal').modal('toggle')" value="Add new shape Dialog" style="margin-bottom: 15px"/>
+
+                <div id="container"></div>
+            </h:form>
+
+            <div id="menu">
+                <div>
+                    <button id="delete-button">Delete</button>
+                </div>
+            </div>
+
+            <h:form id="form2">
+                <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+                                <i class="fa fa-square-plus modal-icon"></i>
+                                <h4 class="modal-title">Ustvarjanje mesta linije</h4>
+                                <!--<small class="font-bold">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</small>-->
+                            </div>
+                            <div class="modal-body">                               
+                                <div class="form-group"><label>Številka workcentra:</label>
+                                    <p:inputText id="stWorkcentraIn" class="form-control" value="#{prodDisplayOnLayoutBean.stWorkcentra}"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                <!--<button type="button" id="buttonAddWithID" class="btn btn-primary">Save changes</button>-->
+                                <p:commandButton type="button" id="buttonAddWithID" class="btn btn-primary" value="Shrani"/> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+        </ui:define>
+
+        <ui:define name="beforeEndOfBody">
+
+        </ui:define>
+
+
+    </ui:composition>
+</html>

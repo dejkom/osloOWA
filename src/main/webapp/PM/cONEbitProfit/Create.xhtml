@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CONEbitProfitCreateDlg" widgetVar="CONEbitProfitCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleEbit.CreateCONEbitProfitTitle}">
+            <h:form id="CONEbitProfitCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{cONEbitProfitController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_idRow}" for="idRow" />
+                        <p:inputText id="idRow" value="#{cONEbitProfitController.selected.idRow}" title="#{bundleEbit.CreateCONEbitProfitTitle_idRow}" required="true" requiredMessage="#{bundleEbit.CreateCONEbitProfitRequiredMessage_idRow}"/>
+                        -->
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_projectNo}" for="projectNo" />
+                        <p:inputText id="projectNo" value="#{cONEbitProfitController.selected.projectNo}" title="#{bundleEbit.CreateCONEbitProfitTitle_projectNo}" required="true"/>
+
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_format}" for="format" />
+                        <p:selectOneMenu id="format" value="#{cONEbitProfitController.selected.format}" required="true">
+                            <f:selectItem itemLabel="Select format" itemValue=""/>
+                            <f:selectItem itemLabel="€" itemValue="€"/>
+                            <f:selectItem itemLabel="%" itemValue="%"/>
+                        </p:selectOneMenu>
+                        <!--
+                        <p:inputText id="format" value="#{cONEbitProfitController.selected.format}" title="#{bundleEbit.CreateCONEbitProfitTitle_format}" />
+                        -->
+                        
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_type}" for="type" />
+                        <p:selectOneMenu id="type" value="#{cONEbitProfitController.selected.type}" required="true">
+                            <f:selectItem itemLabel="Select type" itemValue=""/>
+                            <f:selectItem itemLabel="Ebit" itemValue="Ebit"/>
+                            <f:selectItem itemLabel="Profit" itemValue="Profit"/>
+                            <f:selectItem itemLabel="Target Ebit Project" itemValue="TargetEbitProject"/>
+                            <f:selectItem itemLabel="Target Ebit complexity" itemValue="TargetEbitComplexity"/>
+                        </p:selectOneMenu>
+                        <!--
+                        <p:inputText id="type" value="#{cONEbitProfitController.selected.type}" title="#{bundleEbit.CreateCONEbitProfitTitle_type}" />
+                        -->
+                        
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_phase}" for="phase" />
+                        <p:selectOneMenu id="phase" value="#{cONEbitProfitController.selected.phase}" required="true">
+                            <f:selectItem itemLabel="Select phase" itemValue=""/>
+                            <f:selectItem itemLabel="1" itemValue="1"/>
+                            <f:selectItem itemLabel="2" itemValue="2"/>
+                            <f:selectItem itemLabel="3" itemValue="3"/>
+                            <f:selectItem itemLabel="4" itemValue="4"/>
+                            <f:selectItem itemLabel="5" itemValue="5"/>
+                            <f:selectItem itemLabel="6" itemValue="6"/>
+                        </p:selectOneMenu>
+                        <!--
+                        <p:inputText id="phase" value="#{cONEbitProfitController.selected.phase}" title="#{bundleEbit.CreateCONEbitProfitTitle_phase}" />
+                        -->
+                        
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_value}" for="value" />
+                        <p:inputText id="value" value="#{cONEbitProfitController.selected.value}" title="#{bundleEbit.CreateCONEbitProfitTitle_value}" />
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_dateFrom}" for="dateFrom" />
+                        <p:calendar id="dateFrom" pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" required="true" value="#{cONEbitProfitController.selected.dateFrom}" title="#{bundleEbit.EditCONEbitProfitTitle_dateFrom}"/>
+                        <p:outputLabel value="#{bundleEbit.CreateCONEbitProfitLabel_dateTo}" for="dateTo" />
+                        <p:calendar id="dateTo" pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" value="#{cONEbitProfitController.selected.dateTo}" title="#{bundleEbit.EditCONEbitProfitTitle_dateTo}"/>
+                    
+                        <p:outputLabel value="Remark:" for="remark" />
+                        <p:selectOneMenu id="remark" value="#{cONEbitProfitController.selected.remark}" required="false">
+                            <f:selectItem itemLabel="Select remark" itemValue=""/>
+                            <f:selectItem itemLabel="001. Postponement caused by customer" itemValue="001. Postponement caused by customer"/>
+                            <f:selectItem itemLabel="002. Postponement caused by odelo" itemValue="002. Postponement caused by odelo"/>
+                            <f:selectItem itemLabel="003. incorrect calculation" itemValue="003. incorrect calculation"/>
+                            <f:selectItem itemLabel="004. incorrect use of data base" itemValue="004. incorrect use of data base"/>
+                            <f:selectItem itemLabel="005. impact by premises" itemValue="005. impact by premises"/>
+                            <f:selectItem itemLabel="006. change of R&amp;D lead" itemValue="006. change of R&amp;D lead"/>
+                            <f:selectItem itemLabel="007. change of PM" itemValue="007. change of PM"/>
+                            <f:selectItem itemLabel="008. change of production plant" itemValue="008. change of production plant"/>
+                            <f:selectItem itemLabel="009. w/o royalties" itemValue="009. w/o royalties"/>
+                            <f:selectItem itemLabel="010. approved" itemValue="010. approved"/>
+                            <f:selectItem itemLabel="099. to be checked" itemValue="099. to be checked"/>
+                        </p:selectOneMenu>
+                        <!--<p:inputText id="remark" value="#{cONEbitProfitController.selected.remark}" title="Remark" />-->
+                        
+                        <p:outputLabel value="Source:" for="source" />
+                        <p:inputText id="source" value="#{cONEbitProfitController.selected.source}" title="Source" />
+                    
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{cONEbitProfitController.create}" value="#{bundleEbit.Save}" update="display,:CONEbitProfitListForm:datalist,:growl" oncomplete="handleSubmit(args,'CONEbitProfitCreateDialog');"/>
+                    <p:commandButton value="#{bundleEbit.Cancel}" onclick="CONEbitProfitCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            OSEC Downtimes - Prijave operaterjev
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+
+        </ui:define>
+
+
+        <ui:define name="content">
+
+            <h:form id="OSECloginLogListForm">
+                <p:dataTable id="datalist" value="#{oSECloginLogController.items}" var="item"
+                             selectionMode="single" selection="#{oSECloginLogController.selected}"
+                             paginator="true"
+                             rowKey="#{item.loginId}"
+                             rows="10"
+                             rowsPerPageTemplate="10,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_loginId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.loginId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_lineID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lineID}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_workerCard}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.workerCard}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_externalId}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.externalId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_loginStart}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.loginStart}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_loginEnd}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.loginEnd}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_loginDate}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.loginDate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOsecOperaterjiPrijava.ListOSECloginLogTitle_loginShift}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.loginShift}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleOsecOperaterjiPrijava.Create}" actionListener="#{oSECloginLogController.prepareCreate}" update=":OSECloginLogCreateForm" oncomplete="PF('OSECloginLogCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleOsecOperaterjiPrijava.View}" update=":OSECloginLogViewForm" oncomplete="PF('OSECloginLogViewDialog').show()" disabled="#{empty oSECloginLogController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleOsecOperaterjiPrijava.Edit}" update=":OSECloginLogEditForm" oncomplete="PF('OSECloginLogEditDialog').show()" disabled="#{empty oSECloginLogController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleOsecOperaterjiPrijava.Delete}" actionListener="#{oSECloginLogController.destroy}" update=":growl,datalist" disabled="#{empty oSECloginLogController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

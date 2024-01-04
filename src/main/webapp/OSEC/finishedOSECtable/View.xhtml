@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="FinishedOSECtableViewDlg" widgetVar="FinishedOSECtableViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecSpea.ViewFinishedOSECtableTitle}">
+            <h:form id="FinishedOSECtableViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{finishedOSECtableController.selected != null}">
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_id}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.id}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_id}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitSN}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitSN}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitSN}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_firstTestDatetime}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.firstTestDatetime}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_firstTestDatetime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitLN}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitLN}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitLN}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitName}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitName}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitName}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitType}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitType}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitType}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitID}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitID}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitID}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitPN}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitPN}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitPN}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitPanel}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitPanel}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitPanel}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_unitIndex}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.unitIndex}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_unitIndex}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_stationName}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.stationName}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_stationName}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_stationOS}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.stationOS}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_stationOS}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_testDatetime}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.testDatetime}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_testDatetime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_status}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.status}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_status}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_remark}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.remark}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_remark}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_processID}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.processID}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_processID}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_operatorName}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.operatorName}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_operatorName}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_prenosVBaan}"/>
+                        <p:selectBooleanCheckbox value="#{finishedOSECtableController.selected.prenosVBaan}" disabled="true"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_sprostilVBaan}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.sprostilVBaan}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_sprostilVBaan}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_sprostilTimestamp}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.sprostilTimestamp}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_sprostilTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewFinishedOSECtableLabel_prenosVBaanTimestamp}"/>
+                        <h:outputText value="#{finishedOSECtableController.selected.prenosVBaanTimestamp}" title="#{bundleOsecSpea.ViewFinishedOSECtableTitle_prenosVBaanTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOsecSpea.Close}" onclick="FinishedOSECtableViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ENGASmetersViewDlg" widgetVar="ENGASmetersViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleENGas.ViewENGASmetersTitle}">
+            <h:form id="ENGASmetersViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{eNGASmetersController.selected != null}">
+                        <h:outputText value="#{bundleENGas.ViewENGASmetersLabel_meterId}"/>
+                        <h:outputText value="#{eNGASmetersController.selected.meterId}" title="#{bundleENGas.ViewENGASmetersTitle_meterId}"/>
+                        <h:outputText value="#{bundleENGas.ViewENGASmetersLabel_name}"/>
+                        <h:outputText value="#{eNGASmetersController.selected.name}" title="#{bundleENGas.ViewENGASmetersTitle_name}"/>
+                        <h:outputText value="#{bundleENGas.ViewENGASmetersLabel_unit}"/>
+                        <h:outputText value="#{eNGASmetersController.selected.unit}" title="#{bundleENGas.ViewENGASmetersTitle_unit}"/>
+                        <h:outputText value="#{bundleENGas.ViewENGASmetersLabel_location}"/>
+                        <h:outputText value="#{eNGASmetersController.selected.location}" title="#{bundleENGas.ViewENGASmetersTitle_location}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleENGas.Close}" onclick="ENGASmetersViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

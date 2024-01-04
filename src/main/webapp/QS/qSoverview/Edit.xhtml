@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QSoverviewEditDlg" widgetVar="QSoverviewEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQS.EditQSoverviewTitle}">
+            <h:form id="QSoverviewEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{qSoverviewController.selected != null}">
+                        <p:outputLabel value="#{bundleQS.EditQSoverviewLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{qSoverviewController.selected.id}" title="#{bundleQS.EditQSoverviewTitle_id}" disabled="true" required="true" requiredMessage="#{bundleQS.EditQSoverviewRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleQS.EditQSoverviewLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{qSoverviewController.selected.name}" title="#{bundleQS.EditQSoverviewTitle_name}" required="true" requiredMessage="#{bundleQS.EditQSoverviewRequiredMessage_name}"/>
+                        <p:outputLabel value="#{bundleQS.EditQSoverviewLabel_disabled}" for="disabled" />
+                        <p:selectBooleanCheckbox id="disabled" value="#{qSoverviewController.selected.disabled}" />
+                        <p:outputLabel value="#{bundleQS.EditQSoverviewLabel_tid}" for="tid" />
+                        <p:selectOneMenu id="tid" value="#{qSoverviewController.selected.tid}" required="true" requiredMessage="#{bundleQS.EditQSoverviewRequiredMessage_tid}">
+                            <f:selectItem itemLabel="#{bundleQS.SelectOneMessage}"/>
+                            <f:selectItems value="#{qSmainController.itemsAvailableSelectOne}"
+                                           var="tidItem"
+                                           itemValue="#{tidItem}"
+                                           itemLabel="#{tidItem.category}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{qSoverviewController.update}" value="#{bundleQS.Save}" update="display,:QSoverviewListForm:datalist,:growl" oncomplete="handleSubmit(args, 'QSoverviewEditDialog');"/>
+                    <p:commandButton value="#{bundleQS.Cancel}" onclick="QSoverviewEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

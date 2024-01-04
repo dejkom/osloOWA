@@ -1,0 +1,89 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Seznam standardne računalniške opreme
+
+            <script>
+
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="card">
+                            <p:dataTable id="dtt" var="product" value="#{standardITEquipmentBean.fileContainers}">
+                                
+                                <p:column headerText="Oznake" width="100px">    
+                                    <p:chip label="#{product.value.extractContentFromXML('znacke')}" styleClass="mr-2"/>
+                                    <!--
+                                    <h:outputText value="#{product.value.extractContentFromXML('znacke')}" />
+                                    -->
+                                </p:column> 
+                                
+                                <p:column headerText="Code" rendered="false">
+                                    <h:outputText value="#{product.key}" />
+                                </p:column>
+                                <p:column headerText="PDF" rendered="false">
+                                    <h:outputText value="#{product.value.getPDFFiles().size()}" />
+                                </p:column>
+                                <p:column headerText="XML files" rendered="false">
+                                    <h:outputText value="#{product.value.getXMLFiles().size()}" />
+                                </p:column> 
+
+                                <p:column headerText="Izdelek" width="200px">
+                                    <h:outputText value="#{product.value.extractContentFromXML('name')}" />
+                                </p:column> 
+
+                                <p:column headerText="Cena z DDV" width="80px">
+                                    <h:outputText value="#{product.value.extractContentFromXML('cenaDDV')}" />
+                                </p:column> 
+
+                                <p:column headerText="Cena brez DDV" width="80px">
+                                    <h:outputText value="#{product.value.extractContentFromXML('cenaBrezDDV')}" />
+                                </p:column> 
+
+                                <p:column headerText="Opis">
+                                    <h:outputText value="#{product.value.extractContentFromXML('opisKompleta')}" style="white-space: pre-line;"/>
+                                </p:column> 
+
+                                <p:column headerText="Predračun" width="120px" visible="true">
+                                    <p:commandButton icon="fa fa-file-pdf" update="dtt :dialog1:pdf-product-content" oncomplete="PF('pdfDialog').show()" disabled="false" title="Open PDF file" >
+                                        <f:setPropertyActionListener value="#{product.key}"  target="#{standardITEquipmentBean.selectedObjectForPdf}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </h:form>
+            
+            <p:dialog header="View PDF Document" appendTo="@(body)" showEffect="fade" width="70%" modal="false" widgetVar="pdfDialog" responsive="false">
+                <h:form id="dialog1">
+                    <p:outputPanel id="pdf-product-content" class="ui-fluid">
+                        <p:media id="pdfm" value="http://prapps2.pr.lighting.int:7070/osloWebApp/28. Ponudbe/Standard/#{standardITEquipmentBean.selectedObjectForPdf}.pdf" cache="false" width="100%" height="700px" player="pdf"/>         
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+            
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <head lang="sl">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+        <title>Napaka 500</title>
+    </head>
+    <style>
+        body {
+            font-family: Arial;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .errorlabel{
+            font-weight: 900;
+            font-size: 450%;
+            margin: 0;
+            left: 5%;
+            top:2.5%;
+        }
+
+    </style>
+    <body>
+        <div style="width: 100vw; height: 100vh;">
+            <h1 class="errorlabel">Težava s strežnikom</h1>
+            <h:graphicImage alt="image" library="img" name="error_500.gif" width="50%" height="50%"/>
+        </div>
+        <script>
+            window.onload = (event) => {
+                console.log("500 Internal Server Error - A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.");
+                setTimeout(refreshWindow, 5000);
+            };
+            function refreshWindow() {
+                window.location.reload(true);
+                console.log("500 Internal Server Error - A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.");
+                console.log("Refreshing page");
+                setTimeout(refreshWindow, 5000);
+            }
+        </script>
+    </body>
+</html>

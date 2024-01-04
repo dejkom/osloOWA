@@ -1,0 +1,93 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:h="http://java.sun.com/jsf/html"
+>
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Imenik zaposlenih
+        </ui:define>
+        
+        <ui:define name="PageHeaderSubtitle">
+            Iščete lahko po imenu, priimku, delovnem mestu in telefonski številki
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <p:inputText id="searchBox" value="#{vADCODEKSUsersController.searchBoxText}"  required="false" label="Search" style="width: 95%">
+                            <p:ajax event="keyup" delay="1000" listener="#{vADCODEKSUsersController.updateContactsList()}" update="@parent"  />
+                        </p:inputText>
+                        <p:commandButton action="#{vADCODEKSUsersController.updateContactsList()}" update="@parent" value="Search" styleClass="p-mr-2" />
+                    </div>
+                
+                </div>
+                <br/>
+            
+                <div class="row">
+                <!--
+            <div class="col-lg-3">
+                <div class="contact-box center-version">
+                    <a href="#">
+                        <img alt="image" class="rounded-circle" src="/osloWebApp/resources/img/a2.jpg" />
+
+                        <h3 class="m-b-xs"><strong>John Smith</strong></h3>
+                        <div class="font-bold">Graphics designer</div>
+                        <address class="m-t-md">
+                            <strong>Twitter, Inc.</strong><br/>
+                            795 Folsom Ave, Suite 600<br/>
+                            San Francisco, CA 94107<br/>
+                            (123) 456-7890
+                        </address>
+                    </a>
+                    <div class="contact-box-footer">
+                        <div class="m-t-xs btn-group">
+                            <a href="" class="btn btn-xs btn-white"><i class="fa fa-phone"></i> Call </a>
+                            <a href="" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i> Email</a>
+                            
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                -->
+
+                <ui:repeat value="#{vADCODEKSUsersController.items}" var="item">
+                    <div class="col-lg-3">
+                        <div class="contact-box center-version">
+                            <a href="#">
+                                <img alt="image" class="rounded-circle" src="/osloWebApp/resources/img/avat_placeholder128.png" />
+
+                                <h3 class="m-b-xs"><strong>#{item.firstname} #{item.lastname}</strong></h3>
+                                <div class="font-bold">#{item.title}</div>
+                                <address class="m-t-md">
+                                    <strong></strong><br/>
+                                    #{item.telephoneNumber}<br/>
+                                    #{item.mail}<br/>
+                                    #{item.location}<br/>
+                                    #{item.country}
+                                </address>
+                            </a>
+                            <div class="contact-box-footer">
+                                <div class="m-t-xs btn-group">
+                                    <a href="tel:#{item.telephoneNumber}" style="#{item.telephoneNumber != null ? '' : 'display:none'}; margin: 5px" class="btn btn-xs btn-white"><i class="fa-solid fa-phone"></i> Call </a>
+                                    <a href="mailto:#{item.mail}" style="#{item.mail != null ? '' : 'display:none'}; margin: 5px" class="btn btn-xs btn-white"><i class="fa fa-envelope"></i> Email</a>
+                                    <a href="http://teams.microsoft.com/l/chat/0/0?users=#{item.mail}" style="#{fn:contains(item.dn, 'OU=365') ? '' : 'display:none'}; margin: 5px" class="btn btn-xs btn-white"><i class="fab fa-microsoft"></i> Teams</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </ui:repeat>
+
+            </div>
+            </h:form>
+        </ui:define>
+
+        
+    </ui:composition>
+</html>

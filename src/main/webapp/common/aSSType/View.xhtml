@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSTypeViewDlg" widgetVar="ASSTypeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewASSTypeTitle}">
+            <h:form id="ASSTypeViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSTypeController.selected != null}">
+                        <h:outputText value="#{bundle.ViewASSTypeLabel_IDType}"/>
+                        <h:outputText value="#{aSSTypeController.selected.IDType}" title="#{bundle.ViewASSTypeTitle_IDType}"/>
+                        <h:outputText value="#{bundle.ViewASSTypeLabel_typeDescription}"/>
+                        <h:outputText value="#{aSSTypeController.selected.typeDescription}" title="#{bundle.ViewASSTypeTitle_typeDescription}"/>
+                        <h:outputText value="#{bundle.ViewASSTypeLabel_typeDisable}"/>
+                        <p:selectBooleanCheckbox value="#{aSSTypeController.selected.typeDisable}" disabled="true"/>
+                        <h:outputText value="#{bundle.ViewASSTypeLabel_typeReturn}"/>
+                        <p:selectBooleanCheckbox value="#{aSSTypeController.selected.typeReturn}" disabled="true"/>
+                        <h:outputText value="#{bundle.ViewASSTypeLabel_IDTypeParent}"/>
+                        <h:outputText value="#{aSSTypeController.selected.IDTypeParent}" title="#{bundle.ViewASSTypeTitle_IDTypeParent}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ASSTypeViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

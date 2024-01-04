@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseHRCourseInstructorViewDlg" widgetVar="HRCourseHRCourseInstructorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.ViewHRCourseHRCourseInstructorTitle}">
+            <h:form id="HRCourseHRCourseInstructorViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseHRCourseInstructorController.selected != null}">
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseHRCourseInstructorLabel_id}"/>
+                        <h:outputText value="#{hRCourseHRCourseInstructorController.selected.id}" title="#{bundleHRCourse.ViewHRCourseHRCourseInstructorTitle_id}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseHRCourseInstructorLabel_courseID}"/>
+                        <h:outputText value="#{hRCourseHRCourseInstructorController.selected.courseID}" title="#{bundleHRCourse.ViewHRCourseHRCourseInstructorTitle_courseID}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseHRCourseInstructorLabel_instructorID}"/>
+                        <h:outputText value="#{hRCourseHRCourseInstructorController.selected.instructorID}" title="#{bundleHRCourse.ViewHRCourseHRCourseInstructorTitle_instructorID}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRCourse.Close}" onclick="HRCourseHRCourseInstructorViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

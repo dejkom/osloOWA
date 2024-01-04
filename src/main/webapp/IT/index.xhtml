@@ -1,0 +1,671 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Predstavitvena stran oddelka: IT
+
+            <style type="text/css">
+                .modal-lg{
+                    max-width:1360px
+                }
+
+                .inmodal .modal-header {
+                    padding: 15px 30px;
+                    text-align: center;
+                    display: block;
+                }
+            </style>
+
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+
+                <!--
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>Organigram Ekipe</h2>
+                        <h:graphicImage alt="image" library="img" name="organigramFullTransparent.png" height="100%" width="100%"/>
+                    </div>
+                </div>
+                -->
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2>Povezave: </h2>
+                        <div class="row">
+                            <ul>
+                                <a href="/osloWebApp/faces/IT/open/IPBlue.xhtml"><li>Izobraževanje in ozaveščanje o informacijski varnosti (osnovno)</li></a>
+                                <a href="/osloWebApp/faces/IT/open/IPWhite.xhtml"><li>Izobraževanje in ozaveščanje o informacijski varnosti (napredno)</li></a>
+                                <a href="http://prapps02.pr.lighting.int:7070/osloWebApp/Process%20Harmonisations/Procedures/29%20Information%20Management%20and%20Information%20Technology%20Procedure/29%20Information%20Management%20and%20Information%20Technology%20Procedure.docx" target="_blank"><li>Informacijska varnostna politika</li></a>
+                                <!--
+                                <a href="/osloWebApp/faces/IT/open/ITorganigram.xhtml"><li>Organigram Tima</li></a>
+                                -->
+                                <a href="#" data-toggle="modal" data-target="#myModal5"><li>Organigram Tima</li></a>
+                            </ul>  
+                        </div>
+                        
+                        
+                        
+                        
+                        <h:panelGroup layout="block" rendered="#{oWANotificationController.getItemsByArea('indexIT').size() gt 0}">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['Notifications']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <!--
+                                TUKAJ PRIDEJO OBVESTILA
+                                -->
+
+                                <c:forEach var="notification" items="${oWANotificationController.getItemsByArea('indexIT')}" varStatus="loop">
+
+                                    <div class="alert alert-${notification.severityStyle}">
+                                        <strong>${notification.title}:</strong> <br/>${notification.notificationContent} 
+
+                                        <c:choose>
+                                            <c:when test="${notification.linkURL.length() gt 0}">
+                                                <a class="alert-link" target="_blank" href="${fn:escapeXml(notification.linkURL)}">#{msg['Link']}</a>.
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- No link to display -->
+                                            </c:otherwise>
+                                        </c:choose>
+
+
+                                    </div>
+
+                                </c:forEach>
+                                <c:if test = "${oWANotificationController.getItemsByArea('indexAll').size() lt 1}">
+                                    <tr>
+                                        <td>#{msg['NoNotifications']}</td>                                      
+                                    </tr>
+                                </c:if>
+
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                        <!--
+                            <div class="grid">
+                                <div class="col-12 md:col-4">
+                                    <p:staticMessage severity="info" summary="INFO" detail="Trenutno ni obvestil" style="width: 90%"/>
+                                </div>                               
+                            </div>
+                        -->
+
+                        <ul class="notes">
+                            <li>
+                                <div>
+                                    <small>30.8.2023 11:15</small>
+                                    <h4>Did you know?</h4>
+                                    <p>First Computer Programmer was a Woman. That's why computer language is so difficult to understand.</p>
+                                    
+                                </div>
+                            </li>
+                           
+                            <!--
+                            <li>
+                                <div>
+                                    <small>11:08:33 16-04-2014</small>
+                                    <h4>Latin professor at Hampden-Sydney </h4>
+                                    <p>The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</p>
+                                    <a href="#"><i class="fa fa-thumbs-up "></i></a>
+                                </div>
+                            </li>   
+                            -->
+
+                        </ul>
+
+
+
+                    </div>
+                    <div class="col-lg-6">
+                        <h2>Pogosta vprašanja:</h2>
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <i class="fa fa-lock"></i>
+                                <h5>Dostopi in varnost</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <!--
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed" aria-expanded="false">Kako spremenim svoje geslo?</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+                                                    Če poznate svoje trenutno geslo, si ga lahko kadarkoli ​spremenite na <a href="http://10.33.33.6:8080/osloWebApp/faces/AD_pwdChange_Public.xhtml">povezavi</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed" aria-expanded="false">Pozabil sem geslo, kaj naj naredim?</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseTwo" class="panel-collapse collapse" style="">
+                                                <div class="panel-body">
+                                                    V primeru da ste pozabili svoje geslo se osebno oglasite v oddelek IT ali pa odprite zahtevek na helpdesk sistemu.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed" aria-expanded="false">Napotki za izbiro gesel</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseThree" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    Za geslo svoje digitalne identitete ne uporabljajte osebnih podatkov. Premislite, katere druge podatke o vas ve širok krog ljudi: ime vašega psa/mačke/hrčka, vaša najljubša skupina ipd. - tudi to niso pametna gesla. Besede, ki jih najdete v slovarju, niso dobra gesla. 
+                                                    <br/>
+                                                    <br/>
+                                                    Boljša je kombinacija vsaj osmih znakov, ki naj vsebuje velike in male črke, pa tudi kakšno število ali ločilo. 
+                                                    <br/>
+                                                    <br/>
+                                                    Priporočila za izbiro in rokovanje z gesli​:
+                                                    <ul>
+                                                        <li>​Gesla MORAJO biti vedno zaupna.</li>
+                                                        <li>Gesla NIKOLI ne zapišemo in ga nikoli ne povemo nikomur (ne sodelavcem, ne nadrejenim in ne tehničnemu osebju).</li>
+                                                        <li>Gesla, ki se uporabljajo v informacijskih sistemih odelo, se NE UPORABLJAJO v drugih informacijskih sistemih (npr. v sistemu elektronskega bančništva, drugih sistemih za e-pošto kot npr. Gmail, sistemih socialnega mreženja kot npr. Facebook).</li>
+                                                        <li>Gesla se redno menjujejo (veljavnost gesel je 3 mesece).</li>
+                                                        <li>V spletnih brskalnikih se ne uporablja funkcija »zapomni si geslo«.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed" aria-expanded="false">Zaščita računalnika z antivirusnim programom</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseFour" class="panel-collapse collapse" style="">
+                                                <div class="panel-body">
+                                                    ​​Na računalnikih mora biti skladno z Varnostno politiko nameščena protivirusna zaščita. 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" class="collapsed" aria-expanded="false">Upravljanje digitalnih potrdil (certifikatov)</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseFive" class="panel-collapse collapse" style="">
+                                                <div class="panel-body">
+                                                    TO-DO
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" class="collapsed" aria-expanded="false">Informacijska varnostna politika</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseSix" class="panel-collapse collapse" style="">
+                                                <div class="panel-body">
+                                                    ​Varnostna politika predstavlja na enem mestu zbrana navodila ter standarde za zagotavljanje in upravljanje z informacijsko varnostjo za vse uporabnike informacijskega sistema.
+                                                    <br/>
+                                                    <br/>
+                                                    Vsak, ki ima dostop do informacijskega sistema odelo, mora izpolnjevati zahteve informacijske varnostne politike.
+                                                    <br/>
+                                                    <br/>
+                                                    ​Informacijska varnostna politika je v veljavi od 25.2.2020.
+                                                    <br/>   
+                                                    <br/>
+                                                    Informacijska varnostna politika je dostopna <a href="http://prapps02.pr.lighting.int:7070/osloWebApp/Process%20Harmonisations/Procedures/29%20Information%20Management%20and%20Information%20Technology%20Procedure/29%20Information%20Management%20and%20Information%20Technology%20Procedure.docx">tukaj</a>​.
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <i class="fa fa-envelope"></i>
+                                <h5>Elektronska pošta</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <!--
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion2">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" class="collapsed" aria-expanded="false">Uporaba storitev elektronske pošte</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne2" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+                                                    Do elektronskega predala so upravičeni zaposleni v podjetju odelo Slovenija. Vsem tem se na strežniku za e-pošto
+                                                    omogoči uporaba elektronske pošte v obliki, ki je tipično ime.priimek@odelo.si. Izjeme nastopijo v
+                                                    primerih, ko obstaja več oseb z istim imenom ali priimkom, ko skupna dolžina imena in priimka
+                                                    presega 20 znakov ali drugih utemeljenih razlogih. 
+                                                    <br/>
+                                                    Z dnem prekinitve delovnega razmerja se odvzame pravica do uporabe informacijskih sredstev,
+                                                    vključno z e-naslovom in ukinejo se vsi dostopi do informacijskih virov. Opuščene identitete (e-naslova)
+                                                    ni dovoljeno spet ponovno uporabiti za drugega uporabnika.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo2" class="collapsed" aria-expanded="false">Uporaba poštnega predala</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseTwo2" class="panel-collapse collapse" style="">
+                                                <div class="panel-body">
+                                                    Vsak uporabnik elektronske pošte ima svoj elektronski predal. Za druge potrebe, kot so:
+                                                    organizacijske enote, posamezni projekti, pomoč uporabnikom in podobno; se odprejo namenski
+                                                    predali. Elektronska sporočila, ki prispejo v namenske predale, uporabljajo in upravljajo pooblaščeni
+                                                    uporabniki.
+                                                    Uporabnik ne sme uporabljati predala v neslužbene namene kot so pridobitna dejavnost, neslužbene
+                                                    (ankete in vprašalniki, trgovina, ipd.) in politične aktivnosti. Prepovedano je razpošiljanje vseh vrst
+                                                    neželene pošte.
+                                                    <br/>
+                                                    <br/>
+                                                    <u>Priporočila:</u>
+                                                    <p>
+                                                        Elektronska sporočila naj bodo kratka z malo priponk. Velikost poslane ali sprejete elektronske pošte
+                                                        skupaj s priponkami je omejena. V primeru, da je omejitev presežena, se sporočilo avtomatično 
+                                                        zavrne. Pošiljatelj dobi obvestilo o zavrnitvi. Omejitev je preventivni ukrep za preprečevanje
+                                                        prekomernega obremenjevanja sistema.
+                                                        Če uporabnik po pomoti prejme sporočilo, ki mu ni namenjeno, vsebine tega sporočila ne sme
+                                                        shraniti ali uporabljati za katerikoli namen. O pomoti je dolžan nemudoma obvestiti pošiljatelja in
+                                                        prejeto sporočilo takoj izbrisati. 
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseThree2" class="collapsed" aria-expanded="false">Pošiljanje in prejemanje elektronskih sporočil</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseThree2" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    Pri pošiljanju elektronskih sporočil mora uporabnik upoštevati načelo racionalnosti in varnosti.
+                                                    Obsežnih priponk naj se ne pošilja, če pa že, naj se jih pretvori v ustrezni format, ki omogoča stiskanje
+                                                    vsebine. Iz varnostnih razlogov dokumentov s končnicami, ki omogočajo avtomatsko izvajanje , ni
+                                                    priporočljivo prenašati z elektronsko pošto.
+                                                    <br/>
+                                                    Uporabnik se ne sme prijavljati s službenim naslovom na elektronske poštne sezname, če ti niso
+                                                    vsebinsko povezani z delovnimi nalogami uporabnika ali uporabljati službeni naslov elektronske pošte
+                                                    kot podatek pri izpolnjevanju elektronskih obrazcev, če ti niso vsebinsko povezani z delovnimi
+                                                    nalogami uporabnika.
+                                                    <br/>
+                                                    Uporabnik ne sme preusmerjati elektronskih sporočil.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseFour2" class="collapsed" aria-expanded="false">Brisanje elektronskih sporočil</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseFour2" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    Uporabnik mora vzdrževati svoj elektronski poštni predal tako, da po potrebi, ki jo narekujejo
+                                                    omejitve kapacitete ali druge omejitve, arhivira in izbriše vsa elektronska sporočila, ki jih ne
+                                                    potrebuje več v službene namene ali so zasebne narave.
+                                                    <br/>
+                                                    <br/>
+                                                    Skrbnik se lahko odloči za ukrepanje v primeru, če bi uporabnik:
+                                                    <ul>
+                                                        <li>uporabljal elektronsko pošto za pošiljanje verižnih pisem</li>
+                                                        <li>uporabljal elektronsko pošto za prenos množičnih sporočil ("spamming")</li>
+                                                    </ul>
+                                                    <br/>
+                                                    V primeru nedovoljene uporabe sistema za elektronska sporočila, lahko skrbnik začasno onemogoči
+                                                    uporabo sistema za uporabnika.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseFive2" class="collapsed" aria-expanded="false">Pogosta vprašanja</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseFive2" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <strong>Ali si lahko e-pošto, ki prihaja na službeni e-naslov, preusmerim na privatni (zunanji) naslov e-pošte?</strong>
+                                                    <br/>
+                                                    <br/>
+                                                    Ne. Preusmeritev ni podprta (ni dovoljena), ker lahko preusmerjanje zaradi morebitne nerazpoložljivosti (nedosegljivosti) poštnega predala zunanjega sistema zaradi različnih vzrokov, ki niso pod nadzorom odela (nedosegljivost ciljnega omrežja, prekoračena diskovna kvota, ipd.), povzroči povečano tveganje v sistemu odelo. Prav tako preusmeritev sporočil v zunanji sistem ni dovoljena s stališča varnosti in zaupnosti podatkov. Uporabnikom, ki želijo v drugem sistemu imeti dostop do službene e-pošte, priporočamo, da se obrnejo na IT oddelek.
+                                                    <br/>
+                                                    <br/>
+                                                    <strong>Kolikšna je največja velikost priponke v sporočilu, ki jo lahko prejmem / pošljem preko odelo strežnikov?​</strong>
+                                                    <br/>
+                                                    <br/>
+                                                    Največja velikost priponke, ki jo lahko prejmete preko odelo dohodnega poštnega strežnika znaša 30 MB. Enaka omejitev velja za klasično odhodno pošto, z uporabo modernih priponk pa je velikost poslanih sporočil teoretično neomejena. Za pošiljanje večjih dokumentov, ki jih zaradi velikosti ni mogoče poslati preko običajne elektronske pošte, lahko uporabite tudi XXXXX, ki je dosegljiv na naslovu XXXXXXXX.SI.
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <i class="fa fa-wifi"></i>
+                                <h5>Povezljivost</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <!--
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion3">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion3" href="#collapseOne3" class="collapsed" aria-expanded="false">Fiksna in mobilna telefonija</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne3" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion3" href="#collapseTwo3" class="collapsed" aria-expanded="false">Brezžično omrežje ODELO</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo3" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion3" href="#collapseThree3" class="collapsed" aria-expanded="false">Navidezno privatno omrežje (VPN)</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseThree3" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion3" href="#collapseFour3" class="collapsed" aria-expanded="false">Kako ravnati v primeru težav z Wi-Fi?</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseFour3" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+                                                    <strong>Splošno priporočilo:</strong> za pravilno delovanje vseh funkcionalnosti na mobilni napravi je priporočljivo, da je sistemska programska oprema (Android, Windows Mobile ali iOS) na mobilni napravi posodobljena na zadnjo različico.
+                                                    <br/>
+                                                    <br/>
+                                                    <strong>Nadaljnji koraki za odpravo težav:</strong>
+                                                    <br/>
+                                                    <ol>
+                                                        <li>preverimo ali je na napravi izključen »letalski način«? Če je vključen, ga izključimo.</li>
+                                                        <li>preverimo ali je na napravi nameščena programska oprema, ki bi lahko vplivala na delovanje privzetega Wi-Fi odjemalca (recimo kakšni alternativni WiFi odjemalci, VPN odjemalci, ipd., …). Če je, jo onemogočimo ali odstranimo.</li>
+                                                        <li>preverimo pravilnost vnesenih uporabniških prijavnih podatkov za dotično brežično omrežje na katerega se želimo prijaviti.</li>
+                                                        <li>reset oziroma ponovni zagon naprave.</li>
+                                                        <li>izberemo možnost »Pozabi (željeno) omrežje« (npr. ODELO-WIFI) in ponovimo vnos prijavnih podatkov (korak 3).</li>
+                                                        <li>preverimo pridobljene omrežne podatke (IP naslov, privzeti prehod,…) v primeru, da je povezava z brezžičnim omrežjem že vzpostavljena.</li>
+                                                    </ol>
+                                                    <br/>
+                                                    <br/>
+                                                    <strong>Kako preverimo delovanje Wi-fi?</strong>
+                                                    <br/>
+                                                    <ol>
+                                                        <li>preverimo povezljivost (z brskanjem po spletu, preverjanje odzivnosti nekega strežnika/spletne strani (PING)...</li>
+                                                        <li>vzpostavljeno povezavo lahko preverimo tudi tako, da testiramo hitrost le te s pomočjo spletnih orodij (npr. <a href="http://speedtest.net">http://speedtest.net</a>).</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <i class="fa fa-share-nodes"></i>
+                                <h5>Dokumenti in skupna raba</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <!--
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion4" href="#collapseOne4" class="collapsed" aria-expanded="false">Shranjevanje datotek na mrežnem disku</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne4" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion4" href="#collapseTwo4" class="collapsed" aria-expanded="false">Shranjevanje datotek (Office 365)</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo4" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>                              
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <i class="fa fa-calendar"></i>
+                                <h5>Organizacija dela, delo na daljavo</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <!--
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                    -->
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <div class="panel-body">
+                                    <div class="panel-group" id="accordion4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion5" href="#collapseOne5" class="collapsed" aria-expanded="false">Microsoft Teams - središče za skupinsko delo v storitvi Microsoft365</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne5" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+                                                    Microsoft Teams je del Microsoft365 in omogoča izvajanje videokonferenc, zato se lahko uporabi za poučevanje na daljavo, sestanke na daljavo, konferenčne klice, pogovore na daljavo, ipd. Pri dogodkih, ki se izvajajo preko Microsoft Teams, lahko prikazujete ppt prezentacije, delite vsebino svojega zaslona, vključite "Whitebord". Za sodelovanje na dogodku je potrebna prijava z digitalno identiteto.
+                                                    <br/>
+                                                    <br/>
+
+                                                    Skupini se lahko dodajo datoteke (Word, Excel, PowerPoint, Pdf,...), beležke iz programa OneNote, knjižnice iz SharePointa Online…
+                                                    <br/>
+                                                    <br/>
+                                                    Microsoft Teams je dostopen preko spletnega brskalnika, naprave Android ali iOS ali namiznega odjemalca, ki je na voljo v operacijskih sistemih Windows, Mac in Linux. Za uporabo preko spletnega brskalnika se s svojo digitalno identiteto prijavite na <a href="https://login.microsoftonline.com/"> https://login.microsoftonline.com/</a>​.
+                                                    <br/>
+                                                    <br/>
+                                                    Za namestitev namiznega odjemalca pojdite na <a href="https://www.microsoft.com/sl-si/microsoft-teams/download-app">https://www.microsoft.com/sl-si/microsoft-teams/download-app​</a>.
+                                                    Za namestitev na napravah Android ali iOS obiščite Google Play ali Apple Store.
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion5" href="#collapseTwo5" class="collapsed" aria-expanded="false">Boljša organizacija dela z Outlook koledarjem</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo5" class="panel-collapse in collapse" style="">
+                                                <div class="panel-body">
+                                                    Koledar programa Microsoft Outlook je komponenta za koledar in razporejanje programa Outlook, ki je popolnoma integrirana z e-pošto, stiki in drugimi funkcijami. Med drugim omogoča:
+                                                    <br/>
+                                                    <ul>
+                                                        <li>ustvarjanje sestankov in dogodkov,</li>
+                                                        <li>organiziranje srečanj,</li>
+                                                        <li>pošiljanje koledarja drugim po e-pošti itd.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>                              
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+
+
+                <div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">X</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">IT Organigram</h4>
+                                <small class="font-bold"></small>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <h:graphicImage alt="image" library="img" name="organigramFullTransparent.png" height="90%" width="90%"/>
+                                </p>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Zapri</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Vsebina
+                    </div>
+                    <div class="panel-body">
+                        <p>Tu notri je lahko karkoli</p>
+                    </div>
+                </div>
+                -->
+            </h:form>
+
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

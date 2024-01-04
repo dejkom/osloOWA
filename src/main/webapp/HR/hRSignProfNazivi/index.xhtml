@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Sign Prof Nazivi - šifrant nazivov delovnih mest
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+
+                body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+                    background: #c5dced;
+                    color: #495057;
+                }
+
+                .custom-dialog {
+                    width: 90% !important;
+                    height: 90% !important;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="Tukaj lahko urejate nazive delovnih mest, ki bodo prikazani v avtomatskem podpisu (elektronska pošta)"/>
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="HRSignProfNaziviListForm">
+                <p:dataTable id="datalist" value="#{hRSignProfNaziviController.items}" var="item"
+                             selectionMode="single" selection="#{hRSignProfNaziviController.selected}"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,50,{ShowAll|'All'}"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column filterBy="#{item.id}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.uradniNaziv}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_uradniNaziv}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.uradniNaziv}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.razsirjenSlo}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_razsirjenSlo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.razsirjenSlo}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.angUradni}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_angUradni}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.angUradni}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.razsirjenAng}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_razsirjenAng}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.razsirjenAng}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.oddelekSlo}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_oddelekSlo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.oddelekSlo}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.oddelekAng}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_oddelekAng}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.oddelekAng}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRSignProfNazivi.Create}" actionListener="#{hRSignProfNaziviController.prepareCreate}" update=":HRSignProfNaziviCreateForm" oncomplete="PF('HRSignProfNaziviCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRSignProfNazivi.View}" update=":HRSignProfNaziviViewForm" oncomplete="PF('HRSignProfNaziviViewDialog').show()" disabled="#{empty hRSignProfNaziviController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRSignProfNazivi.Edit}" update=":HRSignProfNaziviEditForm" oncomplete="PF('HRSignProfNaziviEditDialog').show()" disabled="#{empty hRSignProfNaziviController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRSignProfNazivi.Delete}" actionListener="#{hRSignProfNaziviController.destroy}" update=":growl,datalist" disabled="#{empty hRSignProfNaziviController.selected}"/>
+                        <p:commandButton id="seznamButton" icon="ui-icon-search"   value="Prikaži seznam zaposlenih" actionListener="#{hRSignProfNaziviController.createSeznamZaposlenih()}" update=":HRSignProfNaziviSeznamZaposlenihForm" oncomplete="PF('HRSignProfNaziviSeznamZaposlenihDialog').show()"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+            <ui:include src="seznamZaposlenih.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

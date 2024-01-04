@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECMachineEditDlg" widgetVar="OSECMachineEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.EditOSECMachineTitle}">
+            <h:form id="OSECMachineEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECMachineController.selected != null}">
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECMachineLabel_machineID}" for="machineID" />
+                        <p:inputText id="machineID" value="#{oSECMachineController.selected.machineID}" title="#{bundleOSECZastoji.EditOSECMachineTitle_machineID}" required="true" requiredMessage="#{bundleOSECZastoji.EditOSECMachineRequiredMessage_machineID}"/>
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECMachineLabel_machineName}" for="machineName" />
+                        <p:inputText id="machineName" value="#{oSECMachineController.selected.machineName}" title="#{bundleOSECZastoji.EditOSECMachineTitle_machineName}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECMachineLabel_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{oSECMachineController.selected.active}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECMachineLabel_lineIDfk}" for="lineIDfk" />
+                        <p:selectOneMenu id="lineIDfk" value="#{oSECMachineController.selected.lineIDfk}" >
+                            <f:selectItem itemLabel="#{bundleOSECZastoji.SelectOneMessage}"/>
+                            <f:selectItems value="#{oSECLineController.itemsAvailableSelectOne}"
+                                           var="lineIDfkItem"
+                                           itemValue="#{lineIDfkItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oSECMachineController.update}" value="#{bundleOSECZastoji.Save}" update="display,:OSECMachineListForm:datalist,:growl" oncomplete="handleSubmit(args, 'OSECMachineEditDialog');"/>
+                    <p:commandButton value="#{bundleOSECZastoji.Cancel}" onclick="OSECMachineEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

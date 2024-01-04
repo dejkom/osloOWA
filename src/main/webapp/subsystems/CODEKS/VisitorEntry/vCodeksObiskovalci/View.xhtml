@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VCodeksObiskovalciViewDlg" widgetVar="VCodeksObiskovalciViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle}">
+            <h:form id="VCodeksObiskovalciViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{vCodeksObiskovalciController.selected != null}">
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_visitId}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.visitId}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_visitId}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_timeIn}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.timeIn}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_timeIn}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_datum}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.datum}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_datum}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_timeOut}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.timeOut}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_timeOut}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_company}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.company}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_company}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_foruser}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.foruser}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_foruser}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_reason}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.reason}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_reason}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_prisotnost}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.prisotnost}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_prisotnost}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_najavljen}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.najavljen}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_najavljen}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_guest}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.VCodeksObiskovalciPK.guest}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_guest}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_guestCompany}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.guestCompany}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_guestCompany}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_status}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.status}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_status}"/>
+                        <h:outputText value="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciLabel_name}"/>
+                        <h:outputText value="#{vCodeksObiskovalciController.selected.name}" title="#{bundleCodeksObiskovalci.ViewVCodeksObiskovalciTitle_name}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleCodeksObiskovalci.Close}" onclick="VCodeksObiskovalciViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

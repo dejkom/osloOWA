@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            #{msg['HRCourse_PageHeader']} Zgodovina
+            <script type="text/javascript">
+
+
+                var currentEvent;
+
+                $(document).ready(function () {
+                    PrimeFaces.widget.ContextMenu.prototype.show = function (e) {
+                        //hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if (e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                                left = e.pageX,
+                                top = e.pageY,
+                                width = this.jq.outerWidth(),
+                                height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if ((left + width) > (win.width()) + win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if ((top + height) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if (this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                            'top': top,
+                            'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+
+            <style type="text/css">
+                .tabs-container .panel-body {
+                    background: #fff;
+                    border: 1px solid #e7eaec;
+                    border-radius: 2px;
+                    padding: 20px;
+                    position: relative;
+                    margin-bottom: 25px;
+                }
+
+                .file-box{
+                    float:left;
+                    width: auto;
+                }
+
+                body .ui-chips .ui-chips-container {
+                    padding: 0.25rem 0.5rem;
+                    width: 100%;
+                }
+
+                .keypad-div {	
+                    z-index: 10000 !important;	
+                }
+
+                .delButton:hover {
+                    background-color: red !important;
+                }
+
+
+
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            #{msg['HRCourse_PageHeaderSubtitle']}
+        </ui:define>
+        
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:remoteCommand name="rc" update=":form:gallery" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.changeActiveIndex}" oncomplete="PF('galleria3').show()" />
+                <div class="row" style="margin: 5px">
+                    <div class="col-md-12">
+                        <p:panelGrid columns="2" style="background-color: transparent; width: 100%">
+                            <p:outputLabel for="courseofferinglist" value="#{msg['HRCourse_SelectedCourseOffering']}:" />
+                            <p:selectOneMenu id="courseofferinglist" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering}" filter="true" filterMatchMode="contains" style="width: 100%">
+                                <f:selectItem itemLabel="#{msg['HRCourse_SelectCourseOffering']}" itemValue="#{null}" />
+                                <f:selectItems value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.allOfferings}" var="offering" itemLabel="#{offering.courseID.courseTitle} (#{msg['Lecturer']}: #{offering.instructorID.lastname} #{offering.instructorID.firstname}, #{msg['Place']}: #{offering.meetingroomString}, #{msg['Date']}: #{offering.courseDateString})" itemValue="#{offering}"/>
+                                <p:ajax listener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.offeringSelected}" update="form form4" />
+                            </p:selectOneMenu>
+
+                            <!--
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#skenirajKljucek">
+                                Launch Default Modal
+                            </button>
+                            -->
+
+                        </p:panelGrid>
+                    </div>
+                </div>
+
+
+
+                <div class="row" style="margin: 5px">
+                    <div class="col-md-12">
+                        <h:panelGroup id="pg" layout="block" class="box box-default" rendered="#{!empty hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering}">
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs">
+                                    <li class=""><a class="nav-link active" href="#tab_1" data-toggle="tab" aria-expanded="true">#{msg['BasicInformations']}</a></li>
+                                    <li class=""><a class="nav-link" href="#tab_2" data-toggle="tab" aria-expanded="false">#{msg['Attendees']}</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+
+                                                    <h2>#{msg['HRCourse_CourseTitle']}:</h2><h3><h:outputText id="ctitle2" value = "#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.courseID.courseTitle}" /></h3>
+                                                    <br/>
+
+                                                    <h2>#{msg['HRCourse_Lecturer']}:</h2><h3><h:outputText id="izobrazevalec2" value = "#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.instructorID.firstname} #{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.instructorID.lastname}" /></h3>
+                                                    <br/>
+
+                                                    <h2>#{msg['Date']}: </h2><h3><h:outputText id="when2" value = "#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.courseDate}">
+                                                            <f:convertDateTime type="date" pattern="dd.MM.yyyy HH:mm"/>
+                                                        </h:outputText></h3>
+                                                    <br/>
+
+                                                    <h2>#{msg['Place']}:</h2><h3><h:outputText id="lokacija2" value = "#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.meetingroomString}" /></h3>
+                                                    <br/>
+
+
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h1>#{msg['Remarks']}:</h1>
+                                                    <br/>
+                                                    <h:outputText id="courseNote" value = "#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.courseID.courseNotes}" />
+
+                                                    <h1>#{msg['Attachments']}:</h1>
+                                                    <br/>
+                                                    <p:galleria id="gallery" widgetVar="galleria3" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.courseID.fileattachments}" var="photo" numVisible="7" 
+                                                                circular="true" fullScreen="true" showItemNavigators="true" showThumbnails="false" style="max-width: 850px" activeIndex="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.activeIndex}">
+                                                        <p:graphicImage value="/#{photo.itemFileAttachmentSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
+                                                    </p:galleria>
+
+                                                    <ui:repeat value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedOffering.courseID.fileattachments}" var="photo" varStatus="status">
+                                                        <!--DELA <p:graphicImage value="/#{photo.itemFileAttachmentSrc}" alt="#{photo.alt}" style="cursor: pointer" onclick="rc([{'name': 'index', 'value': #{status.index}}])" /> -->
+                                                        <!--<p:graphicImage alt="image" height="128px" width="128px" library="img" name="#{photo.thumbnailImageSrc}.png"/>-->
+
+                                                        <div class="file-box">
+                                                            <div class="file">
+                                                                <a href="/osloWebApp#{photo.itemFileAttachmentSrc}" target="_blank">
+                                                                    <span class="corner"></span>
+
+                                                                    <div class="icon">
+                                                                        <p:graphicImage alt="image" height="64px" width="64px" library="img" name="#{photo.thumbnailImageSrc}.png"/>
+                                                                    </div>
+                                                                    <div class="file-name">
+                                                                        <h:outputText id="fname" value = "#{photo.title}" />
+                                                                        <br/>
+                                                                        <small><h:outputText id="cdate" value = "#{photo.creationdate}" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" /></h:outputText></small>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                    </ui:repeat>
+
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <button type="button" id="b1" style="width:100%; height: 60px; background-color: #1ab394; color: white; font-weight: bold; font-size: large" class="btn btn-default" data-toggle="modal" data-target="#skenirajKljucek">
+                                                    #{msg['HRCourse_RecordAttendance']}
+                                                </button> 
+                                                <!--
+                                                <button type="button" id="b2" style="width:30%; height: 60px; background-color: #1ab394; color: white; font-weight: bold; font-size: large" class="btn btn-default" data-toggle="modal" data-target="#skenirajKljucek">
+                                                    Ročno dodajanje
+                                                </button> 
+                                                -->
+                                            </div>
+                                            <p:dataTable id="dtt" var="car" style="padding-top: 10px" editMode="cell" widgetVar="cellCars" editable="true" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.seznamUdelezencev}">
+
+                                                <p:ajax event="cellEdit" listener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.onCellEdit}" update="growl" />
+
+                                                <!--
+                                                <p:column headerText="Prisotnost ID">
+                                                    <h:outputText value="#{car.attendanceID}" />
+                                                </p:column>
+    
+                                                <p:column headerText="Codeks številka">
+                                                    <h:outputText value="#{car.codeksID}" />
+                                                </p:column>
+                                                -->
+
+                                                <p:column headerText="#{msg['Firstname']} #{msg['Lastname']}" filterBy="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vrnjeniUserjiMap.get(car.codeksID).firstname} #{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vrnjeniUserjiMap.get(car.codeksID).lastname}" filterMatchMode="contains">
+                                                    <!--
+                                                    <h:outputText value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vuserjiHM.get(car.codeksID).firstname} #{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vuserjiHM.get(car.codeksID).lastname}" />
+                                                    -->
+                                                    <h:outputText value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vrnjeniUserjiMap.get(car.codeksID).firstname} #{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vrnjeniUserjiMap.get(car.codeksID).lastname}" />
+                                                </p:column>        
+
+                                                <p:column headerText="#{msg['Card']}">
+                                                    <h:outputText value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.vrnjeniUserjiMap.get(car.codeksID).card}" />
+                                                </p:column>  
+
+                                                <p:column headerText="#{msg['Time']}">
+                                                    <h:outputText value="#{car.timestamp}">
+                                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                                    </h:outputText>
+                                                </p:column>  
+
+                                                <p:column headerText="#{msg['HRCourse_WasAttended']}">
+                                                    <h:outputText value="#{car.wasAttended}" />
+                                                </p:column>
+
+                                                <p:column headerText="#{msg['Remarks']}">                                               
+                                                    <p:cellEditor>
+                                                        <f:facet name="output">
+                                                            <h:outputText value="#{car.comment}" />
+                                                        </f:facet>
+                                                        <f:facet name="input">
+                                                            <p:inputTextarea value="#{car.comment}" rows="5" cols="30" counter="display" maxlength="300" counterTemplate="{0} characters remaining." autoResize="false" />
+                                                            <br />
+                                                            <h:outputText id="display" />
+                                                        </f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="#{msg['Grade']}">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output">
+                                                            <p:rating value="#{car.rate}" readonly="true"/>
+                                                        </f:facet>
+                                                        <f:facet name="input">
+                                                            <p:rating value="#{car.rate}"/>
+                                                        </f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="#{msg['Actions']}">
+                                                    <p:commandButton update=":form:dtt" class="delButton" icon="fa fa-trash-can" title="#{msg['Delete']}" action="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.brisiUdelezenca}">
+                                                        <f:setPropertyActionListener value="#{car}" target="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.udelezenecZaBrisanje}"/>
+                                                    </p:commandButton>
+                                                </p:column>
+
+
+                                            </p:dataTable>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </h:panelGroup>   
+
+                    </div>
+                </div>
+
+
+
+                <div id="niOfferingov" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLinkModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['HRCourse_MSG_H_cantFindCourses']}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>#{msg['HRCourse_MSG_B_cantFindCourses']}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                                    #{msg['Continue']}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </h:form>
+
+            <h:form id="form2">
+
+                <div id="skenirajKljucek" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['HRCourse_RegisterAttendee']}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <p:focus for="kin2"/>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <center>
+                                                <h:graphicImage library="img" name="em-usb-reader.png" alt="" style="height: 150px"/>
+                                            </center>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <center>
+                                                <h:graphicImage library="img" name="elatec-twn4-legic.png" alt="" style="height: 150px"/>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <center>
+                                                <p:selectOneRadio id="console" class="padding-table-columns" style="text-align:center;width: 100%" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.izbrancitalec}">
+                                                    <f:selectItem itemLabel="levi" itemValue="emcard" />
+                                                    <!--<f:selectItem itemLabel="ročno" itemValue="rocno" />-->
+                                                    <f:selectItem itemLabel="desni" itemValue="elatec" />
+
+                                                    <p:ajax listener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.readerChange}" update="kin kin2"/>
+                                                </p:selectOneRadio>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <p:inputText id="kin" disabled="#{!hRCourseIzvedbaIzobrazevanjaZaNazajBean.kinenabled}" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.kljucekStringBelezenje}" style="width: 100%;margin-top: 5px; margin-bottom: 5px; display: none"/>                                  
+
+                                    <p:chips id="kin2" unique="true" oninput="console.log('input')" disabled="#{!hRCourseIzvedbaIzobrazevanjaZaNazajBean.kinenabled}" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.kljucekStringBelezenjeChips}" style="width: 100%; margin-top: 5px; margin-bottom: 5px;">
+                                        <p:ajax event="itemSelect" listener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.chipsSelect}" update="kin2"/>
+                                        <p:ajax event="itemUnselect" listener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.chipsDeselect}" update="kin2"/>
+                                    </p:chips>
+                                    <!--
+                                    <p:selectOneMenu disabled="#{!hRCourseIzvedbaIzobrazevanjaZaNazajBean.kinenabled}" id="advanced" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.rocnoIzbranUser}" panelStyle="width:380px"
+                                                     style="width:100%" appendTo="@this" converter="omnifaces.SelectItemsConverter" var="t" filter="true"
+                                                     filterMatchMode="contains" >
+
+                                        <f:selectItems value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.currentlyEmployed}" var="theme" itemLabel="#{theme.firstname} #{theme.lastname}" itemValue="#{theme}" />
+
+                                        <p:column>
+                                            <h:outputText value="#{t.firstname}" />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{t.lastname}" />
+                                        </p:column>
+
+                                        <p:ajax listener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.rocnoIzbranUserAjax}" partialSubmit="false" update="kin kin2"/>
+
+                                    </p:selectOneMenu>
+                                    -->
+
+                                    <br/>                                      
+                                </p>
+
+                                <p:commandButton id="openManualSelectionButton" class="btn btn-primary" style="width: 100%" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.manualSelectionOfEmployees}" update="form2:kin form:dtt form2:kin2 form2:console"  value="#{msg['handPickAttendees']}" oncomplete="$('#skenirajKljucek').modal('hide');"/>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">#{msg['Cancel']}</button>
+
+                                <!--<p:commandButton id="submitButton" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.shraniZabelezenKljucek}" update="form2:kin form:dtt"  value="Shrani" oncomplete="$('#skenirajKljucek').modal('hide');"/>-->
+                                <p:commandButton id="submitButtonChips" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.shraniZabelezenKljucekChips}" update="form2:kin form:dtt form2:kin2 form2:console"  value="#{msg['Save']}" oncomplete="$('#skenirajKljucek').modal('hide');"/>
+                                <!--
+                                <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                                    Nadaljuj
+                                </a>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="form3">
+                <div id="niPrijavljenUporabnik" class="modal" data-keyboard="false" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="myLinkModal2" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['Notification']}!</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>#{msg['HRCourse_MSG_B_attendeNotOnList']}</p>
+                                <br/>
+                                <p>#{msg['HRCourse_MSG_B_continueWithAdding']}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandButton id="neshraniNeprijavljenega" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.neshraniNeprijavljenega}"  value="#{msg['DontAddToList']}" oncomplete="$('#niPrijavljenUporabnik').modal('hide');"/>                                
+                                <p:commandButton id="shraniNeprijavljenega" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.shraniNeprijavljenega}" update="form:dtt"  value="#{msg['AddToList']}" oncomplete="$('#niPrijavljenUporabnik').modal('hide');"/>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="form4">
+                <div id="accessPIN" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLinkModal3" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['Notification']}!</h4>
+                            </div>
+                            <div class="modal-body">
+                                #{msg['PINAccessExplanation']}
+                                <br/>
+                                <br/>
+                                <p:keyboard id="keypad" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.inputPIN}" keypadOnly="true" styleClass="keypad-div"/>
+                            </div>
+                            <div class="modal-footer">                                           
+                                <p:commandButton id="prijaviZpinom" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.accessWithPIN}" update="form form:dtt"  value="#{msg['LogIn']}" oncomplete="$('#accessPIN').modal('hide')"/>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="form5">
+                <div id="accessPINwrong" class="modal" data-keyboard="false"  data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="myLinkModal4" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['Notification']}!</h4>
+                            </div>
+                            <div class="modal-body">
+                                PIN number wrong!
+                            </div>
+                            <div class="modal-footer">                                           
+                                <!--
+                                <p:commandButton id="prijaviZpinom" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.accessWithPIN}" update="form form:dtt"  value="#{msg['LogIn']}" oncomplete="$('#accessPIN').modal('hide');"/>                                
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="form6">
+                <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content animated bounceInRight">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">#{msg['Close']}</span></button>
+                                <i class="fa fa-lock modal-icon"></i>
+                                <h4 class="modal-title">#{msg['WrongAccessPIN']}</h4>
+                                <small class="font-bold">#{msg['WrongAccessPINexplanation']}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+
+
+            <h:form id="form7">
+
+                <div id="izbiraOseb" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLOModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['HRCourse_RegisterAttendee']}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+
+                                    <p:selectManyMenu id="advanced" style="width: 100%;" value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.selectedEmployees}" converter="omnifaces.SelectItemsConverter" var="t" filter="true" filterMatchMode="contains" showCheckbox="true">                           
+                                        <f:selectItems value="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.currentlyEmployed}" var="theme" itemLabel="#{theme.firstname} #{theme.lastname}" itemValue="#{theme}" />
+                                        <p:column>
+                                            <h:outputText value="#{t.firstname}" />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{t.lastname}" />
+                                        </p:column>
+
+                                        <!-- <p:ajax update="dv"  partialSubmit="true"/>  -->
+
+                                    </p:selectManyMenu>
+
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">#{msg['Cancel']}</button>
+                                <p:commandButton id="submitButtonOsebe" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaZaNazajBean.shraniIzbraneOsebe}" update="form2:kin form:dtt form2:kin2 form2:console"  value="#{msg['Save']}" oncomplete="$('#izbiraOseb').modal('hide');"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

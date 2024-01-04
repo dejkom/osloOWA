@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVstatusLogEditDlg" widgetVar="AGVstatusLogEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.EditAGVstatusLogTitle}">
+            <h:form id="AGVstatusLogEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVstatusLogController.selected != null}">
+                        <p:outputLabel value="#{bundleAGV.EditAGVstatusLogLabel_statusLogId}" for="statusLogId" />
+                        <p:inputText id="statusLogId" value="#{aGVstatusLogController.selected.statusLogId}" title="#{bundleAGV.EditAGVstatusLogTitle_statusLogId}" required="true" requiredMessage="#{bundleAGV.EditAGVstatusLogRequiredMessage_statusLogId}"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVstatusLogLabel_timestamp}" for="timestamp" />
+                        <p:calendar id="timestamp" pattern="MM/dd/yyyy HH:mm:ss" value="#{aGVstatusLogController.selected.timestamp}" title="#{bundleAGV.EditAGVstatusLogTitle_timestamp}" required="true" requiredMessage="#{bundleAGV.EditAGVstatusLogRequiredMessage_timestamp}" showOn="button"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVstatusLogLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{aGVstatusLogController.selected.status}" title="#{bundleAGV.EditAGVstatusLogTitle_status}" required="true" requiredMessage="#{bundleAGV.EditAGVstatusLogRequiredMessage_status}"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVstatusLogLabel_person}" for="person" />
+                        <p:inputText id="person" value="#{aGVstatusLogController.selected.person}" title="#{bundleAGV.EditAGVstatusLogTitle_person}" />
+                        <p:outputLabel value="#{bundleAGV.EditAGVstatusLogLabel_message}" for="message" />
+                        <p:inputText id="message" value="#{aGVstatusLogController.selected.message}" title="#{bundleAGV.EditAGVstatusLogTitle_message}" />
+                        <p:outputLabel value="#{bundleAGV.EditAGVstatusLogLabel_orderId}" for="orderId" />
+                        <p:selectOneMenu id="orderId" value="#{aGVstatusLogController.selected.orderId}" >
+                            <f:selectItem itemLabel="#{bundleAGV.SelectOneMessage}"/>
+                            <f:selectItems value="#{aGVorderController.itemsAvailableSelectOne}"
+                                           var="orderIdItem"
+                                           itemValue="#{orderIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aGVstatusLogController.update}" value="#{bundleAGV.Save}" update="display,:AGVstatusLogListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AGVstatusLogEditDialog');"/>
+                    <p:commandButton value="#{bundleAGV.Cancel}" onclick="AGVstatusLogEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

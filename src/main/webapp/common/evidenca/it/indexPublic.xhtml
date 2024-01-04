@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="head">
+            <script type="text/javascript"></script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            Evidenca sredstev
+
+            <style type="text/css">
+
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+
+                .thirty-percent {
+                    width: 30%;
+                }
+
+                .seventy-percent {
+                    width: 70%;
+                }
+
+                .noPadding{
+                    padding-left: 0px !important;
+                }
+
+                .ui-datatable-header.ui-widget-header.ui-corner-top{
+                    background-color: transparent !important;
+                    border-color: transparent !important;
+                    height: 0px;
+                }
+
+                .critical {
+                    background-color: #ffbbbb !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .warning {
+                    background-color: #FBFFA3 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .hiddenDTrow{
+                    visibility: collapse;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Na tej strani lahko brskate po sredstvih in jih izdajate uporabnikom
+        </ui:define>
+
+        <ui:define name="content">
+
+
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:accordionPanel widgetVar="kategorijePanel">
+                    <p:tab title="Kategorije">
+                        <p class="m-0">
+                            <p:tree id="tree" value="#{EventsView.root}" var="item" selectionMode="single" style="width:90%" selection="#{EventsView.selectedNode}">
+                                <p:ajax event="expand" update=":form:messages" listener="#{EventsView.onNodeExpand}"/>
+                                <p:ajax event="collapse" update=":form:messages" listener="#{EventsView.onNodeCollapse}"/>
+                                <p:ajax event="select" update=":form:messages,:ASSAssetListForm :ASSAssetListForm:assAssetDatalist" listener="#{EventsView.onNodeSelect}" oncomplete="PF('kategorijePanel').unselect(0)"/>
+                                <p:ajax event="unselect" update=":form:messages" listener="#{EventsView.onNodeUnselect}"/>
+
+                                <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                                    <h:outputText value="#{item.typeDescription}"/>
+                                </p:treeNode>
+                                <p:treeNode type="assetType" icon="pi pi-box">
+                                    <h:outputText value="#{item.typeDescription}"/>
+                                </p:treeNode>
+                            </p:tree>
+                        </p>
+                    </p:tab>
+
+                    <p:tab title="Lokacije">
+                        <p class="m-0">
+                            <p:tree id="tree2" value="#{EventsView.rootLocation}" var="loc" selectionMode="single" style="width:90%" selection="#{EventsView.selectedNodeLocation}">
+                                <p:ajax event="expand" update=":form:messages" listener="#{EventsView.onNodeLocationExpand}"/>
+                                <p:ajax event="collapse" update=":form:messages" listener="#{EventsView.onNodeLocationCollapse}"/>
+                                <p:ajax event="select" update=":form:messages,:ASSAssetListForm :ASSAssetListForm:assAssetDatalist" listener="#{EventsView.onNodeLocationSelect}" oncomplete="PF('kategorijePanel').unselect(1)"/>
+                                <p:ajax event="unselect" update=":form:messages" listener="#{EventsView.onNodeLocationUnselect}"/>
+
+                                <p:treeNode expandedIcon="pi pi-folder-open" collapsedIcon="pi pi-folder">
+                                    <h:outputText value="#{loc.locationDescription}"/>
+                                </p:treeNode>
+                                <p:treeNode type="assetLocation" icon="pi pi-box">
+                                    <h:outputText value="#{loc.locationDescription}"/>
+                                </p:treeNode>
+                            </p:tree>
+                        </p>
+                    </p:tab>
+
+                </p:accordionPanel>
+
+
+            </h:form>
+
+            <br/>
+
+            <h:form id="ASSAssetListForm">
+                <p:panel header="">
+                    <p:dataTable id="assAssetDatalist" value="#{EventsView.assAssetTableList}" var="asset"
+                                 selectionMode="single" selection="#{formIzposojaBean.selectedAsset}"
+                                 paginator="true"
+                                 widgetVar="assetsTable"
+                                 rowKey="#{asset.IDAsset}"
+                                 stripedRows="true"
+                                 rowStyleClass="#{EventsView.findSumLogQuantity(asset) le asset.assetMinimumQuantityCritical ? 'critical' : EventsView.findSumLogQuantity(asset) gt asset.assetMinimumQuantityCritical and EventsView.findSumLogQuantity(asset) le asset.assetMinimumQuantityWarning ? 'warning' : null}"
+                                 emptyMessage="Ni sredstev v izbrani kategoriji"
+                                 rows="#{EventsView.assAssetTableList.size()}"
+                                 rowsPerPageTemplate="10,20,30,40,50,#{EventsView.assAssetTableList.size()}"
+                                 >
+
+                        <f:facet name="header">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                <div>
+                                    <p:commandButton id="osebaVracilo" type="button" value="Vračilo" onclick="PF('dlg2').show()" style="" icon="fa fa-backward"/>
+                                    <p:commandButton id="izdajaKompleta" value="Izdaja kompleta" update="form1:display form4 form4:display dlg3" actionListener="#{formIzposojaBean.izdajaKompletaOpen(EventsView.selectedAssType)}" disabled="#{!EventsView.selectedAssType.typeDescription.contains('Komplet ')}" style="margin-left: 10px" icon="fa fa-box"/>
+                                    <p:commandButton id="razdiranjeKompleta" value="Razdri komplet" update="form1:display form5 form5:display :form5:razDT" actionListener="#{formIzposojaBean.razdiranjeKompletaOpen(EventsView.selectedAssType)}" disabled="#{!EventsView.selectedAssType.typeDescription.contains('Komplet ')}" style="margin-left: 10px" icon="fa fa-box-open"/>
+                                    <p:commandButton id="natisniQR" value="Opremi s kodo" update="form1:display form6 dlg5" actionListener="#{formIzposojaBean.natisniKodoOpen(EventsView.selectedAssType)}" disabled="#{!EventsView.selectedAssType.typeDescription.contains('Komplet ')}" style="margin-left: 10px" icon="fa fa-qrcode"/>
+                                    <p:commandButton id="toggler" type="button" value="Stolpci" style="float:right" icon="pi pi-align-justify"/>
+                                    <p:columnToggler datasource="assAssetDatalist" trigger="toggler" />
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <p:column filterBy="#{asset.assetDescription}" filterMatchMode="contains" filterable="true">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetDescription}"/>
+                        </p:column>
+                        <p:column width="80px">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetReturn}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{asset.assetReturn}" disabled="true"/>
+                        </p:column>
+                        <p:column width="80px">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetDeleted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{asset.assetDeleted}" disabled="true"/>
+                        </p:column>
+                        <p:column filterBy="#{asset.assetSerialNumber}" filterMatchMode="contains" visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetSerialNumber}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetSerialNumber}"/>
+                        </p:column>
+                        <p:column filterBy="#{asset.assetComment}" filterMatchMode="contains" visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetComment}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetComment}"/>
+                        </p:column>
+                        <p:column width="120px" visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetUpdated}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetUpdated}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetUpdatedUser}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetUpdatedUser}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireDays}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetExpireDays}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireMonths}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetExpireMonths}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireYears}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetExpireYears}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetMinimumQuantityWarning}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetMinimumQuantityWarning}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetMinimumQuantityCritical}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.assetMinimumQuantityCritical}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetParent}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.IDAssetParent}" title="#{asset.IDAssetParent.assetDescription}"/>
+                        </p:column>
+
+
+                        <p:column filterMatchMode="exact" filterBy="#{asset.IDAssetLocation.locationDescription}">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('assetsTable').filter()" styleClass="ui-custom-filter">
+                                    <f:selectItem itemLabel="All" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{EventsView.lokacijezafilter}" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetLocation}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.IDAssetLocation.locationDescription}" title="#{asset.IDAssetLocation.locationDescription}"/>
+                        </p:column>
+
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetType}"/>
+                            </f:facet>
+                            <h:outputText value="#{asset.IDAssetType.typeDescription}" title="#{asset.IDAssetType.typeDescription}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{EventsView.findSumLogQuantity(asset)}" filterMatchMode="contains" filterable="true">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSLogTitle_logQuantity}"/>
+                            </f:facet>
+                            <h:outputText value="#{EventsView.findSumLogQuantity(asset)}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:contextMenu for="assAssetDatalist" style="width: 400px">
+                        <p:menuitem value="Izbriši" action="#{EventsView.markAssAssetDeleted()}" update=":ASSAssetListForm" icon="pi pi-times" disabled="true"/>
+                        <p:menuitem value="Manipulacija sredstev" action="#{formIzposojaBean.manipulacijaSredstevOpen()}" update="form1:display" icon="fa fa-pen-to-square"/>
+                        <p:menuitem value="Dodaj v košarico" action="#{EventsView.dodajVKosarico(formIzposojaBean.selectedAsset)}" update="form1:display formKosarica:kosaricaDT formKosarica:kosaricaCounter" icon="fa fa-cart-shopping"/>
+                    </p:contextMenu>
+
+                </p:panel>
+            </h:form>
+
+            <p:dialog header="Manipulacija sredstva" id="dlg1" widgetVar="dlg1" minHeight="600" width="650" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+                <h:form id="form1">
+                    <h:panelGroup id="display">                     
+
+                        <p:panelGrid columns="2" style="width:100% !important" styleClass="noBorders" columnClasses="thirty-percent, seventy-percent">
+                            <p:outputLabel value="Izbrano sredstvo:" for="izbranoSredstvo" />
+                            <h:outputText id="izbranoSredstvo" value="#{formIzposojaBean.selectedAsset.assetDescription}"/>
+
+                            <p:outputLabel value="Operacija:" for="operacija" />
+                            <p:selectOneMenu id="operacija" value="#{formIzposojaBean.trenutniLog.IDLogStatus}" converter="omnifaces.SelectItemsConverter" style="width:100%">
+                                <f:selectItem itemLabel="Izberi operacijo..." itemValue=""/>
+                                <f:selectItems value="#{formIzposojaBean.mozneOperacije}"  var="operacija" itemLabel="#{operacija.statusDescription}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Količina:" />
+                            <p:inputText value="#{formIzposojaBean.trenutniLog.logQuantity}" class="easy-get easy-put" onclick="show_easy_numpad(this);" />
+
+
+                            <p:outputLabel value="Prejemnik:" />
+                            <p:panelGrid columns="3" style="float: left;" styleClass="noBorders" columnClasses="noPadding">
+                                <p:selectOneMenu id="codeksID" value="#{formIzposojaBean.trenutniLog.logExternalID}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="contains" style="width:100%;">
+                                    <f:selectItem itemLabel="Izberite osebo..." itemValue="#{null}" />
+                                    <f:selectItems value="#{formIzposojaBean.aktualniZaposleni}" var="theme" itemLabel="#{theme.lastname} #{theme.firstname} " itemValue="#{theme.id} "/>
+                                </p:selectOneMenu>
+                                ali
+                                <p:button value="Ključek" />
+                            </p:panelGrid>
+
+                            <p:outputLabel value="Komentar:" />
+                            <p:inputTextarea rows="6" cols="50" value="#{formIzposojaBean.trenutniLog.logComment}"/>
+
+                        </p:panelGrid>
+
+                        <center>
+                            <p:commandButton id="f1shrani" action="#{formIzposojaBean.shraniEnoManipulacijo}" value="Shrani" update=":ASSAssetListForm:assAssetDatalist" ajax="true" style="width: 90%; margin-top: 15px" />
+                        </center>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+            <p:dialog header="Vračilo sredstva" id="dlg2" widgetVar="dlg2" minHeight="700" width="750" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+                <h:form id="form2">
+                    <h:panelGroup id="display">                     
+
+                        <p:panelGrid columns="2" style="width:100% !important" styleClass="noBorders" columnClasses="thirty-percent, seventy-percent">
+                            <p:outputLabel value="Oseba:" />
+                            <p:panelGrid columns="3" style="float: left;" styleClass="noBorders" columnClasses="noPadding">
+                                <p:selectOneMenu id="codeksID" value="#{formIzposojaBean.zaposleniKiVraca}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="contains" style="width:100%;">
+                                    <f:selectItem itemLabel="Izberite osebo..." itemValue="#{null}" />
+                                    <f:selectItems value="#{formIzposojaBean.aktualniZaposleni}" var="theme" itemLabel="#{theme.lastname} #{theme.firstname} " itemValue="#{theme}"/>
+                                    <p:ajax event="itemSelect" update=":form:messages izposojenoDT" listener="#{formIzposojaBean.izbranaOsebaKiVraca}" />
+                                </p:selectOneMenu>
+                                ali
+                                <p:button value="Ključek" />
+                            </p:panelGrid>
+                        </p:panelGrid>
+                        <p:dataTable var="product" id="izposojenoDT" value="#{formIzposojaBean.izposojeno}" rowStyleClass="#{product.suma*-1 le 0 ? 'hiddenDTrow':''}">
+                            <p:column headerText="Sredstvo ID" rendered="false" >
+                                <h:outputText value="#{product.assetID}" />
+                            </p:column>
+
+                            <p:column headerText="Sredstvo ID">
+                                <h:outputText value="#{product.sredstvo.assetDescription}" />
+                            </p:column>
+
+                            <p:column headerText="Datum izposoje" rendered="false">
+                                <h:outputText value="#{product.logTimestamp}"><f:convertDateTime dateStyle="full" pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Potrebno vračilo">
+                                <p:selectBooleanCheckbox value="#{product.assetReturn}"/>
+                            </p:column>
+
+                            <p:column headerText="Rok vračila" rendered="false">
+                                <h:outputText value="#{product.dateWhenMustBeReturned}"><f:convertDateTime dateStyle="full" pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/></h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Preostali čas" rendered="false">
+                                <h:outputText value="#{product.printDifference(now, product.dateWhenMustBeReturned)}"></h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Količina">
+                                <h:outputText value="#{product.suma*-1}" />
+                            </p:column>
+
+                            <p:column headerText="Lokacija sredstva">
+                                <h:outputText value="#{product.sredstvo.IDAssetLocation.locationDescription}" />
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton value="Vrni" action="#{formIzposojaBean.returnAction}" update=":form2:display" title="Vrni">
+                                    <f:setPropertyActionListener value="#{product}" target="#{formIzposojaBean.selectedAssetToReturn}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton value="Vrni drugam" action="#{formIzposojaBean.returnDrugamAction}" update=":form2:display :form7:display" title="Vrni drugam">
+                                    <f:setPropertyActionListener value="#{product}" target="#{formIzposojaBean.selectedAssetToReturn}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                        <center>
+                            <p:commandButton id="f2shrani" value="Shrani"  ajax="true" style="width: 90%; margin-top: 15px" />
+                        </center>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+            <p:dialog header="Izdaja kompleta - #{EventsView.selectedAssType.typeDescription}" id="dlg3" widgetVar="dlg3" minHeight="700" width="750" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+                <h:form id="form4">
+                    <h:panelGroup id="display">                     
+                        <p:panelGrid columns="2" style="width:100% !important" styleClass="noBorders" columnClasses="thirty-percent, seventy-percent">
+                            <p:outputLabel value="Izbrano sredstvo:" for="izbranoSredstvo" />
+                            <h:outputText id="izbranoSredstvo" value="#{EventsView.selectedAssType.typeDescription}"/>
+
+                            <p:outputLabel value="Operacija:" for="operacija" />
+                            <p:selectOneMenu id="operacija" value="#{formIzposojaBean.trenutniLog.IDLogStatus}" converter="omnifaces.SelectItemsConverter" style="width:100%">
+                                <f:selectItem itemLabel="Izberi operacijo..." itemValue=""/>
+                                <f:selectItems value="#{formIzposojaBean.mozneOperacije}"  var="operacija" itemLabel="#{operacija.statusDescription}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Prejemnik:" />
+                            <p:panelGrid columns="3" style="float: left;" styleClass="noBorders" columnClasses="noPadding">
+                                <p:selectOneMenu id="codeksID" value="#{formIzposojaBean.trenutniLog.logExternalID}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="contains" style="width:100%;">
+                                    <f:selectItem itemLabel="Izberite osebo..." itemValue="#{null}" />
+                                    <f:selectItems value="#{formIzposojaBean.aktualniZaposleni}" var="theme" itemLabel="#{theme.lastname} #{theme.firstname} " itemValue="#{theme.id} "/>
+                                </p:selectOneMenu>
+                                ali
+                                <p:button value="Ključek" />
+                            </p:panelGrid>
+
+                            <p:outputLabel value="Komentar:" />
+                            <p:inputTextarea rows="6" cols="50" value="#{formIzposojaBean.trenutniLog.logComment}"/>
+
+                        </p:panelGrid>
+
+                        <center>
+                            <p:commandButton id="f1shrani" action="#{formIzposojaBean.shraniEnoManipulacijoKomplet(EventsView.selectedAssType)}" value="Shrani" update=":ASSAssetListForm:assAssetDatalist :form" ajax="true" style="width: 90%; margin-top: 15px" />
+                        </center>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+            <h:form id="form5">
+                <p:dialog header="Razdiranje kompleta - #{EventsView.selectedAssType.typeDescription}" id="dlg4" widgetVar="dlg4" minHeight="700" width="750" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+
+                    <h:panelGroup id="display">   
+                        <!--
+                        <p:panelGrid columns="2" style="width:100% !important" styleClass="noBorders" columnClasses="thirty-percent, seventy-percent">
+                            <p:outputLabel value="Izbrano sredstvo:" for="izbranoSredstvo" />
+                            <h:outputText id="izbranoSredstvo" value="#{EventsView.selectedAssType.typeDescription}"/>
+                        </p:panelGrid>
+                        -->
+                        <p:dataTable id="razDT" var="ass" lazy="true" value="#{formIzposojaBean.kompletZaRazdiranje.ASSAssetList}">
+                            <p:column headerText="Opis">
+                                <h:outputText value="#{ass.assetDescription}" />
+                            </p:column>
+
+                            <p:column headerText="Količina">
+                                <!--<h:outputText value="#{ass.kolicinaKosarica}" />-->
+                                <h:outputText value="#{EventsView.findSumLogQuantity(ass)}"/>
+                            </p:column>
+
+                            <p:column headerText="Tip sredstva">
+                                <h:outputText value="#{ass.IDAssetParent.IDAssetType.typeDescription}" />
+                            </p:column>
+
+                            <p:column headerText="Lokacija za vnitev">
+                                <h:outputText value="#{ass.IDAssetParent.IDAssetLocation.locationDescription}" />
+                            </p:column>
+
+                            <!--
+                            <p:column>
+                                <p:commandButton value="Vrni" action="#{formIzposojaBean.returnActionRazdiranje}" update=":form5:razDT :ASSAssetListForm:assAssetDatalist" title="Vrni">
+                                    <f:setPropertyActionListener value="#{ass}" target="#{formIzposojaBean.selectedAssetRazdiranje}"/>
+                                </p:commandButton>
+                            </p:column>
+                            -->
+
+                        </p:dataTable>
+
+                        <center>
+                            <p:commandButton id="f1shrani" value="Razdri komplet" action="#{formIzposojaBean.brisiKompletRazdiranje}" update=":ASSAssetListForm:assAssetDatalist" ajax="true" style="width: 90%; margin-top: 15px" />
+                        </center>
+                    </h:panelGroup>
+
+                </p:dialog>
+            </h:form>
+
+
+
+            <p:dialog header="Priprava QR kode kompleta - #{EventsView.selectedAssType.typeDescription}" id="dlg5" widgetVar="dlg5" minHeight="700" width="750" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+                <h:form id="form6">
+                    <f:facet name="header">
+                        <h:outputText id="dialogHeader" value="Priprava QR kode kompleta - #{EventsView.selectedAssType.typeDescription}"/>
+                    </f:facet>
+                    <h:panelGroup id="display">   
+
+                        <p:panelGrid columns="2" style="width:100% !important" styleClass="noBorders" columnClasses="thirty-percent, seventy-percent">
+                            <p:outputLabel value="Izbrano sredstvo:" for="izbranoSredstvo" />
+                            <h:outputText id="izbranoSredstvo" value="#{EventsView.selectedAssType.typeDescription}"/>                           
+
+                            <p:outputLabel value="Prejemnik:" />
+                            <p:panelGrid columns="2" style="float: left;" styleClass="noBorders" columnClasses="noPadding">
+                                <p:selectOneMenu id="prejemnikIzbranString" value="#{formIzposojaBean.prejemnikKompleta}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="contains" style="width:100%;">
+                                    <p:ajax event="change" listener="#{formIzposojaBean.prejemnikKompletaChange}" process="@this"/>
+                                    <f:selectItem itemLabel="Izberite prejemnika..." itemValue="#{null}" />
+                                    <f:selectItems value="#{formIzposojaBean.aktualniZaposleni}" var="theme" itemLabel="#{theme.lastname} #{theme.firstname} " itemValue="#{theme.lastname} #{theme.firstname}"/>
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+
+                        <center>
+                            <p:commandButton id="f1shrani" value="Tiskaj" action="#{formIzposojaBean.tiskajKodoZebra()}" ajax="true" style="width: 90%; margin-top: 15px" />
+                        </center>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="Izbira lokacije za vračanje" id="dlg6" widgetVar="dlg6" minHeight="600" width="650" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+                <h:form id="form7">
+                    <f:facet name="header">
+                        <h:outputText id="dialogHeader" value="Izbira lokacije za vračanje"/>
+                    </f:facet>
+                    <h:panelGroup id="display">   
+
+                        <p:dataTable var="product" id="izposojenoDT" value="#{formIzposojaBean.assetsReturningMultipleLocations}" emptyMessage="Za izbrano sredstvo ni alternativnih lokacij">
+                            <p:column headerText="Sredstvo ID" rendered="false" >
+                                <h:outputText value="#{product.assetID}" />
+                            </p:column>
+
+                            <p:column headerText="Sredstvo ID">
+                                <h:outputText value="#{product.assetDescription}" />
+                            </p:column>
+
+                            <p:column headerText="Lokacija sredstva">
+                                <h:outputText value="#{product.IDAssetLocation.locationDescription}" />
+                            </p:column>
+                            
+                            <p:column>
+                                <p:commandButton value="Vrni" action="#{formIzposojaBean.returnOnDifferentLocationAction}" update=":form2:display :ASSAssetListForm:assAssetDatalist" title="Vrni">
+                                    <f:setPropertyActionListener value="#{product.IDAssetLocation}" target="#{formIzposojaBean.selectedLocationToReturn}"/>
+                                    <f:setPropertyActionListener value="#{product}" target="#{formIzposojaBean.selectedLocationToReturnAsset}"/>
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                        
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+        </ui:define>
+
+
+        <ui:define name="beforeEndOfBody">
+            <h:form id="formKosarica">
+                <div class="theme-config">
+                    <div class="theme-config-box">
+                        <div class="spin-icon">
+                            <p:badge id="kosaricaCounter" style="background-color: #1ab394" styleClass="p-mr-2" value="#{EventsView.kosaricaNabrano.size()}">
+
+                            </p:badge>
+                            <i class="fa fa-shopping-cart animated pulse"></i>
+                        </div>
+                        <div class="skin-settings">
+                            <div class="title">Košarica <br/>
+                                <small style="text-transform: none;font-weight: 400">
+
+                                </small>
+                            </div>
+
+
+                            <p:dataTable id="kosaricaDT" var="product" value="#{EventsView.kosaricaNabrano}" emptyMessage="Ni artiklov" scrollWidth="700" style="width:100%;overflow-x: hidden !important;">
+                                <p:column headerText="Artikel">
+                                    <h:outputText value="#{product.assetDescription}" />
+                                </p:column>
+
+                                <p:column headerText="Količina">
+                                    <!--<h:outputText value="#{product.kolicinaKosarica}" />-->
+                                    <p:inplace>
+                                        <p:inputText style="width:50px" value="#{product.kolicinaKosarica}"/>
+                                    </p:inplace>
+                                </p:column>
+                            </p:dataTable>
+
+
+
+
+                            <div class="setings-item">
+                                <p:commandButton id="orderAllButtonLogin" value="Pripravi komplet" ajax="true" style="width:100%" update=":formKosarica :form" actionListener="#{EventsView.pripraviKompletIzKosarice()}" />
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+            <script>
+                // SKIN Select
+                $('.spin-icon').click(function () {
+                    $(".theme-config-box").toggleClass("show");
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title><ui:insert name="title">osloWebApp</ui:insert></title>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.css"/>
+
+        <h:outputStylesheet library="css" name="animate.css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+        <h:outputStylesheet library="css" name="overridestyle.css"/>
+
+        <h:outputStylesheet library="css" name="preview.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+    </h:head>
+
+    <h:body>
+        <dir class="wrapper">
+            <p:growl id="growl" life="3000" />
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav metismenu" id="side-menu">
+                        <li class="nav-header-logo">
+                            <a href="/osloWebApp/faces/index.xhtml"><h:graphicImage alt="image" library="img" name="odelo_white_IMG.png" height="100%" width="100%"/></a>
+                        </li>
+                        <li class="nav-header">
+                            <div class="dropdown profile-element">
+                                <center><h:graphicImage alt="image" styleClass="rounded-circle" library="img" name="default_profile_small.png"/> </center>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    <center><span class="block m-t-xs font-bold"><h:outputText value="#{userController.username}"/></span></center>
+                                    <!--<span class="text-muted text-xs block">Admin <b class="caret"></b></span>-->
+                                </a>
+                                <h:panelGroup layout="block" rendered="#{userController.subject.authenticated}">
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a class="dropdown-item" href="#">Profil</a></li>
+                                    <li class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Odjava</a></li>
+                                </ul>
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" rendered="#{!userController.subject.authenticated}">
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a class="dropdown-item" href="/osloWebApp/faces/login2.xhtml">Prijava</a></li>
+                                </ul>
+                                </h:panelGroup>
+                            </div>
+                            <div class="logo-element">
+                                <h:graphicImage alt="image" library="img" name="oLogo.PNG" height="60%" width="60%"/>
+                            </div>
+                        </li>
+                        
+                        <li class="">
+                        <a href="#" aria-expanded="false"><i class="fa fa-sitemap"></i> <span class="nav-label">Organizacija</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li><a href="/osloWebApp/faces/common/usersDirectory.xhtml">Imenik zaposlenih</a></li>
+                        </ul>
+                    </li>
+                        
+                        <h:panelGroup layout="block" rendered="#{userController.hasRole('IT_ADMIN,OWA_HR')}">
+                            <li>
+                                <a href="/osloWebApp/faces/SIGN/sIGNTelevision/index.xhtml"><i class="fa fa-th-large"></i> <span class="nav-label">HR Displays</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li><a href="/osloWebApp/faces/SIGN/sIGNTelevision/index.xhtml">Televizije</a></li>
+                                    <li><a href="/osloWebApp/faces/SIGN/sIGNPresentation/index.xhtml">Prezentacije</a></li>
+                                    <li><a href="/osloWebApp/faces/SIGN/sIGNAlert/index.xhtml">Obvestila</a></li>
+                                </ul>
+                            </li>
+                        </h:panelGroup>
+                        
+                        <li class="">
+                        <a href="#" aria-expanded="false"><i class="fa fa-desktop"></i> <span class="nav-label">IT</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li><a href="/osloWebApp/faces/IT/open.xhtml">Javna stran</a></li>
+                            <h:panelGroup layout="block" rendered="#{userController.hasRole('IT_ADMIN')}">
+                            <li><a href="/osloWebApp/faces/IT/secured.xhtml">Zaščitena Stran</a></li>
+                            </h:panelGroup>
+                        </ul>
+                    </li>
+                        
+                        <li class="">
+                        <a href="#" aria-expanded="false"><i class="fa fa-desktop"></i> <span class="nav-label">TEST</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li><a href="/osloWebApp/faces/TEST/index.xhtml">Index</a></li>
+                            <li><a href="/osloWebApp/faces/TEST/testApplicationScoped.xhtml">AppScoped</a></li>
+                            <li><a href="/osloWebApp/faces/TEST/testSessionScoped.xhtml">SessionScoped</a></li>
+                            <li><a href="/osloWebApp/faces/TEST/testViewScoped.xhtml">ViewScoped</a></li>
+                        </ul>
+                    </li>
+                        
+                        <li class="">
+                        <a href="#" aria-expanded="false"><i class="fa fa-robot"></i> <span class="nav-label">AGV</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVcatalog/index.xhtml">Catalog</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVmaterial/index.xhtml">Material</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVorder/index.xhtml">Order</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVorderType/index.xhtml">Order Type</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVplace/index.xhtml">Place</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVstatus/index.xhtml">Status</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/aGVstatusLog/index.xhtml">Status Log</a></li>
+                            <li><a href="/osloWebApp/faces/subsystems/AGV/stationAGV.xhtml?placeId=1">--Test Station--</a></li>
+                        </ul>
+                    </li>
+                        
+                        
+                    </ul>
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                            <form role="search" class="navbar-form-custom" action="search_results.html">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Išči..." class="form-control" name="top-search" id="top-search"/>
+                                </div>
+                            </form>
+                        </div>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li>
+                                <span class="m-r-sm text-muted welcome-message">
+                                    Welcome to improved odelo portal
+                                </span>
+                            </li>
+
+                            <li>
+                                <h:form>
+                                    <h:panelGroup layout="block" rendered="#{userController.subject.authenticated}">                                   
+                                        <p:commandLink id="ajax" action="#{userController.logout()}">
+                                            <i class="fa fa-sign-out"></i><h:outputText value="Odjava" />
+                                        </p:commandLink>
+                                    </h:panelGroup>
+                                    <h:panelGroup layout="block" rendered="#{!userController.subject.authenticated}">                                   
+                                            <a class="dropdown-item" href="/osloWebApp/faces/login.xhtml">Prijava</a>
+                                    </h:panelGroup>
+                                </h:form>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-sm-12">
+                        <h2><ui:insert name="PageHeader"></ui:insert></h2>
+                        <div class="breadcrumb">
+                            <ui:insert name="PageHeaderSubtitle"></ui:insert>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <ui:insert name="content"/>                  
+                </div>
+
+                <div class="footer">
+                    <div>
+                        <strong>Copyright</strong> &copy; Odelo Slovenia 2021
+                    </div>
+                    <div>
+                        Server: <h:outputText value="#{userController.serverservinguser}" />
+                    </div>
+                </div>
+            </div>
+        </dir>
+
+
+        <!-- Mainly scripts -->
+        <!--<h:outputScript library="js" name="jquery-3.1.1.min.js"/> NE DELA ČE JE TA JS DODAN-->
+        <h:outputScript name="jquery/jquery.js" library="primefaces" target="head"/>
+        <h:outputScript library="js" name="popper.min.js"/>
+        <h:outputScript library="js" name="bootstrap.js"/>
+        <h:outputScript library="js" name="plugins/metisMenu/jquery.metisMenu.js"/>
+        <h:outputScript library="js" name="plugins/slimscroll/jquery.slimscroll.min.js"/>
+
+        <!-- Custom and plugin javascript -->
+        <h:outputScript library="js"  name="inspinia.js"/>
+        <h:outputScript library="js"  name="plugins/pace/pace.min.js"/>
+        <h:outputScript library="js"  name="preview.js"/>
+    </h:body>
+
+</html>

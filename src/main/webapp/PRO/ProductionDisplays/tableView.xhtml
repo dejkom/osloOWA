@@ -1,0 +1,734 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Production Display - <h:outputText value="List of workcenters"/>
+
+
+            <style type="text/css">
+                .greenrow {
+                    background-color: #91FF96 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+                
+                .yellowrow {
+                    background-color: #FCFF91 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+                
+                .redrow {
+                    background-color: #FF9191 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+
+                .thirty-percent {
+                    width: 30%;
+                }
+
+                .seventy-percent {
+                    width: 70%;
+                }
+
+                .noPadding{
+                    padding-left: 0px !important;
+                }
+
+                .ui-datatable-header.ui-widget-header.ui-corner-top{
+                    background-color: transparent !important;
+                    border-color: transparent !important;
+                    height: 0px;
+                }
+
+                .critical {
+                    background-color: #ffbbbb !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .warning {
+                    background-color: #FBFFA3 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .hiddenDTrow{
+                    visibility: collapse;
+                }
+
+                .wrapper-content {
+                    padding-top: 5px !important;
+                    padding: initial;
+                }
+
+                .jqplot-meterGauge-tick {
+                    font-size: 1.5em;
+                    color: black !important;
+                    font-weight: bold;
+                }
+
+                body .ui-clock {
+                    border: 0px solid transparent;
+                    background: #ffffff;
+                    color: #495057;
+                    padding:0;
+                    font-size: unset !important;
+                    float: right;
+                }
+
+                .dashboardText{
+                    /*font-size: x-large;*/
+                    font-size: 30px;
+                    font-weight: bold;
+                }
+
+                .dashboardTitle{
+                    /*font-size: x-large;*/
+                    font-size: 30px;
+                }
+
+                .ibox-title h5 {
+                    display: block;
+                    font-size: 14px;
+                    margin: 0 0 7px;
+                    padding: 0;
+                    text-overflow: ellipsis;
+                    float: none;
+                    text-align: center;
+                }
+
+                .ibox-content {
+                    text-align: left;
+                    background-color: #ffffff;
+                    color: inherit;
+                    padding: 15px 0px 20px 10px;
+                    border-color: #e7eaec;
+                    border-image: none;
+                    border-style: solid solid none;
+                    border-width: 1px 0;
+                }
+
+                .ibox-content-okvircek {
+                    text-align: center;
+                    background-color: #ffffff;
+                    color: inherit;
+                    /*padding: 15px 0px 20px 10px;*/
+                    border-color: #e7eaec;
+                    border-image: none;
+                    border-style: solid solid none;
+                    border-width: 1px 0;
+
+                    width: 100%;
+                    height: 500px;
+                }
+
+                .ibox-title {
+                    padding: 15px 20px 8px 20px;
+                }
+
+                h1 {
+                    font-size: 150px;
+                }
+
+                h2{
+                    font-size: 24px;
+                }
+
+                .ibox-title h2 {
+                    display: block;
+                    font-size: 26px;
+                    font-weight: bold;
+                    margin: 0 0 7px;
+                    padding: 0;
+                    text-overflow: ellipsis;
+                    float: none;
+                }
+
+                /* test */
+                #chartdiv {
+                    width: 100%;
+                    height: 400px;
+                }
+
+                #chartdivZastoji {
+                    width: 100%;
+                    height: 400px;
+                }
+
+                #chartdivIzmet {
+                    width: 100%;
+                    height: 400px;
+                }
+
+                highcharts-figure .chart-container {
+                    width: 300px;
+                    height: 200px;
+                    float: left;
+                }
+
+                .highcharts-figure,
+                .highcharts-data-table table {
+                    width: 600px;
+                    margin: 0 auto;
+                }
+
+                .highcharts-data-table table {
+                    font-family: Verdana, sans-serif;
+                    border-collapse: collapse;
+                    border: 1px solid #ebebeb;
+                    margin: 10px auto;
+                    text-align: center;
+                    width: 100%;
+                    max-width: 500px;
+                }
+
+                .highcharts-data-table caption {
+                    padding: 1em 0;
+                    font-size: 1.2em;
+                    color: #555;
+                }
+
+                .highcharts-data-table th {
+                    font-weight: 600;
+                    padding: 0.5em;
+                }
+
+                .highcharts-data-table td,
+                .highcharts-data-table th,
+                .highcharts-data-table caption {
+                    padding: 0.5em;
+                }
+
+                .highcharts-data-table thead tr,
+                .highcharts-data-table tr:nth-child(even) {
+                    background: #f8f8f8;
+                }
+
+                .highcharts-data-table tr:hover {
+                    background: #f1f7ff;
+                }
+
+                @media (max-width: 600px) {
+                    .highcharts-figure,
+                    .highcharts-data-table table {
+                        width: 100%;
+                    }
+
+                    .highcharts-figure .chart-container {
+                        width: 300px;
+                        float: none;
+                        margin: 0 auto;
+                    }
+                }
+
+                marquee{
+                    vertical-align: top;
+                }
+
+                .jqplot-meterGauge-tick::before{
+                    content:'2';
+                }
+                .jqplot-meterGauge-tick::first-letter{
+                    color:transparent;
+                }
+
+                body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+                    margin: 0;
+                    float: none;
+                    font-size: 2.25rem;
+                }
+            </style>
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:growl id="AGVgrowl" widgetVar="growl" showDetail="true" life="5000" sticky="false"/>     
+
+
+                <c:forEach var="hall" varStatus="loop" items="${prodDisplayDataGetterBean.map}" >
+
+                    <p:panel header="${hall.key}" toggleable="true">
+                        
+                        <p:dataTable var="product" 
+                                 id="dt${loop.count}" 
+                                 value="${hall.value}" 
+                                 selectionMode="single"
+                                 selection="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay}" 
+                                 rowKey="#{product.workcenter}"
+                                 rowStyleClass="#{product.productivity_double eq 0.0 ? '': product.productivity_double lt 80.0 ? 'redrow': (product.productivity_double ge 80.0 and product.productivity_double lt 90.0) ?'yellowrow': product.productivity_double ge 90.0 ? 'greenrow':''}"
+                                 stripedRows="true"
+                                 paginator="true"
+                                 rows="10"
+                                 sortMode="single"
+                                 rowsPerPageTemplate="10,50">
+
+                        <f:facet name="header">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                <div>
+                                    <p:commandButton id="toggler" type="button" value="Stolpci" style="float:right" icon="pi pi-align-justify"/>
+                                    <p:columnToggler datasource="dt${loop.count}" trigger="toggler" />
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <!--<p:ajax event="rowSelect" listener="#{prodDisplaySingleWorkcenterBean.onRowSelect}" update=":form2 dialogprijava"/>-->
+                        <p:ajax event="rowSelect" listener="#{prodDisplaySingleWorkcenterBean.onRowSelect}" update=":form3 dialogDisplay"/>
+
+
+
+                        <p:column headerText="Workcenter" filterBy="#{product.workcenter}" filterMatchMode="contains" sortBy="#{product.workcenter}" sortOrder="asc">
+                            <h:outputText value="#{product.workcenter}" />
+                        </p:column>
+
+                        <p:column headerText="Quantity Left" sortable="true" sortBy="#{product.quantity_left}" >
+                            <h:outputText value="#{product.quantity_left}" />
+                        </p:column>
+
+                        <p:column headerText="Quantity Right" sortable="true" sortBy="#{product.quantity_right}">
+                            <h:outputText value="#{product.quantity_right}" />
+                        </p:column>
+
+                        <p:column headerText="Scrap Left" sortable="true" sortBy="#{product.scrap_left}">
+                            <h:outputText value="#{product.scrap_left}" />
+                        </p:column>
+
+                        <p:column headerText="Scrap Right" sortable="true" sortBy="#{product.scrap_right}">
+                            <h:outputText value="#{product.scrap_right}" />
+                        </p:column>
+
+                        <p:column headerText="Line Name" filterMatchMode="contains" filterBy="#{product.lineName}">
+                            <h:outputText value="#{product.lineName}" />
+                        </p:column>
+
+                        <p:column headerText="Shift start" sortable="true" sortBy="#{product.shiftStart}">
+                            <h:outputText value="#{product.shiftStart}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Shift end" sortable="true" sortBy="#{product.shiftEnd}">
+                            <h:outputText value="#{product.shiftEnd}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Workers" sortable="true" sortBy="#{product.numberOfWorkers_int}">
+                            <h:outputText value="#{product.numberOfWorkers}" />
+                        </p:column>
+
+                        <p:column headerText="Last Logout" visible="false" sortable="true" sortBy="#{product.lastLogout}">
+                            <h:outputText value="#{product.lastLogout}" />
+                        </p:column>
+
+                        <p:column headerText="Downtime Duration Unplanned" sortable="true" sortBy="#{product.downtimeDurationUnplanned}">
+                            <h:outputText value="#{product.downtimeDurationUnplanned}" />
+                        </p:column>
+
+                        <p:column headerText="Downtime Duration Planned" sortable="true" sortBy="#{product.downtimeDurationPlanned}">
+                            <h:outputText value="#{product.downtimeDurationPlanned}" />
+                        </p:column>
+
+                        <p:column headerText="Total Time" sortable="true" sortBy="#{product.totalTime}">
+                            <h:outputText value="#{product.totalTime}" />
+                        </p:column>
+
+                        <p:column headerText="Left Material" >
+                            <h:outputText value="#{product.materialLeft}" />
+                        </p:column>
+
+                        <p:column headerText="Right Material">
+                            <h:outputText value="#{product.materialRight}" />
+                        </p:column>
+
+                        <p:column headerText="Effective Minutes" visible="false" sortable="true" sortBy="#{product.effectiveMinutes}">
+                            <h:outputText value="#{product.effectiveMinutes}" />
+                        </p:column>
+
+                        <p:column headerText="goodGoal" visible="false">
+                            <h:outputText value="#{product.goodGoal}" />
+                        </p:column>
+
+                        <p:column headerText="productivity" sortable="true" sortBy="#{product.productivity}">
+                            <h:outputText value="#{product.productivity}" />
+                        </p:column>
+
+                        <p:column headerText="cycle" sortable="true" sortBy="#{product.cycle}">
+                            <h:outputText value="#{product.cycle}" />
+                        </p:column>
+
+                        <p:column headerText="location" sortable="true" sortBy="#{product.location}">
+                            <h:outputText value="#{product.location}" />
+                        </p:column>
+
+                    </p:dataTable>
+                        
+                        
+                        
+                        
+                        
+                        <!--
+                        <c:forEach var="row" varStatus="loop" items="${hall.value}" >
+                            
+                        </c:forEach>
+                        -->
+                        
+                        
+                    </p:panel>
+                    <br/>
+
+                </c:forEach> 
+
+
+
+
+
+
+
+
+
+                <br/>
+
+                <!--
+                <p:panel header="">
+
+                    <p:staticMessage severity="info" summary="Info" detail="Tabela se ne posodablja v živo, podatki se naložijo ob prikazu/osvežitvi strani." style="width: 100%"/>
+
+                    <p:dataTable var="product" 
+                                 id="dt" 
+                                 value="#{prodDisplayDataGetterBean.employees}" 
+                                 selectionMode="single"
+                                 selection="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay}" 
+                                 rowKey="#{product.workcenter}"
+                                 rowStyleClass=""
+                                 stripedRows="true"
+                                 paginator="true"
+                                 rows="10"
+                                 sortMode="single"
+                                 rowsPerPageTemplate="10,50,#{prodDisplayDataGetterBean.employees.size()}">
+
+                        <f:facet name="header">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                <div>
+                                    <p:commandButton id="toggler" type="button" value="Stolpci" style="float:right" icon="pi pi-align-justify"/>
+                                    <p:columnToggler datasource="dt" trigger="toggler" />
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <p:ajax event="rowSelect" listener="#{prodDisplaySingleWorkcenterBean.onRowSelect}" update=":form3 dialogDisplay"/>
+
+
+
+                        <p:column headerText="Workcenter" filterBy="#{product.workcenter}" filterMatchMode="contains" sortBy="#{product.workcenter}" sortOrder="asc">
+                            <h:outputText value="#{product.workcenter}" />
+                        </p:column>
+
+                        <p:column headerText="Quantity Left" sortable="true" sortBy="#{product.quantity_left}" >
+                            <h:outputText value="#{product.quantity_left}" />
+                        </p:column>
+
+                        <p:column headerText="Quantity Right" sortable="true" sortBy="#{product.quantity_right}">
+                            <h:outputText value="#{product.quantity_right}" />
+                        </p:column>
+
+                        <p:column headerText="Scrap Left" sortable="true" sortBy="#{product.scrap_left}">
+                            <h:outputText value="#{product.scrap_left}" />
+                        </p:column>
+
+                        <p:column headerText="Scrap Right" sortable="true" sortBy="#{product.scrap_right}">
+                            <h:outputText value="#{product.scrap_right}" />
+                        </p:column>
+
+                        <p:column headerText="Line Name" filterMatchMode="contains" filterBy="#{product.lineName}">
+                            <h:outputText value="#{product.lineName}" />
+                        </p:column>
+
+                        <p:column headerText="Shift start" sortable="true" sortBy="#{product.shiftStart}">
+                            <h:outputText value="#{product.shiftStart}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Shift end" sortable="true" sortBy="#{product.shiftEnd}">
+                            <h:outputText value="#{product.shiftEnd}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Workers" sortable="true" sortBy="#{product.numberOfWorkers_int}">
+                            <h:outputText value="#{product.numberOfWorkers}" />
+                        </p:column>
+
+                        <p:column headerText="Last Logout" visible="false" sortable="true" sortBy="#{product.lastLogout}">
+                            <h:outputText value="#{product.lastLogout}" />
+                        </p:column>
+
+                        <p:column headerText="Downtime Duration Unplanned" sortable="true" sortBy="#{product.downtimeDurationUnplanned}">
+                            <h:outputText value="#{product.downtimeDurationUnplanned}" />
+                        </p:column>
+
+                        <p:column headerText="Downtime Duration Planned" sortable="true" sortBy="#{product.downtimeDurationPlanned}">
+                            <h:outputText value="#{product.downtimeDurationPlanned}" />
+                        </p:column>
+
+                        <p:column headerText="Total Time" sortable="true" sortBy="#{product.totalTime}">
+                            <h:outputText value="#{product.totalTime}" />
+                        </p:column>
+
+                        <p:column headerText="Left Material" >
+                            <h:outputText value="#{product.materialLeft}" />
+                        </p:column>
+
+                        <p:column headerText="Right Material">
+                            <h:outputText value="#{product.materialRight}" />
+                        </p:column>
+
+                        <p:column headerText="Effective Minutes" visible="false" sortable="true" sortBy="#{product.effectiveMinutes}">
+                            <h:outputText value="#{product.effectiveMinutes}" />
+                        </p:column>
+
+                        <p:column headerText="goodGoal" visible="false">
+                            <h:outputText value="#{product.goodGoal}" />
+                        </p:column>
+
+                        <p:column headerText="productivity" sortable="true" sortBy="#{product.productivity}">
+                            <h:outputText value="#{product.productivity}" />
+                        </p:column>
+
+                        <p:column headerText="cycle" sortable="true" sortBy="#{product.cycle}">
+                            <h:outputText value="#{product.cycle}" />
+                        </p:column>
+
+                        <p:column headerText="location" sortable="true" sortBy="#{product.location}">
+                            <h:outputText value="#{product.location}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+-->
+
+
+                <!--
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Example with fullscreen option</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <p>
+                                    Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </p>
+                                <p>
+                                    Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                -->
+
+                <br/>
+
+            </h:form>
+
+
+            <p:dialog dynamic="true" header="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.lineName} - workcenter: #{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.workcenter}" id="dialogDisplay" width="90%" widgetVar="dlg3"  maximizable="true" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form3">
+                    <h:panelGroup id="wpcontainer" layout="block">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="gauge"></div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h2><center>Levi</center></h2>
+                                    </div>
+                                    <div class="ibox-content">                
+                                        <h:outputText value="Izdelek:" styleClass="dashboardTitle"/><h:panelGroup styleClass="dashboardText" ><marquee width="70%" direction="left" >#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.matLeftDesc}</marquee></h:panelGroup><br/>
+                                        <h:outputText value="Ident:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialLeft}" styleClass="dashboardText"/><br/>
+                                        <h:outputText value="Nalog:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialLeftOrder}" styleClass="dashboardText"/><br/>
+                                        <h:outputText value="Proizvedeno:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_left_int}" styleClass="dashboardText"/> <br/>
+                                        <h:outputText value="Izmet:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_left_int}" styleClass="dashboardText"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h2><center>Skupaj</center></h2>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <!--
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-8"><center><h:outputText value="Workcenter:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.workcenter}" styleClass="dashboardText"/></center> </div>
+                                            <div class="col-md-2"></div>
+                                            -->
+                                            <!--<div class="col-md-6"><h:outputText value="Delovni nalog:" styleClass="dashboardTitle"/> <h:outputText value="?" styleClass="dashboardText"/> </div>-->
+                                            <!--<div class="col-md-6"></div>-->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6"><h:outputText value="Prijavljenih operaterjev:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.numberOfWorkers_int}" styleClass="dashboardText"/> </div>
+                                            <div class="col-md-6"><h:outputText value="Planiranih operaterjev:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.plannedNumberOfWorkers}" styleClass="dashboardText"/> </div>
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-6"><h:outputText value="Planirani zastoji:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationPlanned} min" styleClass="dashboardText"/> </div>
+                                            <div class="col-md-6"><h:outputText value="Neplanirani zastoji:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationUnplanned_int} min" styleClass="dashboardText"/> </div>
+
+                                        </div>  
+                                        <div class="row">
+
+                                            <div class="col-md-6"><h:outputText value="Downtime Rate:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeRate_StringPercentage}" styleClass="dashboardText"/> </div>
+                                            <div class="col-md-6"><h:outputText value="Cikel:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.cycle}" styleClass="dashboardText"/> </div>
+
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h2><center>Desni</center></h2>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <h:outputText value="Izdelek:" styleClass="dashboardTitle"/><h:panelGroup styleClass="dashboardText" ><marquee width="70%" direction="left" >#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.matRightDesc}</marquee></h:panelGroup><br/>
+                                        <h:outputText value="Ident:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialRight}" styleClass="dashboardText"/> <br/>
+                                        <h:outputText value="Nalog:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialRightOrder}" styleClass="dashboardText"/><br/>
+                                        <h:outputText value="Proizvedeno:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_right_int}" styleClass="dashboardText"/> <br/>
+                                        <h:outputText value="Izmet:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_right_int}" styleClass="dashboardText"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h2><center>Realizacija</center></h2>
+                                    </div>
+                                    <div class="ibox-content-okvircek">
+                                        <!--<h1 class="no-margins">95%</h1>-->
+                                        <!--<div id="chartdiv"></div>-->
+                                        <p:chart id="gaugeREALIZACIJA" type="metergauge" model="#{prodDisplaySingleWorkcenterBean.meterGaugeRealizacija}" style="width:100%;height:250px"/>
+
+                                        <div class="col-12 md:col-6 lg:col-12 p-3" style="margin-top: -40px; width: 90% !important; margin-top: -40px; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
+                                            <div class="p-3 text-center" style="border-radius: 12px; background-color: #{prodDisplaySingleWorkcenterBean.getBarva_Realizacija()}">
+                                                <div class="text-2xl font-medium mb-2" style="color: black; font-weight: bold !important; font-size: 3em !important"><h:outputText id="r1" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.productivityPercentageString}"/>%</div>
+                                                <!--<span class="font-medium" style="color: black">Messages</span>-->
+                                            </div>
+                                        </div>
+
+                                <!-- <p:commandButton value="Submit" actionListener="#{prodDisplaySingleWorkcenterBean.testirajGaugeRandomData()}" update="gaugeREALIZACIJA"/> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h2><center>Neplanirani zastoji</center></h2>
+                                    </div>
+                                    <div class="ibox-content-okvircek">
+                                        <!--<h1 class="no-margins">90%</h1>-->
+                                        <!--<div id="chartdivZastoji"></div>-->
+                                        <p:chart id="gaugeZASTOJI" type="metergauge" model="#{prodDisplaySingleWorkcenterBean.meterGaugeZastoji}" style="width:100%;height:250px"/>
+                                        <div class="col-12 md:col-6 lg:col-12 p-3" style="margin-top: -40px; width: 90% !important; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
+                                            <div class="p-3 text-center" style="border-radius: 12px; background-color: #{prodDisplaySingleWorkcenterBean.getBarva_Zastoji()}">
+                                                <div class="text-2xl font-medium mb-2" style="color: black; font-weight: bold !important; font-size: 3em !important"><h:outputText id="r2" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationUnplanned}"/> min</div>
+                                                <!--<span class="font-medium" style="color: black">Messages</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h2><center>Izmet</center></h2>
+                                    </div>
+                                    <div class="ibox-content-okvircek">
+                                        <!--<h1 class="no-margins">5%</h1>-->
+                                        <!--<div id="chartdivIzmet"></div>-->
+                                        <p:chart id="gaugeIZMET" type="metergauge" model="#{prodDisplaySingleWorkcenterBean.meterGaugeIzmet}" style="width:100%;height:250px"/>
+                                        <div class="col-12 md:col-6 lg:col-12 p-3" style="margin-top: -40px; width: 90% !important; margin-right: auto; margin-bottom: 0px; margin-left: auto;">
+                                            <div class="p-3 text-center" style="border-radius: 12px; background-color: #{prodDisplaySingleWorkcenterBean.getBarva_Izmet()}">
+                                                <div class="text-2xl font-medium mb-2" style="color: black; font-weight: bold !important; font-size: 3em !important"><h:outputText id="r3" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.getScrapRate_StringPercentage()}" /> %</div>
+                                                <!--<span class="font-medium" style="color: black">Messages</span>-->
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+        </ui:define>
+
+        <ui:define name="beforeEndOfBody">
+
+        </ui:define>
+
+
+    </ui:composition>
+</html>

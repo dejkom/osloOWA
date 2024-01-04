@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCContractViewDlg" widgetVar="PRCContractViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC2.ViewPRCContractTitle}">
+            <h:form id="PRCContractViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCContractController.selected != null}">
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_id}"/>
+                        <h:outputText value="#{pRCContractController.selected.id}" title="#{bundlePRC2.ViewPRCContractTitle_id}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_ident}"/>
+                        <h:outputText value="#{pRCContractController.selected.ident}" title="#{bundlePRC2.ViewPRCContractTitle_ident}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_pdfpath}"/>
+                        <h:outputText value="#{pRCContractController.selected.pdfpath}" title="#{bundlePRC2.ViewPRCContractTitle_pdfpath}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_xml}"/>
+                        <h:outputText value="#{pRCContractController.selected.xml}" title="#{bundlePRC2.ViewPRCContractTitle_xml}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_dateRetrieved}"/>
+                        <h:outputText value="#{pRCContractController.selected.dateRetrieved}" title="#{bundlePRC2.ViewPRCContractTitle_dateRetrieved}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_status}"/>
+                        <h:outputText value="#{pRCContractController.selected.status}" title="#{bundlePRC2.ViewPRCContractTitle_status}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_contractNumber}"/>
+                        <h:outputText value="#{pRCContractController.selected.contractNumber}" title="#{bundlePRC2.ViewPRCContractTitle_contractNumber}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_amendmentDate}"/>
+                        <h:outputText value="#{pRCContractController.selected.amendmentDate}" title="#{bundlePRC2.ViewPRCContractTitle_amendmentDate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC2.ViewPRCContractLabel_orderDate}"/>
+                        <h:outputText value="#{pRCContractController.selected.orderDate}" title="#{bundlePRC2.ViewPRCContractTitle_orderDate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundlePRC2.Close}" onclick="PRCContractViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

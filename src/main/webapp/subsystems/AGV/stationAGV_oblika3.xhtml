@@ -1,0 +1,721 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template_agv.xhtml">
+
+        <ui:define name="PageHeader">
+            Ordering Portal - <h:outputText value="#{agvBean.place.placeName}"/>
+
+            <style type="text/css">
+                .pending {
+                    background-color: #EDEDED !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .submitted {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .processing {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .sent {
+                    background-color: #E9FFB9 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .delivered {
+                    background-color: #9AFF95 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .canceled {
+                    background-color: #FFA6A6 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+            </style>
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+
+
+                function handleOpen(event) {
+                    console.log('Openning ', event);
+                }
+
+                function handleClose(code, channel, event) {
+                    console.log('Handle close: ' + code, channel, event);
+                    if (code == -1) {
+                        console.log('Websockets not supported by client')
+                    } else if (code == 1000) { // Normal close (as result of expired session or view)
+                        console.log('Normal close, will try to reconnect');
+                    } else {
+                        // Abnormal close reason (as result of an error)
+                        alert('Error during the reconnect! Please refresh WebPage')
+                    }
+                }
+
+                function handleAGVChannelMessage(message, event) {
+                    var url_string = window.location.href;
+                    console.log('URLstring:' + url_string);
+                    var url = new URL(url_string);
+                    var placeIDfromGET = url.searchParams.get("placeId");
+                    console.log('PlaceID from GET:' + placeIDfromGET);
+
+                    const obj = JSON.parse(message);
+                    console.log("RECIPIENT: " + obj.recipient);
+
+                    if (placeIDfromGET == obj.recipient) {
+                        //console.log("Sporočilo je namenjeno meni, reload je potreben");
+                        //location.reload();
+                        console.log("Now I will play sound in this browser");
+                        ion.sound.play("bell_ring");
+                        rc();
+                        rc2();
+                    } else {
+                        //console.log("Sporočilo ni namenjeno placu, reload ni potreben");
+                        //do nothing
+                    }
+                }
+
+                function handleAGVChannelGrowlMessage(message, event) {
+                    var url_string = window.location.href;
+                    console.log('URLstring:' + url_string);
+                    var url = new URL(url_string);
+                    var placeIDfromGET = url.searchParams.get("placeId");
+                    console.log('PlaceID from GET:' + placeIDfromGET);
+
+                    const obj = JSON.parse(message);
+                    console.log("RECIPIENT: " + obj.recipient);
+
+                    if (obj.recipient == 0) {
+                        //Message for all
+                        ion.sound.play("button_tiny");
+                        PF('AGVgrowl').renderMessage({summary: "Message from server", detail: obj.message + "", severity: obj.severity});
+                    } else {
+                        //Message for specific place
+                        if (placeIDfromGET == obj.recipient) {
+                            ion.sound.play("button_tiny");
+                            PF('AGVgrowl').renderMessage({summary: "Message from server", detail: obj.message + "", severity: obj.severity});
+                        } else {
+                            //console.log("Sporočilo ni namenjeno placu, reload ni potreben");
+                            //do nothing
+                        }
+                    }
+
+                }
+
+                function handleMessage(message, channelName, event) {
+                    if (channelName === 'AGVchannel') {
+                        //console.log('handleMessage - AGVchannel ', event);
+                        handleAGVChannelMessage(message, event);
+                    } else if (channelName === 'AGVchannel_growls') {
+                        //console.log('handleMessage - CLOCK ', event);
+                        handleAGVChannelGrowlMessage(message, event);
+                    } else if (channelName === 'clock') {
+                        //console.log('handleMessage - CLOCK ', event);
+                        handleClockChannelMessage(message, event);
+                    } else {
+                        alert('Unhandled channel: ' + channelName);
+                    }
+                }
+
+
+
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <o:socket channel="clock" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose" />
+            <o:socket channel="AGVchannel" user="#{agvBean.place.placeId}" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose"/>
+            <o:socket channel="AGVchannel_growls" user="#{agvBean.place.placeId}" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose"/>
+
+            <h:form id="form">
+                <p:growl id="AGVgrowl" widgetVar="AGVgrowl" showDetail="true" life="5000" sticky="false"/>                
+                <p:remoteCommand name="rc" update="form:toSupplyDT" action="#{agvBean.remoteCommandToSupply}"/>
+                <p:remoteCommand name="rc2" update="form:orderedDT" action="#{agvBean.remoteCommandOrdered}"/>
+
+                <p:panel id="pg" header="Workplace information" rendered="false">
+                    <div class="row">
+                        <div class="col-sm">
+                            Station Name: <h:outputText value="#{agvBean.place.placeName}"/>
+                        </div>
+                        <div class="col-sm">
+                            Websocket Channel: <h:outputText value="#{agvBean.place.chanel}"/>
+                        </div>
+                        <div class="col-sm">
+                            RFID Key: <h:outputText id="rf" value="#{agvBean.rfidKey}"/>
+                        </div>
+                    </div>
+                </p:panel>
+                <br/>
+
+                <div class="row">
+                    <div class="#{agvBean.catalogWhatICanOrder.size() lt 1 ? 'd-none':'col-lg'}">
+                        <p:panel header="Materials I can order - buttons" toggleable="true" closable="true" collapsed="false">
+                            <f:facet name="header">
+                                <h:outputText value="Materials I can order " /><span class="label"><h:outputText value="#{agvBean.catalogWhatICanOrder.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">
+                                <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{agvBean.printAvailableMaterialsForOrdering()}">
+                                    <h:outputText styleClass="ui-icon pi pi-print"/>
+                                </p:commandLink>
+                            </f:facet>
+
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <div class="tabs-container">
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <c:forEach var="cat" varStatus="loop" items="${agvBean.catalogWhatICanOrderTEST2}" >
+                                                <c:if test="${loop.count == 1}">
+                                                    <li><a class="nav-link active" data-toggle="tab" href="#tab-${loop.count}">${cat.key}</a></li>
+                                                </c:if>
+                                                <c:if test="${loop.count > 1}">
+                                                    <li><a class="nav-link" data-toggle="tab" href="#tab-${loop.count}">${cat.key}</a></li>
+                                                </c:if>
+                                            </c:forEach>                                          
+                                        </ul>
+                                        <div class="tab-content">
+
+                                            <c:forEach var="keycat" items="${agvBean.catalogWhatICanOrderTEST2}" varStatus="loop">
+                                                <c:if test="${loop.count == 1}">
+                                                    <div role="tabpanel" id="tab-${loop.count}" class="tab-pane active">
+                                                        <div class="panel-body">
+                                                            <c:forEach var="art2" items="${keycat.value}" >
+                                                                <p:commandButton update=":form3:productDetail" oncomplete="PF('productDialog').show(); $('.easy-get').on('click', () => {show_easy_numpad(); });"
+                                                                                 value="${art2.materialId}&#10;${art2.materialDescription}" title="View" style="white-space: pre;width:30%; height: 80px; margin: 10px; font-size: medium !important">
+                                                                    
+                                                                    
+                                                                    
+                                                                    <f:setPropertyActionListener value="#{art2.materialId}" target="#{agvBean.selectedMaterial}"/>
+                                                                    <f:setPropertyActionListener value="#{art2}" target="#{agvBean.selectedCatalog}"/>
+                                                                </p:commandButton>
+                                                            </c:forEach> 
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+                                                <c:if test="${loop.count > 1}">
+                                                    <div role="tabpanel" id="tab-${loop.count}" class="tab-pane">
+                                                        <div class="panel-body">
+                                                            <c:forEach var="art2" items="${keycat.value}" >
+                                                                <p:commandButton update=":form3:productDetail" oncomplete="PF('productDialog').show(); $('.easy-get').on('click', () => {show_easy_numpad(); });"
+                                                                                 value="${art2.materialId}&#10;${art2.materialDescription}" title="View" style="white-space: pre;width:30%; height: 80px; margin: 10px; font-size: medium !important">
+                                                                    <f:setPropertyActionListener value="#{art2.materialId}" target="#{agvBean.selectedMaterial}"/>
+                                                                    <f:setPropertyActionListener value="#{art2}" target="#{agvBean.selectedCatalog}"/>
+                                                                </p:commandButton>
+                                                            </c:forEach> 
+                                                        </div>
+                                                    </div>
+                                                </c:if>
+
+                                            </c:forEach>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </p:panel>
+                        <br/>
+                        <!-- DATATABLE OF MATERIALS I CAN ORDER
+                        <p:panel header="Materials I can order - datatable" rendered="false" toggleable="true" closable="true" collapsed="true">
+                            <f:facet name="header">
+                                <h:outputText value="Materials I can order - datatable " /><span class="label"><h:outputText value="#{agvBean.catalogWhatICanOrder.size()}" /></span>
+                            </f:facet>
+                            <p:dataTable var="catalog" value="#{agvBean.catalogWhatICanOrder}" widgetVar="catalogTable"
+                                         rows="10" paginator="true" currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:column headerText="Material Id" filterBy="#{catalog.materialId}" filterMatchMode="contains">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb1" onchange="PF('catalogTable').filter()" keypadOnly="true"/>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Material Description" filterBy="#{catalog.materialDescription}" filterMatchMode="contains">
+                                    <h:outputText value="#{catalog.materialDescription}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb2" onchange="PF('catalogTable').filter()" layout="qwertyBasic"/>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="Material Category" filterBy="#{catalog.materialCategory}" filterMatchMode="contains">
+                                    <h:outputText value="#{catalog.materialCategory}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb3" onchange="PF('catalogTable').filter()" layout="qwertyBasic"/>
+                                    </f:facet>
+                                </p:column>
+                                <p:column headerText="order from">
+                                    <h:outputText value="#{catalog.placeFrom.placeName}" />
+                                </p:column>
+                                <p:column style="width:6rem;text-align: center">
+                                    <p:commandButton update=":form3:productDetail" oncomplete="PF('productDialog').show()"
+                                                     icon="pi pi-download" value="Order" title="View">
+                                        <f:setPropertyActionListener value="#{catalog.materialId}" target="#{agvBean.selectedMaterial}"/>
+                                        <f:setPropertyActionListener value="#{catalog}" target="#{agvBean.selectedCatalog}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        -->
+                        <br/>
+                        <p:panel header="Materials I have ordered - 'Košarica' ">
+                            This materials will be ordered when you complete order - press button "order all"
+                            <br/>                   
+                            <p:commandButton id="orderAllButton" value="Order All" update="orderedDT" actionListener="#{agvBean.orderAllFromKosarica()}" rendered="false"/>
+                            <p:commandButton id="orderAllButtonLogin" value="Naroči / Order All" ajax="true"  actionListener="#{agvBean.orderAllFromKosaricaWithLogin()}" />
+                            <p:commandButton id="orderByMe" value="Ordered By Me" update="orderedDT" actionListener="#{agvBean.testirajOrderByMe()}" rendered="false"/>
+                            <br/>
+                            <br/>
+                            <f:facet name="actions">
+                                <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" update=":form7" actionListener="#{agvBean.showCartPopup()}">
+                                    <p:badge id="kosaricaCounter" value="#{agvBean.kosaricaNabrano.size()}"> <i class="ui-icon pi pi-shopping-cart"/></p:badge>
+                                </p:commandLink>
+                            </f:facet>
+                            <f:facet name="options">
+                                <p:menu>
+                                    <p:submenu label="Actions">
+                                        <p:menuitem value="Order All"  actionListener="#{agvBean.orderAllFromKosarica()}" rendered="false" ajax="true" update="orderedDT" icon="pi pi-clone"/>
+                                        <p:menuitem value="Order All login" onclick="dlg1.show()" ajax="true" update="orderedDT" icon="pi pi-clone"/>
+                                        <p:menuitem value="Discard All" actionListener="#{agvBean.discardAllKosarica()}" ajax="true" update="orderedDT" icon="pi pi-trash"/>
+                                    </p:submenu>
+                                </p:menu>
+                            </f:facet>
+                            <p:dataTable id="orderedDT" touchable="true" var="ordered" value="#{agvBean.listOfOrders}" rowKey="#{ordered.orderId}+'|'+#{ordered.createdTimestamp}" selection="#{agvBean.selectedOrderForCancelation}" selectionMode="single"
+                                         rowStyleClass="#{ordered.statusId.statusName eq 'OrderSubmitted' ? 'submitted' : ordered.statusId.statusName eq 'Order Pending' ? 'pending' : ordered.statusId.statusName eq 'OrderProcessing' ? 'processing' : ordered.statusId.statusName eq 'OrderSent' ? 'sent' : ordered.statusId.statusName eq 'OrderCanceled' ? 'canceled' : null}">
+
+                                <p:ajax event="rowSelect" listener="#{agvBean.orderforcancelationonRowSelect}" />
+                                <p:ajax event="rowUnselect" listener="#{agvBean.orderforcancelationonRowUnselect}" />
+
+                                <p:column headerText="Order ID" style="width:20px">
+                                    <h:outputText value="#{ordered.orderId}" />
+                                </p:column>
+
+                                <p:column headerText="Origin of material">
+                                    <h:outputText value="#{ordered.placeFrom.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Destination of material" visible="false">
+                                    <h:outputText value="#{ordered.placeTo.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Material">
+                                    <h:outputText value="#{ordered.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Quantity" style="width:40px">
+                                    <h:outputText value="#{ordered.quantity}" >
+                                        <f:convertNumber pattern = "#0" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{ordered.statusId.statusName}" />
+                                </p:column>
+
+                                <p:column headerText="Created" sortBy="#{ordered.createdTimestamp}" sortOrder="asc">
+                                    <h:outputText value="#{ordered.createdTimestamp}">
+                                        <f:convertDateTime pattern = "HH:mm:ss dd.MM.yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Modified" sortBy="#{ordered.modifiedTimestamp}" sortOrder="asc">
+                                    <h:outputText value="#{ordered.modifiedTimestamp}">
+                                        <f:convertDateTime pattern = "HH:mm:ss dd.MM.yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="" style="width:45px">
+                                    <!--<h:outputText value="#{ordered.changedString}" />-->
+                                    <p:tag id="wmessage" rendered="#{ordered.changedString eq 'notModified' ? false : true}" styleClass="p-mr-2" icon="pi pi-info-circle" severity="info" value="Info"></p:tag>
+                                    <p:overlayPanel for="wmessage" showEvent="mouseover" hideEvent="mouseout" style="width:350px">
+                                        <p>#{ordered.changedString}</p>
+                                    </p:overlayPanel>
+
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:confirmDialog widgetVar="dataChangeDlg" header="Confirmation" severity="warning" message="Are you sure you want to delete this unsaved Order?" closable="false" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                                <p:commandButton value="No" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                                <p:commandButton value="Yes" actionListener="#{agvBean.removeOrderFromBasket()}" update="orderedDT :form7 :form8 kosaricaCounter :kosaricaCounter" oncomplete="PF('dataChangeDlg').hide()" ajax="true" styleClass="ui-confirmdialog-yes" />
+                            </p:confirmDialog>
+
+                        </p:panel>
+                        <br/>
+                    </div>
+
+                    <div class="#{agvBean.catalogWhatICanSupply.size() lt 1 ? 'd-none':'col-lg'}">
+                        <p:panel header="Materials I can supply" toggleable="true" closable="true" collapsed="true">
+                            <!--There will be list of materials this station can supply-->
+                            <f:facet name="header">
+                                <h:outputText value="Materials I can supply " /><span class="label"><h:outputText value="#{agvBean.catalogWhatICanSupply.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">
+                                <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{agvBean.printAvailableMaterialsForSupplying()}">
+                                    <h:outputText styleClass="ui-icon pi pi-print"/>
+                                </p:commandLink>
+                            </f:facet>
+                            <p:dataTable var="catalog" value="#{agvBean.catalogWhatICanSupply}" rows="10" paginator="true" currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:column headerText="Material Id">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Material Description">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Supplying To">
+                                    <h:outputText value="#{catalog.placeTo.placeName}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+                        <p:panel header="Actual orders">
+                            <f:facet name="actions">
+                                <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{agvBean.printActualOrdersList()}">
+                                    <h:outputText styleClass="ui-icon pi pi-print"/>
+                                </p:commandLink>
+                            </f:facet>
+                            There will be list of orders for this station
+                            <br/>
+                            <p:dataTable id="toSupplyDT" widgetVar="toSupplyDT" var="tosupply" value="#{agvBean.listOfOrdersToSupply}" selectionMode="single"
+                                         rowStyleClass="#{tosupply.statusId.statusName eq 'OrderSubmitted' ? 'submitted' : tosupply.statusId.statusName eq 'Order Pending' ? 'pending' : tosupply.statusId.statusName eq 'OrderProcessing' ? 'processing' : tosupply.statusId.statusName eq 'OrderSent' ? 'sent' : tosupply.statusId.statusName eq 'OrderCanceled' ? 'canceled' : null}"
+                                         selection="#{agvBean.selectedOrder}" rowKey="#{tosupply.orderId}">
+
+                                <p:ajax event="rowSelect" listener="#{agvBean.onRowSelect}" update=":form:AGVgrowl dlg4 :form:toSupplyDT"/>
+
+                                <p:column headerText="Order ID" filterBy="#{tosupply.orderId}" filterMatchMode="contains">
+                                    <h:outputText value="#{tosupply.orderId}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb3" onchange="PF('toSupplyDT').filter()" keypadOnly="true" style="width:90%"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Origin of material" visible="false">
+                                    <h:outputText value="#{tosupply.placeFrom.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Destination of material" filterBy="#{tosupply.placeTo.placeName}" filterMatchMode="contains">
+                                    <h:outputText value="#{tosupply.placeTo.placeName}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb2" onchange="PF('toSupplyDT').filter()" style="width:90%"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Material" filterBy="#{tosupply.materialId}" filterMatchMode="contains">
+                                    <h:outputText value="#{tosupply.materialId}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb1" onchange="PF('toSupplyDT').filter()" keypadOnly="true" style="width:90%"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Quantity">
+                                    <h:outputText value="#{tosupply.quantity}" >
+                                        <f:convertNumber pattern = "#0" />
+                                    </h:outputText>
+                                    <h:outputText value=" (#{tosupply.materialUnit})" />
+                                </p:column>
+
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{tosupply.statusId.statusName}" />
+                                </p:column>
+
+                                <p:column headerText="Created" sortBy="#{tosupply.createdTimestamp}" sortOrder="descending">
+                                    <h:outputText value="#{tosupply.createdTimestamp}">
+                                        <f:convertDateTime pattern = "HH:mm:ss dd.MM.yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Modified" sortBy="#{tosupply.modifiedTimestamp}" sortOrder="descending">
+                                    <h:outputText value="#{tosupply.modifiedTimestamp}">
+                                        <f:convertDateTime pattern = "HH:mm:ss dd.MM.yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                </div>
+
+
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6">
+
+                    </div>
+
+                    <div class="col-lg-6">
+
+                    </div>
+                </div>
+                <br/>
+
+                <p:dialog header="Info" id="dialog" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true" appendTo="@(body)" >
+                    <p class="p-m-0">This web page was requested without necessary URL parameters. Looks like there is no placeId set.</p>
+                    <f:facet name="footer">
+                        <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                            Close this page
+                        </a>
+                    </f:facet>
+                </p:dialog>
+
+                <p:dialog id="dialog1"  widgetVar="ex" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/AGV/stationAGVprintListOfMaterialsIOrder.xhtml?placeId=#{agvBean.placeIdFromURLparam}"
+                            name="someName" id="someId" scrolling="auto" width="750"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+                <p:dialog id="dialog2"  widgetVar="ex2" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/AGV/stationAGVprintListOfMaterialsISupply.xhtml?placeId=#{agvBean.placeIdFromURLparam}"
+                            name="someName" id="someId" scrolling="auto" width="750"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+                <p:dialog id="dialog3" header="What do you want to print?" widgetVar="ex3" dynamic="true">                   
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/AGV/stationAGVprintListOfActualOrders.xhtml?placeId=#{agvBean.placeIdFromURLparam}"
+                            name="someName" id="someId" scrolling="auto" width="750"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>                   
+                </p:dialog>
+
+
+            </h:form>
+
+
+            <p:dialog header="Operator login" id="dialogprijava" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form2">
+                    <h:panelGroup id="display">
+                        <p:defaultCommand target="submitButton" />
+                        <p class="p-m-0">If you want to use this page you need to login with your RFID key.</p>
+                        <br/>
+                        <p:inputText id="rfidin" widgetVar="myInput" value="#{agvBean.rfidKey}" >
+                        </p:inputText>
+                        <p:commandButton id="submitButton" actionListener="#{agvBean.handleLoginAndOrdering}" update=":form:pg :form:orderedDT :form7 :form8 :form:kosaricaCounter" ajax="true"  value="Shrani"  />
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="dlg" header="Confirm order creation" widgetVar="productDialog" modal="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" dynamic="false" >
+                <h:form id="form3" >
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:defaultCommand target="orderButton" />
+                        <p:column>
+                            You are ordering:
+                            <br/>
+                            <br/>
+                            Material - <h:outputText value="#{agvBean.selectedMaterial}" style="font-weight: bold"/>
+                            <br/>
+                            Description - <h:outputText value="#{agvBean.selectedCatalog.materialDescription}" style="font-weight: bold" />                            
+                            <br/>
+                            Material Unit - <h:outputText value="#{agvBean.selectedCatalog.materialUnit}" style="font-weight: bold" />
+                            <br/>
+                            <br/>
+                            Please enter desired quantity
+                            <br/>
+                            <br/>
+                            <p:spinner id="quantityin" min="1" value="#{agvBean.quantity}" rendered="false" buttons="vertical" upButtonStyleClass="ui-button-secondary" downButtonStyleClass="ui-button-secondary"/>
+                            <p:keyboard id="keypad" rendered="false" class="easy-put" value="#{agvBean.quantity}" keypadOnly="true"/>              
+                            <p:inputText value="#{agvBean.quantity}" class="easy-get easy-put" />
+                            <br/>
+                            <br/>
+                            <p:commandButton id="orderButton" actionListener="#{agvBean.orderButtonAction()}" update=":form:pg productDetail :form:orderedDT :form:kosaricaCounter :form7 :form8 kosaricaCounter"  value="Order" />
+                        </p:column>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="dlg4" header="Select Order Action" widgetVar="orderDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" dynamic="true" >
+                <h:form id="form4" >
+                    <p:outputPanel id="orderDetail" style="text-align:center;">
+                        <p:column rendered="#{not empty agvBean.selectedOrder}">
+                            You are performing action on following Order:
+                            <br/>
+                            Material - <h:outputText value="#{agvBean.selectedOrder.materialId}" style="font-weight: bold"/>
+                            <br/>
+                            Quantity - <h:outputText value="#{agvBean.selectedOrder.quantity}" style="font-weight: bold" />
+                            <br/>
+                            Current Status - <h:outputText value="#{agvBean.selectedOrder.statusId.statusName}" style="font-weight: bold" />
+                            <br/>
+                            <hr/>
+                            Next Status - <h:outputText value="#{agvBean.selectedOrder.nextStaus.statusName}" style="font-weight: bold" />
+                            <br/> 
+                            <br/>
+                            <br/>
+                            <p:commandButton id="corderButton2" actionListener="#{agvBean.orderOrCancelOrderAction('reject')}" style="margin: 10px" styleClass="ui-button-danger" update=":form:pg :form:orderedDT :form:toSupplyDT"  value="Reject Order" />
+                            <p:commandButton id="prorderButton" disabled="#{agvBean.selectedOrder.quantity eq 1}" actionListener="#{agvBean.orderOrCancelOrderAction('partially')}" style="margin: 10px" styleClass="ui-button-warning" update=":form:pg :form:orderedDT :form:toSupplyDT"  value="Partially Realize Order" />
+                            <p:commandButton id="rorderButton" actionListener="#{agvBean.orderOrCancelOrderAction('order')}" style="margin: 10px" styleClass="ui-button-success" update=":form:pg :form:orderedDT :form:toSupplyDT"  value="Realize Order" />
+
+
+                        </p:column>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="dlg5" header="Partially Realize Order" widgetVar="prorderDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" dynamic="true" >
+                <h:form id="form5" >
+                    <p:outputPanel id="prorderDetail" style="text-align:center;">
+                        <p:column rendered="#{not empty agvBean.selectedOrder}">
+                            You are performing action on following Order:
+                            <br/>
+                            Order ID - <h:outputText value="#{agvBean.selectedOrder.orderId}" style="font-weight: bold"/>
+                            <br/>
+                            Material - <h:outputText value="#{agvBean.selectedOrder.materialId}" style="font-weight: bold"/>
+                            <br/>
+                            Quantity - <h:outputText value="#{agvBean.selectedOrder.quantity}" style="font-weight: bold" />
+                            <br/>
+                            Current Status - <h:outputText value="#{agvBean.selectedOrder.statusId.statusName}" style="font-weight: bold" />
+                            <br/>
+                            <hr/>
+                            How many items can you supply (for others you will need to specify reason)?
+                            <br/>
+                            <br/>
+                            <p:spinner id="vertical" value="#{agvBean.partialNumberICanRealize}" min="1" max="#{agvBean.selectedOrder.quantity - 1}" buttons="vertical" upButtonStyleClass="ui-button-secondary" downButtonStyleClass="ui-button-secondary"/>
+                            <br/>
+                            <hr/>
+                            <p:outputLabel for="@next" value="Reason for order splitting: "/>
+                            <br/>
+                            <p:selectOneMenu id="option" value="#{agvBean.reasonForSplitting}">
+                                <f:selectItem itemLabel="Select One" itemValue=""/>
+                                <f:selectItem itemLabel="No material" itemValue="No material"/>
+                                <f:selectItem itemLabel="No space on vehicle" itemValue="No space on vehicle"/>
+                                <f:selectItem itemLabel="Some other reason" itemValue="Other reason"/>
+                            </p:selectOneMenu>
+                            <hr/>
+                            <p:commandButton id="corderButton2" actionListener="#{agvBean.partialyRealizeOrder()}" update=":form:pg :form:orderedDT :form:toSupplyDT" style="margin: 10px; width: 90%" styleClass="ui-button" value="Realize Order" />
+
+                        </p:column>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="dlg6" header="What do you want to print?" widgetVar="printOrdersDialog" dynamic="true">
+                <h:form id="form6">
+                    <p:outputPanel style="text-align:center;">
+                        <p:column>
+                            <p:commandButton value="All orders on my List" action="#{agvBean.printOrdersDialogSelection('all')}" update="dlg6" style="margin: 5px"/>
+                            <p:commandButton value="Orders for specific destination" action="#{agvBean.printOrdersDialogSelection('selection')}" update="dlg6" oncomplete="PF('printOrdersDialog').show()" style="margin: 5px"/>
+
+                            <p:outputPanel id="pod_op2" rendered="#{agvBean.printOrdersSelectionEnabled}">
+                                <br/>
+                                <hr/>
+                                <br/>
+                                <p:selectOneMenu id="group" value="#{agvBean.selectedDestinationForPrintingOrders}" style="width:90%">
+                                    <f:selectItems value="#{agvBean.placesISupplyTo}" var="place" itemValue="#{place}" itemLabel="#{place.placeName}"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Print" action="#{agvBean.printOrdersDialogSelection('selection')}" update="dlg6" oncomplete="PF('printOrdersDialog').hide()" style="margin: 5px"/>
+                            </p:outputPanel>
+
+                        </p:column>                       
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+
+            <p:dialog header="Košarica" id="dialogkosarica" widgetVar="dlg7" minHeight="40" width="350" showEffect="fade" modal="false" draggable="true" appendTo="@(body)" >
+                <h:form id="form7">
+                    <h:panelGroup id="display">                     
+                        <p:dataTable var="product" value="#{agvBean.kosaricaNabrano}">
+                            <p:column headerText="Artikel">
+                                <h:outputText value="#{product.materialId}" />
+                            </p:column>
+
+                            <p:column headerText="Količina">
+                                <h:outputText value="#{product.quantity}" />
+                            </p:column>
+                        </p:dataTable>
+                        
+                        <center>
+                        <p:commandButton id="orderAllButtonLogin" value="Naroči / Order All" ajax="true" style="width: 90%; margin-top: 15px"  actionListener="#{agvBean.orderAllFromKosaricaWithLogin()}" />
+                        </center>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+        </ui:define>
+
+        <ui:define name="beforeEndOfBody">
+            
+                <div class="theme-config">
+                    <div class="theme-config-box">
+                        <div class="spin-icon">
+                            <p:badge id="kosaricaCounter" style="background-color: #1ab394" styleClass="p-mr-2" value="#{agvBean.kosaricaNabrano.size()}">
+                            
+                            </p:badge>
+                            <i class="fa fa-shopping-cart animated pulse"></i>
+                        </div>
+                        <div class="skin-settings">
+                            <div class="title">Košarica <br/>
+                                <small style="text-transform: none;font-weight: 400">
+
+                                </small>
+                            </div>
+                            <h:form id="form8">
+
+                                <p:dataTable var="product" value="#{agvBean.kosaricaNabrano}" emptyMessage="Ni artiklov" scrollWidth="700" style="width:100%;overflow-x: hidden !important;">
+                                <p:column headerText="Artikel">
+                                    <h:outputText value="#{product.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Količina">
+                                    <h:outputText value="#{product.quantity}" />
+                                </p:column>
+                            </p:dataTable>
+
+
+
+
+                            <div class="setings-item">
+                                <p:commandButton id="orderAllButtonLogin" value="Naroči / Order All" ajax="true" style="width:100%" actionListener="#{agvBean.orderAllFromKosaricaWithLogin()}" />
+                            </div>
+                            </h:form>
+
+
+                        </div>
+                    </div>
+                </div>
+            
+            <script>
+                // SKIN Select
+                $('.spin-icon').click(function () {
+                    $(".theme-config-box").toggleClass("show");
+                });
+            </script>
+        </ui:define>
+
+
+    </ui:composition>
+</html>

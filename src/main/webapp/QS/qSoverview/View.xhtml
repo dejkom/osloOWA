@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QSoverviewViewDlg" widgetVar="QSoverviewViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQS.ViewQSoverviewTitle}">
+            <h:form id="QSoverviewViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{qSoverviewController.selected != null}">
+                        <h:outputText value="#{bundleQS.ViewQSoverviewLabel_id}"/>
+                        <h:outputText value="#{qSoverviewController.selected.id}" title="#{bundleQS.ViewQSoverviewTitle_id}"/>
+                        <h:outputText value="#{bundleQS.ViewQSoverviewLabel_name}"/>
+                        <h:outputText value="#{qSoverviewController.selected.name}" title="#{bundleQS.ViewQSoverviewTitle_name}"/>
+                        <h:outputText value="#{bundleQS.ViewQSoverviewLabel_disabled}"/>
+                        <p:selectBooleanCheckbox value="#{qSoverviewController.selected.disabled}" disabled="true"/>
+                        <h:outputText value="#{bundleQS.ViewQSoverviewLabel_tid}"/>
+                        <h:outputText value="#{qSoverviewController.selected.tid}" title="#{bundleQS.ViewQSoverviewTitle_tid}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleQS.Close}" onclick="QSoverviewViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

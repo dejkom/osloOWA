@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSStatusViewDlg" widgetVar="ASSStatusViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewASSStatusTitle}">
+            <h:form id="ASSStatusViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSStatusController.selected != null}">
+                        <h:outputText value="#{bundle.ViewASSStatusLabel_IDStatus}"/>
+                        <h:outputText value="#{aSSStatusController.selected.IDStatus}" title="#{bundle.ViewASSStatusTitle_IDStatus}"/>
+                        <h:outputText value="#{bundle.ViewASSStatusLabel_statusDescription}"/>
+                        <h:outputText value="#{aSSStatusController.selected.statusDescription}" title="#{bundle.ViewASSStatusTitle_statusDescription}"/>
+                        <h:outputText value="#{bundle.ViewASSStatusLabel_statusDisable}"/>
+                        <p:selectBooleanCheckbox value="#{aSSStatusController.selected.statusDisable}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ASSStatusViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

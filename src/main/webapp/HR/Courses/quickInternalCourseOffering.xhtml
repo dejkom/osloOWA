@@ -1,0 +1,205 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Courses"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            #{msg['HRCourse_QuickInternalPageHeader']}
+            <style type="text/css">
+                body .ui-panel {
+                    padding: 0;
+                    margin-bottom: 50px;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            #{msg['HRCourse_QuickInternalPageHeaderSubtitle']}
+        </ui:define>
+        
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:panel id="pnl" header="">
+                    <!--
+                    <p:outputLabel for="@next" value="Course: " />
+                    <p:selectOneMenu id="course" value="#{openCourseOfferingBean.selectedCourse}" converter="omnifaces.SelectItemsConverter">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItems value="#{hRCourseController.itemsAvailableSelectOne}" var="courseIDItem" itemValue="#{courseIDItem}" itemLabel="#{courseIDItem.courseTitle}"/>
+                        <p:ajax listener="#{openCourseOfferingBean.courseSelected}" update="instructor" process="@this" partialSubmit="true" />
+                    </p:selectOneMenu>    
+
+
+                    <p:outputLabel for="@next" value="Available Instructors for selected course: " />
+                    <p:selectOneMenu id="instructor" value="#{openCourseOfferingBean.selectedInstructor}" effect="fold" editable="true">
+
+                        <f:selectItem itemLabel="Select One" itemValue="#{null}" />                   
+                        <f:selectItems value="#{openCourseOfferingBean.instruktorjiNaVoljo}" var="instructorIDItem" itemValue="#{instructorIDItem}" itemLabel="#{instructorIDItem.firstname}"/>
+
+                    </p:selectOneMenu>  
+                    -->
+                    <p>
+                        <h2>#{msg['HRCourse_QuickInternal_what']}</h2>
+                        
+                        
+                    </p>
+                    <p>
+                        <p:outputLabel for="@next" value="#{msg['HRCourse_CourseTitle']}: " />
+                        <p:inputText id="courseTitle" value="#{openCourseOfferingBean.newCourse.courseTitle}" maxlength="100" required="true" title="#{bundleHRCourse.CreateHRCourseTitle_courseTitle}" style="width:90%; float: right"/>
+                    </p>
+                    <p>
+                        <p:outputLabel for="@next" value="#{msg['HRCourse_CourseDescription']}: " />
+                        <p:inputText id="courseDescription" value="#{openCourseOfferingBean.newCourse.courseDescription}" required="true" title="#{bundleHRCourse.CreateHRCourseTitle_courseDescription}" style="width:90%; float: right" />
+                    </p>
+                    <p:outputLabel for="@next" value="#{msg['Duration']} (min): " />
+                    <p:inputText id="duration" value="#{openCourseOfferingBean.newCourse.duration}" required="true" title="#{bundleHRCourse.CreateHRCourseTitle_duration}" style="width:90%; float: right; margin-bottom: 10px"/>
+                    <p style="margin-bottom: 60px">
+                        <p:outputLabel for="@next" value="#{msg['HRCourse_FreeTextField']}:" />
+                        <p:inputTextarea id="courseNotes" value="#{openCourseOfferingBean.newCourse.courseNotes}" style="width:80%;float:right"/>
+                    </p>
+                    
+                    <p:outputLabel for="@next" value="#{msg['qsTopic']}: " />
+                    <p:selectBooleanCheckbox value="#{openCourseOfferingBean.newCourse.qsTopic}"  style="margin-left: 110px; margin-right: 10px"/>
+                    <h:outputText value="#{msg['qsTopicExplanation']}"/> 
+                    <p>
+                        
+                        <!--<p:inputText id="coursePin" value="#{openCourseOfferingBean.pinIn}" title="PIN" style="width:90%; float: right"/>-->
+                    </p>
+                    <p>
+                        <p:outputLabel for="@next" value="#{msg['PINCode']}: " />
+                        <p:inputNumber id="input9" value="#{openCourseOfferingBean.pinIn}" minValue="1" thousandSeparator="" decimalPlaces="0" style="width:90%; float: right"/>
+                        <!--<p:inputText id="coursePin" value="#{openCourseOfferingBean.pinIn}" title="PIN" style="width:90%; float: right"/>-->
+                    </p>
+
+                    <p>
+                        <!--
+                        <p:outputLabel value="Datotečne priloge:" for="courseAttachments" />
+                        <p:fileUpload id="courseAttachments" listener="#{openCourseOfferingBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                      multiple="true" update="growl" sizeLimit="10000000" fileLimit="5"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|xls|xlsx|pdf)$/"
+                                      maxChunkSize="1000000">
+    
+                        </p:fileUpload>
+                        -->
+                        <p:outputLabel value="#{msg['FileAttachments']}:" for="courseAttachments" />
+                        <p:fileUpload id="courseAttachments" listener="#{openCourseOfferingBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                      multiple="true" update="growl pguir" sizeLimit="10000000" fileLimit="50"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|xls|xlsx|pdf)$/"
+                                      maxChunkSize="1000000">
+
+                            <p:panelGrid id="pguir" columns="1" rendered="#{openCourseOfferingBean.newCourse != null}" style="width:100% !important">
+                                <ui:repeat id="uir"  value="#{openCourseOfferingBean.newCourse.files}" var="photo" varStatus="status">
+
+                                    <div class="file-box">
+                                        <div class="file">
+                                            <span class="corner"></span>
+
+                                            <div class="icon">
+                                                <p:graphicImage alt="image" id="imageMy" height="64px" width="64px" stream="false" value="#{photo.content}"/>
+                                                <p:contextMenu for="imageMy" id="context" event="click">                   
+                                                    <p:menuitem value="#{msg['Delete']}" icon="fa fa-delete" ajax="true" update="form:pguir" action="#{openCourseOfferingBean.brisiSliko(status.index)}"/>  
+                                                </p:contextMenu>
+                                            </div>
+                                            <div class="file-name" style="overflow: hidden">
+                                                <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ui:repeat>
+                            </p:panelGrid>
+
+                        </p:fileUpload>
+                    </p>
+
+                    <p style="margin-bottom: 30px">
+                        <p:outputLabel for="@next" value="#{msg['Creator']}: " />
+                        <p:inputText id="kreator" value="#{openCourseOfferingBean.kreatorString}" disabled="true" title="#{bundleHRCourse.CreateHRCourseTitle_duration}" style="width:90%; float: right"/>
+                    </p>
+
+                    <div class="ibox-title-noborder">
+                        <h2>#{msg['HRCourse_QuickInternal_whenwhere']}</h2> <small><p:commandButton icon="pi pi-plus" ajax="true" actionListener="#{openCourseOfferingBean.buttonkdajkjekdo}" styleClass="rounded-button ui-button-success right" oncomplete="PF('dlg1').show()"/></small>
+                    </div>
+
+
+                    <p:dataTable id="izvedbeDT" var="offering" value="#{openCourseOfferingBean.izvedbe}" emptyMessage="#{msg['NoEntries']}">
+                        <p:column headerText="#{msg['When']}?">
+                            <h:outputText value="#{offering.when}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['Where']}?">
+                            <h:outputText value="#{offering.where}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['HRCourse_Lecturer']}">
+                            <h:outputText value="#{offering.who.lastname} #{offering.who.firstname}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <br/>
+                    <p:commandButton id="saveBtn" value="#{msg['Save']} #{msg['HRCourse_Course']}" actionListener="#{openCourseOfferingBean.buttonActionDodajIzvedbo}" update="growl"  styleClass="btn btn-w-m btn-primary" style="width: 100%; background: #1ab394;color: #ffffff"/>
+                </p:panel>
+                <p:blockUI block="pnl" trigger="saveBtn" widgetVar="buiBasic"/>
+            </h:form>
+
+
+            <p:dialog header="#{msg['HRCourse_MSG_H_chooseLocationTimePerson']}" id="dialog1" widgetVar="dlg1" minHeight="40" width="600" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form2">
+                    <h:panelGroup id="display">
+                        <!--<p class="p-m-0">Izberite lokacijo, čas in osebo ki bo izobraževala.</p>-->
+                        <!--<br/>-->
+                        <p>
+                            <p:outputLabel for="@next" value="#{msg['Location']}: " />
+                            <p:inputText id="location" widgetVar="location" value="#{openCourseOfferingBean.novaIzvedba.where}" style="width:80%;float:right">
+                            </p:inputText>
+                        </p>
+                        <br/>
+                        <p>
+                            <p:outputLabel for="@next" value="#{msg['Date']}: " />
+                            <p:calendar id="datum" widgetVar="datum"  pattern="dd.MM.yyyy HH:mm" value="#{openCourseOfferingBean.novaIzvedba.when}" style="width:80%;float:right">
+                            </p:calendar>
+                        </p>
+                        <br/>
+
+                        <p:outputLabel for="@next" value="#{msg['HRCourse_Lecturer']}: " />
+                        <p:selectOneMenu id="codeksID" value="#{openCourseOfferingBean.novaIzvedba.who}" filter="true" converter="omnifaces.SelectItemsConverter" filterMatchMode="contains" style="width:80%;float:right">
+
+                            <f:selectItem itemLabel="#{msg['HRCourse_SelectPerson']}" itemValue="#{null}" />
+                            <f:selectItems value="#{openCourseOfferingBean.aktualniZaposleni}" var="theme" itemLabel="#{theme.lastname} #{theme.firstname} " itemValue="#{theme}"/>
+                            <p:ajax event="itemSelect" listener="#{openCourseOfferingBean.izbranZaposleniEvent}"/>
+                        </p:selectOneMenu>
+
+                        <br/>
+                        <br/>
+                        <p>
+                            <p:commandButton id="submitButton" actionListener="#{openCourseOfferingBean.dialog1SubmitButton}" ajax="true" update=":form form2" oncomplete="PF('dlg1').hide()" style="float: right" value="#{msg['Save']}"  />
+                        </p>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

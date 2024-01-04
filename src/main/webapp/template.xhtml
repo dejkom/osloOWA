@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{loginController.currentL.language}">
+        <h:head>
+            <title><ui:insert name="title">osloWebApp</ui:insert></title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+            <h:outputScript library="js" name="jsfcrud.js"/>
+            <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+            <!--<h:outputStylesheet library="font-awesome" name="css/font-awesome.css"/>-->
+            <h:outputStylesheet library="font-awesome-611" name="css/all.css"/>
+            <h:outputScript library="font-awesome-611" name="js/all.js"/>
+
+
+            <h:outputStylesheet library="css" name="animate.css"/>
+            <h:outputStylesheet library="css" name="style.css" />
+            <h:outputStylesheet library="css" name="overridestyle.css"/>
+            <h:outputStylesheet library="css" name="/flags/flags.css"/>
+
+            <h:outputStylesheet library="css" name="preview.css"/>
+            <style type="text/css">
+                body .fc .fc-event, body .fc .fc-event .fc-event-main{
+                    background: #1ab394;
+                    border: 0px solid #0d89ec;
+                    color: #ffffff;
+                }
+
+                .fc-event-time, .fc-event-title {
+                    color: white;
+                    padding: 0 1px;
+                }
+                
+                .btn-large-dim {
+                    width: 80px;
+                    height: 80px;
+                    font-size: 42px;
+                    margin-top: 10px;
+                }
+            </style>
+
+            <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+            <ui:insert name="head"/>  
+        </h:head>
+
+        <h:body>
+            <dir class="wrapper">
+                <p:growl id="growl" showDetail="true" life="10000" keepAlive="true" skipDetailIfEqualsSummary="true"/>
+
+                <p:dialog header="#{msg['ChangeLanguage']}" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+                    <p class="p-m-0">
+                        <h:form id="languageForm">
+                            <p:selectOneListbox id="advanced" value="#{loginController.country}" converter="omnifaces.SelectItemsConverter" var="c" >
+                                <f:selectItems value="#{loginController.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country}"/>
+                                <p:ajax event="valueChange" process="@this" oncomplete="PF('dlg1').hide()" listener="#{loginController.localeChanged}" />
+                                <p:column>
+                                    <!--<span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>-->
+                                    <h:graphicImage alt="image" library="css" name="/flags/4x3/#{c.code}.svg" height="30px" width="40px"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{c.name}"/>
+                                </p:column>
+                            </p:selectOneListbox>
+                        </h:form>
+
+                    </p>
+                </p:dialog>
+
+                <nav class="navbar-default navbar-static-side" role="navigation">
+                    <div class="sidebar-collapse">
+                        <ul class="nav metismenu" id="side-menu">
+                            <li class="nav-header-logo">
+                                <a href="/osloWebApp/faces/index.xhtml"><h:graphicImage alt="image" library="img" name="odelo_white_IMG.png" height="100%" width="100%"/></a>
+                            </li>
+                            <li class="nav-header">
+                                <div class="dropdown profile-element">
+                                    <a href="/osloWebApp/faces/profileOdelo.xhtml?coid=#{homeController.codeksid}">
+                                    <center><h:graphicImage alt="image" styleClass="rounded-circle" library="img" name="default_profile_small.png"/> </center>                                   
+                                        <center><span class="block m-t-xs font-bold"><h:outputText value="#{homeController.firstname} "/> <h:outputText value="#{homeController.lastname}"/> </span></center>
+                                    </a>
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">    
+                                        <span class="text-muted text-xs block"><h:outputText value = "#{msg['Settings']}" /><b class="caret"></b></span>
+                                    </a>
+                                    <h:panelGroup layout="block" rendered="true">
+                                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                            <li><a class="dropdown-item" href="/osloWebApp/faces/profileOdelo.xhtml?coid=#{homeController.codeksid}"><h:outputText value = "#{msg['Profile']}" /></a></li>
+                                            <li class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" onclick="PF('dlg1').show()"><h:outputText value = "#{msg['ChangeLanguage']}" /></a></li>
+                                            <li class="dropdown-divider"></li>
+
+                                            <h:panelGroup layout="block" rendered="#{homeController.loggedIn}">  
+                                                <h:form>
+                                                    <li><p:commandLink class="dropdown-item" action="#{loginController.logOut}">#{msg['LogOut']}</p:commandLink></li>
+                                                    <li class="dropdown-divider"></li>
+                                                </h:form>
+                                            </h:panelGroup>
+                                            <h:panelGroup layout="block" rendered="#{!homeController.loggedIn}">                                             
+                                                <li><a class="dropdown-item" href="/osloWebApp/faces/usermanagement_test/login2.xhtml">#{msg['LogIn']}</a></li>
+                                            </h:panelGroup>
+                                        </ul>
+                                    </h:panelGroup>
+                                </div>
+                                <div class="logo-element">
+                                    <h:graphicImage alt="image" library="img" name="oLogo.PNG" height="60%" width="60%"/>
+                                </div>
+                            </li>
+
+                            <ui:include src="menu.xhtml"/>
+
+                        </ul>
+                    </div>
+                </nav>
+
+                <div id="page-wrapper" class="gray-bg">
+                    <div class="row border-bottom">
+                        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                            <div class="navbar-header">
+                                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                                <form role="search" class="navbar-form-custom" action="search_results.html">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="#{msg['Search']}" class="form-control" name="top-search" id="top-search"/>
+                                    </div>
+                                </form>
+                            </div>
+                            <ul class="nav navbar-top-links navbar-right">
+                                <li>
+                                    <span class="m-r-sm text-muted welcome-message">
+                                        #{msg['WelcomeMessage']}
+                                    </span>
+                                </li>
+
+                                <li>
+                                    <h:form>
+                                        <h:panelGroup layout="block" rendered="#{homeController.loggedIn}">                                   
+                                            <p:commandLink id="ajax" action="#{userController.logout()}">
+                                                <i class="fa fa-sign-out"></i><h:outputText value="#{msg['LogOut']}" />                                         
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block" rendered="#{!homeController.loggedIn}">                                   
+                                            <a class="dropdown-item" href="/osloWebApp/faces/usermanagement_test/login2.xhtml">#{msg['LogIn']}</a>
+                                        </h:panelGroup>
+                                    </h:form>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+                    <div class="row wrapper border-bottom white-bg page-heading">
+                        <div class="col-sm-10">
+                            <h2><ui:insert name="PageHeader"></ui:insert></h2>
+                            <div class="breadcrumb">
+                                <ui:insert name="PageHeaderSubtitle"></ui:insert>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <ui:insert name="PageHeaderHelpLink"></ui:insert>
+                        </div>
+                    </div>
+
+                    <div class="wrapper wrapper-content animated fadeInRight">
+                        <ui:insert name="content"/>                  
+                    </div>
+
+                    <div class="footer">
+                        <div>
+                            <strong>Copyright</strong> &copy; odelo Slovenia 2023
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </dir>
+
+            <ui:insert name="beforeEndOfBody"/>
+
+
+            <!-- Mainly scripts -->
+            <!--<h:outputScript library="js" name="jquery-3.1.1.min.js"/> NE DELA ČE JE TA JS DODAN-->
+            <h:outputScript name="jquery/jquery.js" library="primefaces" target="head"/>
+            <h:outputScript library="js" name="popper.min.js"/>
+            <h:outputScript library="js" name="bootstrap.js"/>
+            <h:outputScript library="js" name="plugins/metisMenu/jquery.metisMenu.js"/>
+            <h:outputScript library="js" name="plugins/slimscroll/jquery.slimscroll.min.js"/>         
+
+            <!-- Custom and plugin javascript -->
+            <h:outputScript library="js"  name="inspinia.js"/>
+            <h:outputScript library="js"  name="plugins/pace/pace.min.js"/>
+            <h:outputScript library="js"  name="preview.js"/>
+
+            <h:outputScript name="ionsound/ion.sound.js" target="head"/>
+            <h:outputScript library="js"  name="domenMenuExpandMagic.js" />          
+            <h:outputScript library="js"  name="masonry.pkgd.min.js" target="head"/>           
+            <h:outputScript library="js"  name="konva.js" target="head"/>
+            
+
+        </h:body>
+    </f:view>
+</html>

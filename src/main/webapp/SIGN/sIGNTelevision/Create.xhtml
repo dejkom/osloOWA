@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SIGNTelevisionCreateDlg" widgetVar="SIGNTelevisionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Dodaj">
+            <h:form id="SIGNTelevisionCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sIGNTelevisionController.selected != null}">
+                        <p:outputLabel value="IP naslov" for="ipAddress" />
+                        <p:inputText id="ipAddress" value="#{sIGNTelevisionController.selected.ipAddress}" title="#{bundleSIGN.CreateSIGNTelevisionTitle_ipAddress}" required="true"/>
+                        <p:outputLabel value="V uporabi" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{sIGNTelevisionController.selected.active}" />
+                        <p:outputLabel value="Lokacija" for="location" />
+                        <p:inputText id="location" value="#{sIGNTelevisionController.selected.location}" title="#{bundleSIGN.CreateSIGNTelevisionTitle_location}" required="true"/>
+                        <p:outputLabel value="Prezentacija" for="idPresentation" />
+                        <p:selectOneMenu id="idPresentation" value="#{sIGNTelevisionController.selected.idPresentation}" style="width: 9vw; padding: 0px;">
+                            <f:selectItem itemLabel="Brez"/>
+                            <f:selectItems value="#{sIGNPresentationController.itemsAvailableSelectOne}"
+                                           var="idPresentationItem"
+                                           itemValue="#{idPresentationItem}" itemLabel="#{idPresentationItem.name}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Ime gostitelja" for="hostName" />
+                        <p:inputText id="hostName" value="#{sIGNTelevisionController.selected.hostName}" title="#{bundleSIGN.CreateSIGNTelevisionTitle_hostName}" required="true"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sIGNTelevisionController.create}" value="Dodaj" update="display,:SIGNTelevisionListForm:datalist,:growl" oncomplete="handleSubmit(args,'SIGNTelevisionCreateDialog');"/>
+                    <p:commandButton value="Prekliči" onclick="SIGNTelevisionCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

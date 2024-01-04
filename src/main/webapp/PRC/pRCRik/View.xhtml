@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCRikViewDlg" widgetVar="PRCRikViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC2.ViewPRCRikTitle}">
+            <h:form id="PRCRikViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCRikController.selected != null}">
+                        <h:outputText value="#{bundlePRC2.ViewPRCRikLabel_id}"/>
+                        <h:outputText value="#{pRCRikController.selected.id}" title="#{bundlePRC2.ViewPRCRikTitle_id}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCRikLabel_from}"/>
+                        <h:outputText value="#{pRCRikController.selected.frm}" title="#{bundlePRC2.ViewPRCRikTitle_from}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC2.ViewPRCRikLabel_to}"/>
+                        <h:outputText value="#{pRCRikController.selected.too}" title="#{bundlePRC2.ViewPRCRikTitle_to}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC2.ViewPRCRikLabel_value}"/>
+                        <h:outputText value="#{pRCRikController.selected.val}" title="#{bundlePRC2.ViewPRCRikTitle_value}"/>
+                        <h:outputText value="#{bundlePRC2.ViewPRCRikLabel_type}"/>
+                        <h:outputText value="#{pRCRikController.selected.type}" title="#{bundlePRC2.ViewPRCRikTitle_type}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundlePRC2.Close}" onclick="PRCRikViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

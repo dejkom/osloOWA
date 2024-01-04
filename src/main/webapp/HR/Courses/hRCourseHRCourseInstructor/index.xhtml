@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Courses - Course Instructor link to Course
+
+            <script type="text/javascript">
+                var currentEvent;
+
+                $(document).ready(function () {
+                    PrimeFaces.widget.ContextMenu.prototype.show = function (e) {
+                        //hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if (e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                                left = e.pageX,
+                                top = e.pageY,
+                                width = this.jq.outerWidth(),
+                                height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if ((left + width) > (win.width()) + win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if ((top + height) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if (this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                            'top': top,
+                            'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+
+            <style type="text/css">
+                body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+                    background: #c5dced;
+                    color: #495057;
+                }
+
+                .ui-selectonemenu {
+                    min-width: 0;
+                    width: 100%;
+                }
+                
+                .ui-selectlistbox-listcontainer{
+                    height: 250px !important;
+                    width: 100%;
+                }
+
+                .ui-selectonemenu-items-wrapper {
+                    max-height: 300px !important;
+                    width: 100%;
+                }
+                
+                .ui-selectonemenu-panel{
+                    width: 80%;
+                    
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can link Instructors with Course
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="HRCourseHRCourseInstructorListForm">
+                <p:dataTable id="datalist" value="#{hRCourseHRCourseInstructorController.items}" var="item"
+                             selectionMode="single" selection="#{hRCourseHRCourseInstructorController.selected}"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle_courseID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.courseID}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle_instructorID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.instructorID}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{item.courseID.courseTitle}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Ime izobraževanja"/>
+                        </f:facet>
+                        <h:outputText value="#{item.courseID.courseTitle}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.instructorID.firstname} #{item.instructorID.lastname} #{item.instructorID.company}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Izobraževalec"/>
+                        </f:facet>
+                        <h:outputText value="#{item.instructorID.firstname} #{item.instructorID.lastname} (#{item.instructorID.company})"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCourse.Create}" actionListener="#{hRCourseHRCourseInstructorController.prepareCreate}" update=":HRCourseHRCourseInstructorCreateForm" oncomplete="PF('HRCourseHRCourseInstructorCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRCourse.View}" update=":HRCourseHRCourseInstructorViewForm" oncomplete="PF('HRCourseHRCourseInstructorViewDialog').show()" disabled="#{empty hRCourseHRCourseInstructorController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCourse.Edit}" update=":HRCourseHRCourseInstructorEditForm" oncomplete="PF('HRCourseHRCourseInstructorEditDialog').show()" disabled="#{empty hRCourseHRCourseInstructorController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCourse.Delete}" actionListener="#{hRCourseHRCourseInstructorController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseHRCourseInstructorController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

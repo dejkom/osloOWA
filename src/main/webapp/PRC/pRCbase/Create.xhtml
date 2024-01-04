@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCbaseCreateDlg" widgetVar="PRCbaseCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC.CreatePRCbaseTitle}">
+            <h:form id="PRCbaseCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCbaseController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundlePRC.CreatePRCbaseLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pRCbaseController.selected.id}" title="#{bundlePRC.CreatePRCbaseTitle_id}" required="true" requiredMessage="#{bundlePRC.CreatePRCbaseRequiredMessage_id}"/>
+                        -->
+                        <p:outputLabel value="#{bundlePRC.CreatePRCbaseLabel_dateFrom}" for="dateFrom" />
+                        <p:calendar id="dateFrom" pattern="dd.MM.yyyy" value="#{pRCbaseController.selected.dateFrom}" title="#{bundlePRC.EditPRCbaseTitle_dateFrom}"  showOn="button"/>
+                        <p:outputLabel value="#{bundlePRC.CreatePRCbaseLabel_dateTo}" for="dateTo" />
+                        <p:calendar id="dateTo" pattern="dd.MM.yyyy" value="#{pRCbaseController.selected.dateTo}" title="#{bundlePRC.EditPRCbaseTitle_dateTo}"  showOn="button"/>
+                        <p:outputLabel value="#{bundlePRC.CreatePRCbaseLabel_bmwProduct}" for="bmwProduct" />
+                        <p:inputText id="bmwProduct" value="#{pRCbaseController.selected.bmwProduct}" title="#{bundlePRC.CreatePRCbaseTitle_bmwProduct}" />
+                        <p:outputLabel value="#{bundlePRC.CreatePRCbaseLabel_bmwIndex}" for="bmwIndex" />
+                        <p:inputText id="bmwIndex" value="#{pRCbaseController.selected.bmwIndex}" title="#{bundlePRC.CreatePRCbaseTitle_bmwIndex}" />
+                        <p:outputLabel value="#{bundlePRC.CreatePRCbaseLabel_value}" for="value" />
+                        <p:inputText id="value" value="#{pRCbaseController.selected.value}" title="#{bundlePRC.CreatePRCbaseTitle_value}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pRCbaseController.create}" value="#{bundlePRC.Save}" update="display,:PRCbaseListForm:datalist,:growl" oncomplete="handleSubmit(args,'PRCbaseCreateDialog');"/>
+                    <p:commandButton value="#{bundlePRC.Cancel}" onclick="PRCbaseCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

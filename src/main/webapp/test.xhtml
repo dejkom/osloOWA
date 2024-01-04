@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+>
+    <body>
+        <ui:composition template="page_template.xhtml">
+
+            <ui:define name="PageHeader">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="test.xhtml">Glavna stran</a>
+                    </li>
+                </ol>
+            </ui:define>
+
+
+            <ui:define name="PageHeaderSubtitle">
+                to je ena lepa stran
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="form">
+                    <h3>Forma</h3>
+                    <span class="ui-float-label">
+                        <p:inputText id="float-input1" value="#{indexPageBean.ime}" />
+                    </span>
+                    <span class="ui-float-label">
+                        <p:inputText id="float-input2" value="#{indexPageBean.priimek}" />
+                    </span>
+
+                    <p:commandButton value="Say hello" id="ajax" action="#{indexPageBean.sayHello}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+                </h:form>
+            </ui:define>
+
+            <ui:define name="NavHeader">
+                <h:graphicImage alt="image" styleClass="rounded-circle" library="img" name="profile_small.jpg"/> 
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <span class="block m-t-xs font-bold">Janez Novak</span>
+                    <span class="text-muted text-xs block">Direktor <b class="caret"></b></span>
+                </a>
+                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                    <li><a class="dropdown-item" href="#">Profil</a></li>
+                    <li><a class="dropdown-item" href="#">Kontakti</a></li>
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Odjava</a></li>
+                </ul>
+            </ui:define>
+
+            <ui:define name="WelcomeMessage">
+                Pozdravljen Janez Novak
+            </ui:define>
+
+            <ui:define name="Alerts">
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="mailbox.html" class="dropdown-item">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                    <span class="float-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <a href="profile.html" class="dropdown-item">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="float-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <a href="grid_options.html" class="dropdown-item">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="float-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="notifications.html" class="dropdown-item">
+                                    <strong>See All Alerts</strong>
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ui:define>
+
+            <ui:define name="Emails">
+                <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a class="dropdown-item float-left" href="profile.html">
+                                    <h:graphicImage alt="image" styleClass="rounded-circle" library="img" name="a7.jpg"/> 
+                                </a>
+                                <div class="media-body">
+                                    <small class="float-right">46h ago</small>
+                                    <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br/>
+                                    <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a class="dropdown-item float-left" href="#">
+                                    <h:graphicImage alt="image" styleClass="rounded-circle" library="img" name="a4.jpg"/> 
+                                </a>
+                                <div class="media-body ">
+                                    <small class="float-right text-navy">5h ago</small>
+                                    <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br/>
+                                    <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a class="dropdown-item float-left" href="#">
+                                    <h:graphicImage alt="image" styleClass="rounded-circle" library="img" name="profile.jpg"/> 
+                                </a>
+                                <div class="media-body ">
+                                    <small class="float-right">23h ago</small>
+                                    <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br/>
+                                    <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="#" class="dropdown-item">
+                                    <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>

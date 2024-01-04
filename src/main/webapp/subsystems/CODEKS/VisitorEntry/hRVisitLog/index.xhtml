@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Visitors Log
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can see Visitor Log
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="HRVisitLogListForm">
+                <p:dataTable id="datalist" value="#{hRVisitLogController.items}" var="item"
+                             selectionMode="single" selection="#{hRVisitLogController.selected}"
+                             paginator="true"
+                             widgetVar="VisitLogTable"
+                             
+                             rowKey="#{item.HRVisitLogPK.rowKey}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <!--
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                    -->
+
+                    <p:column width="50px" filterBy="#{item.HRVisitLogPK.visitID}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleVisitorEntryLog.ListHRVisitLogTitle_HRVisitLogPK_visitID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.HRVisitLogPK.visitID}"/>
+                    </p:column>
+                    <p:column width="200px" filterBy="#{item.HRVisitLogPK.guest}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleVisitorEntryLog.ListHRVisitLogTitle_HRVisitLogPK_guest}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.HRVisitLogPK.guest}"/>
+                    </p:column>
+                    <p:column field="timeIn"  width="100px" filterMatchMode="between" filterable="true" filterBy="#{item.timeIn}">
+                        <f:facet name="filter">
+                            <p:datePicker selectionMode="range" onchange="PF('VisitLogTable').filter()" />
+                        </f:facet>
+                        <f:facet name="header">
+                            <h:outputText value="Arrival"/>
+                        </f:facet>
+                        <h:outputText value="#{item.timeIn}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="Departure"/>
+                        </f:facet>
+                        <h:outputText value="#{item.timeOut}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="Recipient"/>
+                        </f:facet>
+                        <h:outputText value="#{item.odeloPersonRecipient}"/>
+                    </p:column>
+                    <p:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleVisitorEntryLog.ListHRVisitLogTitle_signature}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.signature.length() gt 50 ? item.signature.substring(0,47).concat('...') : item.signature}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleVisitorEntryLog.ListHRVisitLogTitle_signature}"/>
+                        </f:facet>
+                        <p:signature style="width:100%;height:150px;" value="#{item.signature}"  readonly="true" rendered="#{not empty item.signature}" guideline="true" backgroundColor="#eaeaea" color="#000000"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        
+                    </f:facet>
+                </p:dataTable>
+                <p:contextMenu for="datalist" style="width:300px">
+                    <p:menuitem value="Poglej izpolnjen obrazec" actionListener="#{hRVisitLogController.izpisIzpolnjenegaPotrdila}" update=":VCodeksObiskovalciViewPrintForm" oncomplete="PF('VCodeksObiskovalciViewPrintDialog').show()"/>                        
+                    </p:contextMenu>
+            </h:form>
+
+            <ui:include src="ViewIzpolnjen.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

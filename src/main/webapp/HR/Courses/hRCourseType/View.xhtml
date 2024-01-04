@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseTypeViewDlg" widgetVar="HRCourseTypeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Tip izobraževanja">
+            <h:form id="HRCourseTypeViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseTypeController.selected != null}">
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseTypeLabel_courseTypeID}"/>
+                        <h:outputText value="#{hRCourseTypeController.selected.courseTypeID}" title="#{bundleHRCourse.ViewHRCourseTypeTitle_courseTypeID}"/>
+                        <h:outputText value="Naziv tipa izobraževanja:"/>
+                        <h:outputText value="#{hRCourseTypeController.selected.courseTypeTitle}" title="#{bundleHRCourse.ViewHRCourseTypeTitle_courseTypeTitle}"/>
+                        <h:outputText value="Aktiven:"/>
+                        <p:selectBooleanCheckbox value="#{hRCourseTypeController.selected.active}" disabled="true"/>
+                        <h:outputText value="Starš (nadtip):"/>
+                        <h:outputText value="#{hRCourseTypeController.selected.parent}" title="#{bundleHRCourse.ViewHRCourseTypeTitle_parent}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRCourse.Close}" onclick="PF('HRCourseTypeViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

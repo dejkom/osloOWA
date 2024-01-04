@@ -1,0 +1,357 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+>
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Izvedba izobraževanja"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <style type="text/css">
+                .ui-panelgrid>*>tr,
+                .ui-panelgrid .ui-panelgrid-cell {
+                    border: none;
+                    background-color: transparent;
+                }
+
+                .alert-pink {
+                    background-color: #ffabab;
+                    border-color: black;
+                    color: white;
+                }
+
+
+                .paddingBetweenCols td
+                {
+                    padding:0 35px;
+                }
+
+                .padding-table-columns td
+                {
+                    padding:10px 55px 10px 55px; /* Only right padding*/
+                }
+            </style>
+
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            HR - Izvedba izobraževanja
+        </ui:define>
+
+        <ui:define name="PageHeaderDescription">
+
+        </ui:define>
+
+        <ui:define name="breadcrumb">
+            <li class="active">HR Courses</li>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <div class="row" style="margin: 5px">
+                    <div class="col-md-12">
+                        <p:panelGrid columns="2" style="background-color: transparent">
+                            <p:outputLabel for="courseofferinglist" value="Izbrano izobraževanje: " />
+                            <p:selectOneMenu id="courseofferinglist" value="#{hRCourseIzvedbaIzobrazevanjaBean.selectedOffering}">
+                                <f:selectItem itemLabel="Izberite izobraževanje" itemValue="#{null}" />
+                                <f:selectItems value="#{hRCourseIzvedbaIzobrazevanjaBean.allOfferings}" var="offering" itemLabel="#{offering.courseID.courseTitle} #{offering.courseOfferingID}" itemValue="#{offering}"/>
+                                <p:ajax listener="#{hRCourseIzvedbaIzobrazevanjaBean.offeringSelected}" update="form" />
+                            </p:selectOneMenu>
+
+                            <!--
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#skenirajKljucek">
+                                Launch Default Modal
+                            </button>
+                            -->
+
+                        </p:panelGrid>
+                    </div>
+                </div>
+
+
+
+                <div class="row" style="margin: 5px">
+                    <div class="col-md-12">
+                        <h:panelGroup id="pg" layout="block" class="box box-default" rendered="#{!empty hRCourseIzvedbaIzobrazevanjaBean.selectedOffering}">
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Osnovne informacije</a></li>
+                                    <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Udeleženci</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p:panelGrid columns="2" style="background-color: transparent">
+                                                    <p:outputLabel for="ctitle" value = "Naziv izobraževanja:" />
+                                                    <h:outputText id="ctitle" value = "#{hRCourseIzvedbaIzobrazevanjaBean.selectedOffering.courseID.courseTitle}" />
+                                                    <p:outputLabel for="when" value = "Datum izobraževanja:" />
+                                                    <h:outputText id="when" value = "#{hRCourseIzvedbaIzobrazevanjaBean.selectedOffering.courseDate}">
+                                                        <f:convertDateTime type="date" pattern="dd.MM.yyyy HH:mm"/>
+                                                    </h:outputText>
+
+                                                    <p:outputLabel for="izobrazevalec" value = "Izobraževalec:" />
+                                                    <h:outputText id="izobrazevalec" value = "#{hRCourseIzvedbaIzobrazevanjaBean.selectedOffering.instructorID.firstname} #{hRCourseIzvedbaIzobrazevanjaBean.selectedOffering.instructorID.lastname}" />
+
+                                                    <p:outputLabel for="lokacija" value = "Lokacija:" />
+                                                    <h:outputText id="lokacija" value = "#{hRCourseIzvedbaIzobrazevanjaBean.selectedOffering.meetingroomID}" />
+
+                                                </p:panelGrid>
+                                            </div>
+                                            <div class="col-md-6">
+                                                
+                                                <!--
+                                                <div class="info-box bg-gray">
+                                                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
+
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text">UDELEŽBA</span>
+                                                        <span class="info-box-number">#{hRCourseIzvedbaIzobrazevanjaBean.steviloUdelezencevRegistriranih}</span>
+
+                                                        <div class="progress">
+                                                            <div class="progress-bar" style="width: ${hRCourseIzvedbaIzobrazevanjaBean.steviloUdelezencevRegistriranih / hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.size() *100}%"></div>
+                                                        </div>
+                                                        <span class="progress-description">
+                                                            Vseh prijavljenih: #{hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.size()}
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                -->
+                                                
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <!--
+                                        <c:forEach items="${hRCourseIzvedbaIzobrazevanjaBean.seznamUdelezencev}" var="item">
+                                            <h:outputText value="${item.attendanceID} ${item.codeksID} ${item.wasAttended}"/><br/>
+                                        </c:forEach>
+                                        -->
+
+                                        <button type="button" id="b1" style="width:100%" class="btn btn-default" data-toggle="modal" data-target="#skenirajKljucek">
+                                            Zableži prisotnost
+                                        </button>                                       
+
+                                        <p:dataTable id="dtt" var="car" style="padding-top: 10px" editMode="cell" widgetVar="cellCars" editable="true" value="#{hRCourseIzvedbaIzobrazevanjaBean.seznamUdelezencev}">
+
+                                            <p:ajax event="cellEdit" listener="#{hRCourseIzvedbaIzobrazevanjaBean.onCellEdit}" update="growl" />
+
+                                            <!--
+                                            <p:column headerText="Prisotnost ID">
+                                                <h:outputText value="#{car.attendanceID}" />
+                                            </p:column>
+
+                                            <p:column headerText="Codeks številka">
+                                                <h:outputText value="#{car.codeksID}" />
+                                            </p:column>
+                                            -->
+
+                                            <p:column headerText="Ime Priimek" filterBy="#{hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.get(car.codeksID).firstname} #{hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.get(car.codeksID).lastname}" filterMatchMode="contains">
+                                                <h:outputText value="#{hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.get(car.codeksID).firstname} #{hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.get(car.codeksID).lastname}" />
+                                            </p:column>        
+
+                                            <p:column headerText="Card">
+                                                <h:outputText value="#{hRCourseIzvedbaIzobrazevanjaBean.vuserjiHM.get(car.codeksID).card}" />
+                                            </p:column>  
+
+                                            <p:column headerText="Je bil prisoten">
+                                                <h:outputText value="#{car.wasAttended}" />
+                                            </p:column>
+
+                                            <p:column headerText="Zabeležka">                                               
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <h:outputText value="#{car.comment}" />
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:inputTextarea value="#{car.comment}" rows="5" cols="30" counter="display" maxlength="300" counterTemplate="{0} characters remaining." autoResize="false" />
+                                                        <br />
+                                                        <h:outputText id="display" />
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+                                            <p:column headerText="Ocena">
+                                                <p:cellEditor>
+                                                    <f:facet name="output">
+                                                        <p:rating value="#{car.rate}" readonly="true"/>
+                                                    </f:facet>
+                                                    <f:facet name="input">
+                                                        <p:rating value="#{car.rate}"/>
+                                                    </f:facet>
+                                                </p:cellEditor>
+                                            </p:column>
+
+
+
+                                        </p:dataTable>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </h:panelGroup>   
+
+                    </div>
+                </div>
+
+
+
+                <div id="niOfferingov" class="modal fade" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLinkModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Ne najdem planiranih izobraževanj</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Za današnji dan ni planiranih izobraževanj. Stran se bo zaprla</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                                    Nadaljuj
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </h:form>
+
+            <h:form id="form2">
+
+                <div id="skenirajKljucek" class="modal fade" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Registracija udeleženca</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    <p:focus context="form2"/>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <center>
+                                                <h:graphicImage name="dist/img/em-usb-reader.png" alt="" style="height: 150px"/>
+                                            </center>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <center>
+                                                <h:graphicImage name="dist/img/elatec-twn4-legic.png" alt="" style="height: 150px"/>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <center>
+                                            <p:selectOneRadio id="console" class="padding-table-columns" style="text-align:center;width: 100%" value="#{hRCourseIzvedbaIzobrazevanjaBean.izbrancitalec}">
+                                                <f:selectItem itemLabel="levi" itemValue="emcard" />
+                                                <f:selectItem itemLabel="ročno" itemValue="rocno" />
+                                                <f:selectItem itemLabel="desni" itemValue="elatec" />
+
+                                                <p:ajax listener="#{hRCourseIzvedbaIzobrazevanjaBean.readerChange}" update="kin advanced"/>
+                                            </p:selectOneRadio>
+                                        </center>
+                                    </div>
+                                    <p:inputText id="kin" disabled="#{!hRCourseIzvedbaIzobrazevanjaBean.kinenabled}" value="#{hRCourseIzvedbaIzobrazevanjaBean.kljucekStringBelezenje}" style="width: 100%"/>                                  
+
+                                    <p:selectOneMenu disabled="#{!hRCourseIzvedbaIzobrazevanjaBean.kinenabled}" id="advanced" value="#{hRCourseIzvedbaIzobrazevanjaBean.rocnoIzbranUser}" panelStyle="width:380px" effect="fade" 
+                                                     style="width:100%" appendTo="@this" converter="omnifaces.SelectItemsConverter" var="t" filter="true"
+                                                     filterMatchMode="contains" >
+
+                                        <f:selectItems value="#{hRCourseIzvedbaIzobrazevanjaBean.currentlyEmployed}" var="theme" itemLabel="#{theme.firstname} #{theme.lastname}" itemValue="#{theme}" />
+
+                                        <p:column>
+                                            <h:outputText value="#{t.firstname}" />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{t.lastname}" />
+                                        </p:column>
+                                        
+                                        <p:ajax listener="#{hRCourseIzvedbaIzobrazevanjaBean.rocnoIzbranUserAjax}" partialSubmit="false" update="kin"/>
+                                        
+                                        <!--
+                                        <p:ajax event="itemSelect" update="kin" listener="#{hRCourseIzvedbaIzobrazevanjaBean.rocnoIzbranUserAjax}"  partialSubmit="true"/>
+                                        -->
+                                    </p:selectOneMenu>
+
+                                    <br/>
+
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Prekliči</button>
+
+                                <p:commandButton id="submitButton" style="display:none" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaBean.shraniZabelezenKljucek}" update="form2:kin form:dtt"  value="Shrani" oncomplete="$('#skenirajKljucek').modal('hide');"/>
+
+                                <!--
+                                <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                                    Nadaljuj
+                                </a>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="form3">
+                <div id="niPrijavljenUporabnik" class="modal fade" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLinkModal2" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Obvestilo!</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Uporabnik ki se je registriral ni na seznamu oseb prijavljenih na izobraževanje.</p>
+                                <br/>
+                                <p>Želite uporabnika vseeno dodati na seznam udeležencev?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandButton id="neshraniNeprijavljenega" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaBean.neshraniNeprijavljenega}"  value="Ne dodaj na seznam" oncomplete="$('#niPrijavljenUporabnik').modal('hide');"/>                                
+                                <p:commandButton id="shraniNeprijavljenega" class="btn btn-primary" actionListener="#{hRCourseIzvedbaIzobrazevanjaBean.shraniNeprijavljenega}" update="form:dtt"  value="Dodaj na seznam" oncomplete="$('#niPrijavljenUporabnik').modal('hide');"/>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="form4">
+
+            </h:form>
+
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+            <script type="text/javascript">
+                $('#skenirajKljucek').on('shown.bs.modal', function () {
+                    //$('#kin').focus();
+                    document.getElementById('form2:kin').focus();
+                });
+
+                $('#b1').click(function () {
+                    $('#skenirajKljucek').modal({
+                        show: true
+                    });
+                });
+            </script>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

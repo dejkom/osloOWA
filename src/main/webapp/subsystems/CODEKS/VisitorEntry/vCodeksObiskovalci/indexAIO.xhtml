@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template_visitorsWacom.xhtml">
+
+        <ui:define name="PageHeader">
+            Odelo Visitor Information / Odelo informacije za obiskovalce
+
+            <style type="text/css">
+                .table-responsive{
+                    display: block;
+                    width: 100%;
+                    overflow-x: hidden;
+                }
+
+                .ui-widget-content{
+                    border: 0px solid #ddd;
+                }
+            </style>
+
+            <script type="text/javascript">
+                //for the first time the page is loaded
+                jQuery(document).ready(function () {
+                    onLoadFunction();
+                });
+
+                //to load the script after you reload your page with ajax
+                jQuery(document).on("pfAjaxComplete", function () {
+                    onLoadFunction();
+                });
+
+                //your code you handle with
+                function onLoadFunction() {
+                    console.log('sem v onLoadFunction');
+                    jQuery('.ui-widget-overlay').click(function () {
+                        PF('dlg5').hide();
+                    });
+                }
+
+                function addListenerOnDialogueOverlay() {
+                    console.log('Sem v addListenerOnDialogueOverlay()');
+
+                    jQuery('.ui-widget-overlay').click(function () {
+                        PF('dlg5').hide();
+                    });
+
+                }
+            </script>
+
+            <script type="text/javascript">
+
+                function printDiv(divName) {
+                    var printContents = document.getElementById(divName).innerHTML;
+                    var originalContents = document.body.innerHTML;
+                    document.body.innerHTML = printContents;
+                    window.print();
+                    document.body.innerHTML = originalContents;
+                }
+
+                function openWin(id) {
+                    //var divText = document.getElementById(id).innerHTML;
+                    //console.log('LOG:'+divText);
+                    //myWindow=window.open(divText,'','width=800,height=600');
+                    var divText = document.getElementById(id).innerHTML;
+                    var myWindow = window.open('', '', 'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,width=800,height=600');
+                    var doc = myWindow.document;
+                    doc.open();
+                    doc.write(divText);
+                    doc.querySelector('iframe').style.width = '100%';
+                    doc.querySelector('iframe').style.height = '100vh';
+                    doc.close();
+                }
+            </script>
+            <!--
+            <script src="https://mfpembedcdnweu.azureedge.net/mfpembedcontweu/Embed.js" type="text/javascript"></script>
+            <link rel="stylesheet" type="text/css" href="https://mfpembedcdnweu.azureedge.net/mfpembedcontweu/Embed.css" />
+            -->
+            <script type = "text/javascript" >
+                function renderSurvey(parentElementId, FirstName, LastName, locale, visitID, purpose) {
+                    //var se = new SurveyEmbed("MwBzODf4LkSUXc8ilmG5pgX8iyIc74NAned2Z1g3o6dUM09NTDEzRkw4NDhQRTVOTjZDNFVHQThYVS4u", "https://customervoice.microsoft.com/", "https://mfpembedcdnweu.azureedge.net/mfpembedcontweu/", "true");
+                    //var context = {"First Name": FirstName, "Last Name": LastName, "locale": locale, "visitID": visitID,"purpose": purpose, };
+                    //se.renderInline(parentElementId, context);
+                    document.getElementById('theiframe').setAttribute('src', "http://10.36.64.51:8083/index.php/664445?newtest=Y&amp;lang=sl&amp;visitID=" + visitID);
+                }
+
+                function resizeIframe() {
+                    var iFrameID = document.getElementById('theiframe');
+                    console.log('Sem v resizeIframe')
+                    intval = setInterval(function () {
+                        if (iFrameID.scrollHeight == iFrameID.contentWindow.document.body.scrollHeight) {
+                            clearInterval(intval);
+                        } else {
+                            iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+                        }
+                    }, 500)
+                }
+            </script>
+
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+
+
+                function handleOpen(event) {
+                    console.log('Openning ', event);
+                }
+
+                function handleClose(code, channel, event) {
+                    console.log('Handle close: ' + code, channel, event);
+                    if (code == -1) {
+                        console.log('Websockets not supported by client')
+                    } else if (code == 1000) { // Normal close (as result of expired session or view)
+                        console.log('Normal close, will try to reconnect');
+                    } else {
+                        // Abnormal close reason (as result of an error)
+                        alert('Error during the reconnect! Please refresh WebPage')
+                    }
+                }
+
+                function handleRECEPVISITChannelMessage(message, event) {
+                    console.log('sem v handleRECEPVISITChannelMessage:' + message);
+                    const obj = JSON.parse(message);
+                    console.log('Iz JSONA: ' + obj.vCodeksObiskovalciPK.guest);
+                    rc([{name: 'param1', value: message}]);
+                }
+
+                function handleRECEPVISITChannelMessageSurvey(message, event) {
+                    console.log('sem v handleRECEPVISITChannelMessageSurvey:' + message);
+                    const obj = JSON.parse(message);
+                    console.log('JSON for survey: ' + obj.visitID + ' guest:' + obj.guest + ' company:' + obj.company + ' reason:' + obj.reason);
+                    renderSurvey('surveyDiv', obj.visitID, ' ' + obj.reason, 'SI', obj.visitID, obj.reason);
+                    //openWin('surveyDiv');
+                    PF('dlg5').show();
+                }
+
+                function handleMessage(message, channelName, event) {
+                    if (channelName === 'Reception_Visitor_channel') {
+                        //console.log('handleMessage - CLOCK ', event);
+                        console.log("handleMessage message:" + message + " EVENT:" + event);
+                        handleRECEPVISITChannelMessage(message, event);
+                    } else if (channelName === 'Reception_Visitor_channel_survey') {
+                        console.log("handleMessage message:" + message + " EVENT:" + event);
+                        handleRECEPVISITChannelMessageSurvey(message, event);
+                    } else {
+                        alert('Unhandled channel: ' + channelName);
+                    }
+                }
+
+
+
+            </script>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+
+        </ui:define>
+
+        <ui:define name="content">
+            <o:socket channel="Reception_Visitor_channel" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose" />
+            <o:socket channel="Reception_Visitor_channel_survey" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose" />
+            <h:form id="VCodeksObiskovalciListForm">
+                <p:remoteCommand name="rc" action="#{vCodeksObiskovalciController.pushSetSelected}" update=":VCodeksObiskovalciViewPrintForm" oncomplete="PF('VCodeksObiskovalciViewPrintDialog').show()"/>
+
+                <center>
+                    <p:galleria value="#{vCodeksObiskovalciController.photos}" var="photo" autoPlay="true" showItemNavigators="true" showItemNavigatorsOnHover="true" transitionInterval="5000" circular="true"  numVisible="2" style="max-width: 80%;margin-top: -15px">
+                        <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%" />
+                        <!--
+                        <f:facet name="thumbnail">
+                            <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" />
+                        </f:facet>
+                        -->
+                    </p:galleria>
+                </center>
+
+
+                <p:dialog id="dialog1"  widgetVar="ex" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/vCodeksObiskovalci/printVisitorTemplate_SI.xhtml"
+                            name="someName" id="someId" scrolling="auto" width="900"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+                <p:dialog id="dialog5"  widgetVar="ex5" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/subsystems/CODEKS/VisitorEntry/vCodeksObiskovalci/printVisitorTemplate_EN.xhtml"
+                            name="someName" id="someId" scrolling="auto" width="900"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+
+            </h:form>
+
+
+            <p:dialog header="Naslov za posredovanje ankete" id="dialog7_1" widgetVar="dlg7_1" minHeight="40" width="500" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form7_1">
+                    <h:panelGroup id="display">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h:outputLabel for="akmailin" value="Vpišite email naslov gosta:"/>
+                                <p:inputText id="akmailin" widgetVar="myInputakmail" value="#{vCodeksObiskovalciController.anketaMailGost}" style="width:100%"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small>Email naslov se ne shrani v nobeno odelo zbirko podatkov. Na vpisan email bo posredovana izključno povezava do ankete.</small>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12"><p:commandButton  value="Shrani" actionListener="#{vCodeksObiskovalciController.sendMailAnketa()}" style="width: 100%" onclick="PF('dlg7_1').hide();" /></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <!--
+            <p:dialog header="Carbon Footprint Survey" id="dialog7_2" widgetVar="dlg7_2" minHeight="40" width="660" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form7_2">
+                    <h:panelGroup id="display">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <iframe width="640px" height="480px" src="https://forms.office.com/Pages/ResponsePage.aspx?id=MwBzODf4LkSUXc8ilmG5pgX8iyIc74NAned2Z1g3o6dURFAxQVpRSlRXNEYwT1owSVlWSEw1MFNJNS4u&amp;embed=true" frameborder="0" marginwidth="0" marginheight="0" style="border: none; max-width:100%; max-height:100vh" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" msallowfullscreen="true"> </iframe>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-12"><p:commandButton  value="Zapri" style="width: 100%" onclick="PF('dlg7_2').hide();" /></div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+            -->
+
+
+            <p:dialog header="Survey" id="dialog5" widgetVar="dlg5" onShow="addListenerOnDialogueOverlay()" showEffect="fade" fitViewport="true" modal="true"  width="850px" style="position: absolute; height: 500px; max-height: 500px; overflow: auto" blockScroll="true" showHeader="false" closeOnEscape="false" closable="false" resizable="false" appendTo="@(body)" >
+                <!--
+                <h:form id="form5">
+                    <div id="surveyDiv" style="height: 100vh"></div>
+                </h:form>
+                -->
+
+                
+                <iframe id="theiframe" style="width: 100%;" marginwidth="0" height="800" marginheight="0" align="middle" scrolling="no"></iframe>
+                
+            </p:dialog>
+
+
+            <ui:include src="ViewPrint.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

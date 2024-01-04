@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QSLogTableViewDlg" widgetVar="QSLogTableViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQSLog.ViewQSLogTableTitle}">
+            <h:form id="QSLogTableViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{qSLogTableController.selected != null}">
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_idRow}"/>
+                        <h:outputText value="#{qSLogTableController.selected.idRow}" title="#{bundleQSLog.ViewQSLogTableTitle_idRow}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_customer}"/>
+                        <h:outputText value="#{qSLogTableController.selected.customer}" title="#{bundleQSLog.ViewQSLogTableTitle_customer}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_plant}"/>
+                        <h:outputText value="#{qSLogTableController.selected.plant}" title="#{bundleQSLog.ViewQSLogTableTitle_plant}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_project}"/>
+                        <h:outputText value="#{qSLogTableController.selected.project}" title="#{bundleQSLog.ViewQSLogTableTitle_project}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_HDLSWLBlendaAdapter}"/>
+                        <h:outputText value="#{qSLogTableController.selected.HDLSWLBlendaAdapter}" title="#{bundleQSLog.ViewQSLogTableTitle_HDLSWLBlendaAdapter}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_team}"/>
+                        <h:outputText value="#{qSLogTableController.selected.team}" title="#{bundleQSLog.ViewQSLogTableTitle_team}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_month}"/>
+                        <h:outputText value="#{qSLogTableController.selected.month}" title="#{bundleQSLog.ViewQSLogTableTitle_month}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_defectdescription}"/>
+                        <h:outputText value="#{qSLogTableController.selected.defectdescription}" title="#{bundleQSLog.ViewQSLogTableTitle_defectdescription}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_shorterDefectDescription}"/>
+                        <h:outputText value="#{qSLogTableController.selected.shorterDefectDescription}" title="#{bundleQSLog.ViewQSLogTableTitle_shorterDefectDescription}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_shorterDefectDescriptionSLO}"/>
+                        <h:outputText value="#{qSLogTableController.selected.shorterDefectDescriptionSLO}" title="#{bundleQSLog.ViewQSLogTableTitle_shorterDefectDescriptionSLO}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_causedByInt}"/>
+                        <h:outputText value="#{qSLogTableController.selected.causedByInt}" title="#{bundleQSLog.ViewQSLogTableTitle_causedByInt}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_status8D}"/>
+                        <h:outputText value="#{qSLogTableController.selected.status8D}" title="#{bundleQSLog.ViewQSLogTableTitle_status8D}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_statusOfPartAfterTheComplaint}"/>
+                        <h:outputText value="#{qSLogTableController.selected.statusOfPartAfterTheComplaint}" title="#{bundleQSLog.ViewQSLogTableTitle_statusOfPartAfterTheComplaint}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_krajsiOpisReklamacije}"/>
+                        <h:outputText value="#{qSLogTableController.selected.krajsiOpisReklamacije}" title="#{bundleQSLog.ViewQSLogTableTitle_krajsiOpisReklamacije}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_actionNonDetection}"/>
+                        <h:outputText value="#{qSLogTableController.selected.actionNonDetection}" title="#{bundleQSLog.ViewQSLogTableTitle_actionNonDetection}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_actionOccurence}"/>
+                        <h:outputText value="#{qSLogTableController.selected.actionOccurence}" title="#{bundleQSLog.ViewQSLogTableTitle_actionOccurence}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_rootCauseOccurence}"/>
+                        <h:outputText value="#{qSLogTableController.selected.rootCauseOccurence}" title="#{bundleQSLog.ViewQSLogTableTitle_rootCauseOccurence}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_rootCauseNonDetection}"/>
+                        <h:outputText value="#{qSLogTableController.selected.rootCauseNonDetection}" title="#{bundleQSLog.ViewQSLogTableTitle_rootCauseNonDetection}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_responseTime}"/>
+                        <h:outputText value="#{qSLogTableController.selected.responseTime}" title="#{bundleQSLog.ViewQSLogTableTitle_responseTime}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_DReportCompletedOn}"/>
+                        <h:outputText value="#{qSLogTableController.selected.DReportCompletedOn}" title="#{bundleQSLog.ViewQSLogTableTitle_DReportCompletedOn}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_reactivity3D}"/>
+                        <h:outputText value="#{qSLogTableController.selected.reactivity3D}" title="#{bundleQSLog.ViewQSLogTableTitle_reactivity3D}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_termin8DReport}"/>
+                        <h:outputText value="#{qSLogTableController.selected.termin8DReport}" title="#{bundleQSLog.ViewQSLogTableTitle_termin8DReport}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_nr8DReport}"/>
+                        <h:outputText value="#{qSLogTableController.selected.nr8DReport}" title="#{bundleQSLog.ViewQSLogTableTitle_nr8DReport}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_DReportCompletedOn1}"/>
+                        <h:outputText value="#{qSLogTableController.selected.DReportCompletedOn1}" title="#{bundleQSLog.ViewQSLogTableTitle_DReportCompletedOn1}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_status8DDoneOpen}"/>
+                        <h:outputText value="#{qSLogTableController.selected.status8DDoneOpen}" title="#{bundleQSLog.ViewQSLogTableTitle_status8DDoneOpen}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_reactivity8D}"/>
+                        <h:outputText value="#{qSLogTableController.selected.reactivity8D}" title="#{bundleQSLog.ViewQSLogTableTitle_reactivity8D}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_causeBy}"/>
+                        <h:outputText value="#{qSLogTableController.selected.causeBy}" title="#{bundleQSLog.ViewQSLogTableTitle_causeBy}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_supplierCaused}"/>
+                        <h:outputText value="#{qSLogTableController.selected.supplierCaused}" title="#{bundleQSLog.ViewQSLogTableTitle_supplierCaused}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_odeloCaused}"/>
+                        <h:outputText value="#{qSLogTableController.selected.odeloCaused}" title="#{bundleQSLog.ViewQSLogTableTitle_odeloCaused}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_rejected}"/>
+                        <h:outputText value="#{qSLogTableController.selected.rejected}" title="#{bundleQSLog.ViewQSLogTableTitle_rejected}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_cleanPoint}"/>
+                        <h:outputText value="#{qSLogTableController.selected.cleanPoint}" title="#{bundleQSLog.ViewQSLogTableTitle_cleanPoint}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_statusKosaPoReklamaciji}"/>
+                        <h:outputText value="#{qSLogTableController.selected.statusKosaPoReklamaciji}" title="#{bundleQSLog.ViewQSLogTableTitle_statusKosaPoReklamaciji}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_supplierName}"/>
+                        <h:outputText value="#{qSLogTableController.selected.supplierName}" title="#{bundleQSLog.ViewQSLogTableTitle_supplierName}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_supplierPB}"/>
+                        <h:outputText value="#{qSLogTableController.selected.supplierPB}" title="#{bundleQSLog.ViewQSLogTableTitle_supplierPB}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_dateOfWeiterbelastung}"/>
+                        <h:outputText value="#{qSLogTableController.selected.dateOfWeiterbelastung}" title="#{bundleQSLog.ViewQSLogTableTitle_dateOfWeiterbelastung}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_debitDone}"/>
+                        <h:outputText value="#{qSLogTableController.selected.debitDone}" title="#{bundleQSLog.ViewQSLogTableTitle_debitDone}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_teamLeader}"/>
+                        <h:outputText value="#{qSLogTableController.selected.teamLeader}" title="#{bundleQSLog.ViewQSLogTableTitle_teamLeader}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_terminPSReport}"/>
+                        <h:outputText value="#{qSLogTableController.selected.terminPSReport}" title="#{bundleQSLog.ViewQSLogTableTitle_terminPSReport}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_remarks}"/>
+                        <h:outputText value="#{qSLogTableController.selected.remarks}" title="#{bundleQSLog.ViewQSLogTableTitle_remarks}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_claimedParts}"/>
+                        <h:outputText value="#{qSLogTableController.selected.claimedParts}" title="#{bundleQSLog.ViewQSLogTableTitle_claimedParts}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_PPMrelevantParts}"/>
+                        <h:outputText value="#{qSLogTableController.selected.PPMrelevantParts}" title="#{bundleQSLog.ViewQSLogTableTitle_PPMrelevantParts}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_XRepetitiveDefects}"/>
+                        <h:outputText value="#{qSLogTableController.selected.XRepetitiveDefects}" title="#{bundleQSLog.ViewQSLogTableTitle_XRepetitiveDefects}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_claimDate}"/>
+                        <h:outputText value="#{qSLogTableController.selected.claimDate}" title="#{bundleQSLog.ViewQSLogTableTitle_claimDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_CWWeek}"/>
+                        <h:outputText value="#{qSLogTableController.selected.CWWeek}" title="#{bundleQSLog.ViewQSLogTableTitle_CWWeek}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_productionDate}"/>
+                        <h:outputText value="#{qSLogTableController.selected.productionDate}" title="#{bundleQSLog.ViewQSLogTableTitle_productionDate}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_recievingDate}"/>
+                        <h:outputText value="#{qSLogTableController.selected.recievingDate}" title="#{bundleQSLog.ViewQSLogTableTitle_recievingDate}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_claimNo}"/>
+                        <h:outputText value="#{qSLogTableController.selected.claimNo}" title="#{bundleQSLog.ViewQSLogTableTitle_claimNo}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_claimNoAdditionalMark}"/>
+                        <h:outputText value="#{qSLogTableController.selected.claimNoAdditionalMark}" title="#{bundleQSLog.ViewQSLogTableTitle_claimNoAdditionalMark}"/>
+                        <h:outputText value="#{bundleQSLog.ViewQSLogTableLabel_commentForReport}"/>
+                        <h:outputText value="#{qSLogTableController.selected.commentForReport}" title="#{bundleQSLog.ViewQSLogTableTitle_commentForReport}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleQSLog.Close}" onclick="QSLogTableViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

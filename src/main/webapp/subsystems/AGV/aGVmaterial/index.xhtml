@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Ordering Portal - Material
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage Materials
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="AGVmaterialListForm">
+                <p:panel header="">
+                    <p:dataTable id="datalist" value="#{aGVmaterialController.items}" var="item"
+                                 selectionMode="single" selection="#{aGVmaterialController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.materialId}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVmaterialTitle_materialId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.materialId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVmaterialTitle_materialDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.materialDescription}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Material Category"/>
+                            </f:facet>
+                            <h:outputText value="#{item.materialCategory}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Material Unit"/>
+                            </f:facet>
+                            <h:outputText value="#{item.materialUnit}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleAGV.Create}" actionListener="#{aGVmaterialController.prepareCreate}" update=":AGVmaterialCreateForm" oncomplete="PF('AGVmaterialCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleAGV.View}" update=":AGVmaterialViewForm" oncomplete="PF('AGVmaterialViewDialog').show()" disabled="#{empty aGVmaterialController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleAGV.Edit}" update=":AGVmaterialEditForm" oncomplete="PF('AGVmaterialEditDialog').show()" disabled="#{empty aGVmaterialController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleAGV.Delete}" actionListener="#{aGVmaterialController.destroy}" update=":growl,datalist" disabled="#{empty aGVmaterialController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

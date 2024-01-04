@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECKontrolaJoblogCreateDlg" widgetVar="OSECKontrolaJoblogCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecSpea.CreateOSECKontrolaJoblogTitle}">
+            <h:form id="OSECKontrolaJoblogCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECKontrolaJoblogController.selected != null}">
+                        <p:outputLabel value="#{bundleOsecSpea.CreateOSECKontrolaJoblogLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{oSECKontrolaJoblogController.selected.id}" title="#{bundleOsecSpea.CreateOSECKontrolaJoblogTitle_id}" required="true" requiredMessage="#{bundleOsecSpea.CreateOSECKontrolaJoblogRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.CreateOSECKontrolaJoblogLabel_executiontime}" for="executiontime" />
+                        <p:calendar id="executiontime" pattern="MM/dd/yyyy HH:mm:ss" value="#{oSECKontrolaJoblogController.selected.executiontime}" title="#{bundleOsecSpea.EditOSECKontrolaJoblogTitle_executiontime}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.CreateOSECKontrolaJoblogLabel_message}" for="message" />
+                        <p:inputText id="message" value="#{oSECKontrolaJoblogController.selected.message}" title="#{bundleOsecSpea.CreateOSECKontrolaJoblogTitle_message}" />
+                        <p:outputLabel value="#{bundleOsecSpea.CreateOSECKontrolaJoblogLabel_rowstransfered}" for="rowstransfered" />
+                        <p:inputText id="rowstransfered" value="#{oSECKontrolaJoblogController.selected.rowstransfered}" title="#{bundleOsecSpea.CreateOSECKontrolaJoblogTitle_rowstransfered}" />
+                        <p:outputLabel value="#{bundleOsecSpea.CreateOSECKontrolaJoblogLabel_maxtimestampintransfereddata}" for="maxtimestampintransfereddata" />
+                        <p:calendar id="maxtimestampintransfereddata" pattern="MM/dd/yyyy HH:mm:ss" value="#{oSECKontrolaJoblogController.selected.maxtimestampintransfereddata}" title="#{bundleOsecSpea.EditOSECKontrolaJoblogTitle_maxtimestampintransfereddata}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oSECKontrolaJoblogController.create}" value="#{bundleOsecSpea.Save}" update="display,:OSECKontrolaJoblogListForm:datalist,:growl" oncomplete="handleSubmit(args,'OSECKontrolaJoblogCreateDialog');"/>
+                    <p:commandButton value="#{bundleOsecSpea.Cancel}" onclick="OSECKontrolaJoblogCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

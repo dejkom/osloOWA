@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRJobCreateDlg" widgetVar="HRJobCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateHRJobTitle}">
+            <h:form id="HRJobCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRJobController.selected != null}">
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRJobLabel_jobID}" for="jobID" />
+                        <p:inputText id="jobID" value="#{hRJobController.selected.jobID}" title="#{bundleHRCourse.CreateHRJobTitle_jobID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRJobRequiredMessage_jobID}"/>
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRJobLabel_jobTitle}" for="jobTitle" />
+                        <p:inputText id="jobTitle" value="#{hRJobController.selected.jobTitle}" title="#{bundleHRCourse.CreateHRJobTitle_jobTitle}" required="true" requiredMessage="#{bundleHRCourse.CreateHRJobRequiredMessage_jobTitle}"/>
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRJobLabel_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{hRJobController.selected.active}" required="true" requiredMessage="#{bundleHRCourse.EditHRJobRequiredMessage_active}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRJobController.create}" value="#{bundleHRCourse.Save}" update="display,:HRJobListForm:datalist,:growl" oncomplete="handleSubmit(args,'HRJobCreateDialog');"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="HRJobCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseInstructorsWorkLogEditDlg" widgetVar="HRCourseInstructorsWorkLogEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle}">
+            <h:form id="HRCourseInstructorsWorkLogEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseInstructorsWorkLogController.selected != null}">
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{hRCourseInstructorsWorkLogController.selected.id}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_id}" required="true" requiredMessage="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_courseOfferingID}" for="courseOfferingID" />
+                        <p:inputText id="courseOfferingID" value="#{hRCourseInstructorsWorkLogController.selected.courseOfferingID}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_courseOfferingID}" required="true" requiredMessage="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogRequiredMessage_courseOfferingID}"/>
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_codeksID}" for="codeksID" />
+                        <p:inputText id="codeksID" value="#{hRCourseInstructorsWorkLogController.selected.codeksID}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_codeksID}" required="true" requiredMessage="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogRequiredMessage_codeksID}"/>
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_firstname}" for="firstname" />
+                        <p:inputText id="firstname" value="#{hRCourseInstructorsWorkLogController.selected.firstname}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_firstname}" required="true" requiredMessage="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogRequiredMessage_firstname}"/>
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_lastname}" for="lastname" />
+                        <p:inputText id="lastname" value="#{hRCourseInstructorsWorkLogController.selected.lastname}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_lastname}" required="true" requiredMessage="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogRequiredMessage_lastname}"/>
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_duration}" for="duration" />
+                        <p:inputText id="duration" value="#{hRCourseInstructorsWorkLogController.selected.duration}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_duration}" />
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_timestamp}" for="timestamp" />
+                        <p:inputText id="timestamp" value="#{hRCourseInstructorsWorkLogController.selected.timestamp}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_timestamp}" />
+                        <p:outputLabel value="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogLabel_comment}" for="comment" />
+                        <p:inputText id="comment" value="#{hRCourseInstructorsWorkLogController.selected.comment}" title="#{bundleHRCIWL.EditHRCourseInstructorsWorkLogTitle_comment}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseInstructorsWorkLogController.update}" value="#{bundleHRCIWL.Save}" update="display,:HRCourseInstructorsWorkLogListForm:datalist,:growl" oncomplete="handleSubmit(args, 'HRCourseInstructorsWorkLogEditDialog');"/>
+                    <p:commandButton value="#{bundleHRCIWL.Cancel}" onclick="HRCourseInstructorsWorkLogEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

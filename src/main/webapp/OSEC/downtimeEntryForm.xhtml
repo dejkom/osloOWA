@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templateProductionFaster.xhtml">
+
+        <ui:define name="PageHeader">
+            OSEC <strong><h:outputText value="#{osecDowntimeEntryBean.foundLine.lineName}"/></strong>
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+
+            <script type="text/javascript">
+
+                function focusIF() {
+                    $('#form3\\:kin').focus();
+                }
+
+                function refreshPage() {
+                    location.reload();
+                }
+
+                function setupLiveElapsedTimeDisplays() {
+                    // Function to calculate and format the duration
+
+                    const calculateDuration = (timestamp) => {
+                        console.log('timestamp:' + timestamp);
+                        const fromDate = new Date(timestamp);
+                        const now = new Date();
+                        const diff = now - fromDate;
+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                        const minutes = Math.floor((diff / 1000 / 60) % 60);
+                        const seconds = Math.floor((diff / 1000) % 60);
+
+                        let durationStr = 'Trajanje: ';
+                        if (days > 0)
+                            durationStr += days + ' dni, ';
+                        if (hours > 0)
+                            durationStr += hours + ' ur, ';
+                        if (minutes > 0)
+                            durationStr += minutes + ' min, ';
+                        if (seconds > 0)
+                            durationStr += seconds + ' sec, ';
+
+                        return durationStr.slice(0, -2); // Remove the trailing comma and space
+
+                        //return days+' days, '+hours+' hours, '+minutes+' minutes, '+seconds+' seconds';
+                    };
+
+                    // Function to update each display
+                    const updateDisplays = () => {
+                        document.querySelectorAll('[data-start-timestamp]').forEach(element => {
+                            const timestamp = parseInt(element.getAttribute('data-start-timestamp'), 10);
+                            element.innerText = calculateDuration(timestamp);
+                        });
+                    };
+
+                    // Update the displays every second
+                    setInterval(updateDisplays, 1000);
+                }
+
+                // Initialize the live elapsed time displays
+                //setupLiveElapsedTimeDisplays();
+
+                window.onload = function () {
+                    console.log('sem v onload');
+                    setupLiveElapsedTimeDisplays();
+                };
+
+                function callBeanMethod() {
+                    console.log('Sem v callBeanMethod');
+                    document.getElementById('f2:hiddenButton').click();
+                    PF('OSECDowntimeCreateDialog').show();
+                }
+
+                function checkStringLength() {
+                    var inputField = document.getElementById('form2:workOrderKeypad');
+                    if (inputField.value.length > 7) {
+                        console.log('Input is longer than 7 characters');
+                        // Perform your desired action here, such as showing a dialog
+                        PF('OSECDowntimePrijavaDialog').show();
+                    } else {
+                        console.log('Input is not longer than 8 characters');
+                        alert('Nalog mora vsebovati 8 znakov');
+                        // Handle the case where the input is not longer than 8 characters
+                    }
+                }
+
+                function setFocusToInput() {
+                    PrimeFaces.focus('form3:kin');
+                }
+
+
+
+            </script>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:form id="formNalog">
+                Trenutni nalog: 
+                <strong>
+                    <p:inplace style="width:300px">
+                        <p:inputText value="#{osecDowntimeEntryBean.workorderScanned}" onkeypress="if (event.keyCode === 13) { 
+                                 PF('ajaxListener').fire(); 
+                                 event.preventDefault(); 
+                             }">
+                            <p:ajax event="valueChange" listener="#{osecDowntimeEntryBean.workorderScannedEvent}"
+                                    global="false" async="true" 
+                                    process="@this"
+                                    update=":formNalog :f2" />
+                        </p:inputText>
+                        <h:inputText style="display: none;" />
+                    </p:inplace>
+                </strong>
+            </h:form>
+        </ui:define>
+
+
+        <ui:define name="content">
+
+            <h:outputText value="#{osecDowntimeEntryBean.krneki}"/>
+
+            <h:form id="form1">
+
+                <p:idleMonitor timeout="300000" onidle="refreshPage()">
+
+                </p:idleMonitor>
+            </h:form>
+
+
+            <div class="row" style="margin: 5px">
+                <div class="col-md-12">
+                    <h:panelGroup id="pg" layout="block" class="box box-default" rendered="#{!empty osecDowntimeEntryBean.foundLine}">
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class=""><a class="nav-link" href="#tab_1" data-toggle="tab" aria-expanded="true">#{msg['BasicInformations']}</a></li>
+                                <!--<li class=""><a class="nav-link" href="#tab_3" data-toggle="tab" aria-expanded="false">Delovna navodila</a></li>-->
+                                <li class=""><a class="nav-link active" href="#tab_2" data-toggle="tab" aria-expanded="false">Zastoji<span class="label" style="margin-left: 5px"><h:outputText id="steveczastoji" value="#{osecDowntimeEntryBean.downtimesForSelectedLine.size()}" /></span></a></li>
+                                <li class=""><a class="nav-link" href="#tab_4" data-toggle="tab" aria-expanded="false">Operaterji<span class="label" style="margin-left: 5px"><h:outputText id="stevecoperaterji" value="#{osecDowntimeEntryBean.allLoggedInOnLine.size()}" /></span></a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="tab_1">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <h2>Ime linije:</h2><h3><h:outputText id="ctitle2" value = "#{osecDowntimeEntryBean.foundLine.lineName}" /></h3>
+                                                <br/>
+                                                <h2>Stroji na liniji:</h2>
+                                                <ui:repeat value="#{osecDowntimeEntryBean.foundLine.OSECMachineList}" var="mac" varStatus="status">
+                                                    <h3><h:outputText value="#{mac.machineName}"/></h3>
+                                                </ui:repeat>
+                                            </div>
+
+                                            <div class="col-md-8">
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--
+                                <div class="tab-pane" id="tab_3">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <iframe src="https://odelo.rewo.io/si/guides/check/D87B7B5C-5DFA-6004-AB63-36FD6B9A3220/1" width="100%" height="600px" frameborder="0"></iframe>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+
+                                <div class="tab-pane active" id="tab_2">
+                                    <div class="panel-body">
+                                        <h:form id="f2">
+                                            <div class="row">
+                                                <button type="button" id="b1" style="width:70%; height: 60px; background-color: #1ab394; color: white; font-weight: bold; font-size: large; display:#{osecDowntimeEntryBean.workorderScanned.blank eq true ? 'none' : null}" class="btn btn-default" data-toggle="modal" onclick="callBeanMethod()"  data-target="#skenirajKljucek">
+                                                    Vnos zastoja
+                                                </button>
+                                                
+                                                <p:commandButton value="#{bundleOSECZastoji.insertDowntimeLunch}" action="#{osecDowntimeEntryBean.insertLunchDowntime()}" style="width:30%; height: 60px; background-color: #3b7a6e; color: white; font-weight: bold; font-size: large; border: 0px; display:#{osecDowntimeEntryBean.workorderScanned.blank eq true ? 'none' : null}" class="btn btn-default" oncomplete="PF('OSECDowntimePrijavaDialog').show()" update="form1 form3"/>
+                                                <p:commandButton id="hiddenButton" action="#{osecDowntimeEntryBean.initEmptyDowntime()}" update="form2" style="display:none">
+                                                    <f:ajax/>
+                                                </p:commandButton>
+                                            </div>
+                                            <div class="row">
+                                                <p:dataTable id="datalist" value="#{osecDowntimeEntryBean.downtimesForSelectedLine}" var="item"
+                                                             selectionMode="single" selection="#{oSECDowntimeController.selected}"
+                                                             paginator="true"
+                                                             rowKey="#{item.downtimeID}"
+                                                             rows="10"
+                                                             rowsPerPageTemplate="10,50"
+                                                             >
+
+                                                    <p:ajax event="rowSelect"   />
+                                                    <p:ajax event="rowUnselect" />
+
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_downtimeID}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.downtimeID}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_date}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.date}">
+                                                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_startD}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.startD}">
+                                                            <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_endD}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.endD}">
+                                                            <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_duration}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.duration} min"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_shift}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.shift}"/>
+                                                    </p:column>
+
+
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_workOrder}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.workOrder}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_plannedUnplanned}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.plannedUnplanned}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_comment}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.comment}"/>
+                                                    </p:column>
+                                                    <!--
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_machineIDfk}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.machineIDfk}"/>
+                                                    </p:column>
+                                                    -->
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_reasonIDfk}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.reasonIDfk.text} (#{item.reasonIDfk.reasonGroup} - #{item.reasonIDfk.reasonSubgroup})"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_OSECMachine}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.OSECMachine.machineName} (Linija: #{item.OSECMachine.lineIDfk.lineName})"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="Status"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.statusString}"/>
+                                                        <p:inplace editor="true"  rendered="#{osecDowntimeEntryBean.admin}">
+                                                            <p:selectOneMenu value="#{item.status}" alwaysDisplayLabel="true" >
+                                                                <f:selectItem itemLabel="Nepotrjen" itemValue="0"/>
+                                                                <f:selectItem itemLabel="Zavrnjen" itemValue="1"/>
+                                                                <f:selectItem itemLabel="Sprejet" itemValue="2"/>
+                                                            </p:selectOneMenu>
+                                                            <p:ajax event="save" listener="#{osecDowntimeEntryBean.dtStatusChangeEvent}" update="datalist" />
+                                                        </p:inplace>
+                                                        <!--
+                                                        <h:outputText value="#{item.status}"/>
+                                                        -->
+                                                    </p:column>
+
+                                                    <p:column rendered="false">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="Source"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.source}"/>
+                                                    </p:column>
+
+                                                </p:dataTable>
+                                            </div>
+                                        </h:form>
+                                    </div>
+
+
+
+                                </div>
+
+
+                                <div class="tab-pane" id="tab_4">
+                                    <div class="panel-body">
+                                        <h:form id="f" onsubmit="return false;">
+                                            <h:panelGroup id="displayd">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h2>Izmena v katero se prijavljate:</h2>
+                                                        <p:selectOneRadio id="line" value="#{osecDowntimeEntryBean.shiftSelected}" layout="lineDirection">
+                                                            <p:ajax listener="#{osecDowntimeEntryBean.izmenaChange}"/>
+                                                            <f:selectItem itemLabel="Izmena 1" itemValue="1"/>
+                                                            <f:selectItem itemLabel="Izmena 2" itemValue="2"/>
+                                                            <f:selectItem itemLabel="Izmena 3" itemValue="3"/>
+                                                        </p:selectOneRadio>
+
+                                                        <h2>Prijavno polje:</h2>
+                                                        <p:inputText id="operaterLoginRFID"  style="width:100%" value="#{osecDowntimeEntryBean.operaterKljucekIn}">
+                                                            <p:ajax process="@this" onstart="if(event.keyCode !== 13) {return false;}" update=":f:displayd stevecoperaterji" event="keyup"  listener="#{osecDowntimeEntryBean.operaterPrijava(event)}"  />
+                                                            <!--<f:ajax render=":form1:display" />-->
+                                                        </p:inputText>
+                                                        <!--<p:commandButton style="visibility: hidden;"/>--> <!-- dummy hidden button to stop keyPress from firirng submit -->
+                                                        <br/>
+
+                                                        <h2>Prijavljeni operaterji:</h2>
+                                                        <br/>
+                                                    </div>  
+                                                </div>
+                                                <div class="row">
+
+
+
+                                                    <ui:repeat id="operaterjiuir" value="#{osecDowntimeEntryBean.allLoggedInOnLine}" var="log" varStatus="status">
+                                                        <div class="col-md-3"> 
+                                                            <!--
+                                                            <h3><h:outputText value="#{log.externalId}"/></h3>
+                                                            <h3><h:outputText value="Start: #{log.loginStart}"/></h3>
+                                                            <h3><h:outputText value="End: #{log.loginEnd}"/></h3>
+                                                            -->
+
+                                                            <div class="ibox-content text-center">
+                                                                <h1>#{log.externalId}</h1>
+                                                                <div class="m-b-sm">
+                                                                    <img alt="image" class="rounded-circle" src="/osloWebApp/resources/img/avat_placeholder128.png" />
+                                                                </div>
+                                                                <!--<p class="font-bold">Consectetur adipisicing</p>-->
+                                                                <div class="text-center">
+                                                                    <address class="m-t-md">
+                                                                        <strong></strong><br/>
+                                                                        Prijava: <strong><h:outputText value="#{log.loginStart}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></strong>
+                                                                        <br/>
+                                                                        Izmena: <strong>#{log.loginShift}</strong>
+                                                                        <!--End: <h:outputText value="#{log.loginEnd}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" /></h:outputText>-->
+                                                                        <br/>
+                                                                        <div id="time-display-#{status.index}" data-start-timestamp="#{log.loginStart.time}"></div>
+                                                                    </address>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </ui:repeat>
+
+
+
+
+                                                </div>
+                                            </h:panelGroup>
+                                        </h:form>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+                        </div>
+                    </h:panelGroup>   
+
+                </div>
+            </div>
+
+
+
+            <p:dialog id="OSECDowntimeCreateDlg" widgetVar="OSECDowntimeCreateDialog"  modal="true" height="460" width="70%" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.CreateOSECDowntimeTitle}">           
+                <h:form id="form2">
+                    <!--
+                    <div id="skenirajKljucek" class="modal" data-keyboard="false" data-backdrop="true" tabindex="-1"  role="dialog" aria-labelledby="myLModal" aria-hidden="true" style="z-index: 100" >
+                    -->                   
+                    <h:panelGroup id="display" style="width:1000px !important">                                             
+                        <p:panelGrid columns="4" rendered="#{osecDowntimeEntryBean.newDowntime != null}" style="width:100% !important">
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_date}" for="date" />
+                            <p:calendar id="date" pattern="dd.MM.yyyy" style="width: 90%" value="#{osecDowntimeEntryBean.newDowntime.date}" title="#{bundleOSECZastoji.EditOSECDowntimeTitle_date}"  showOn="button"/>
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_shift}" for="shift" />
+                            <p:selectOneMenu id="shift" appendTo="@this" value="#{osecDowntimeEntryBean.newDowntime.shift}" style="width: 90%">
+                                <f:selectItem itemLabel="Select shift" itemValue=""/>
+                                <f:selectItem itemLabel="Shift 1" itemValue="1"/>
+                                <f:selectItem itemLabel="Shift 2" itemValue="2"/>
+                                <f:selectItem itemLabel="Shift 3" itemValue="3"/>
+                                <p:ajax event="change" update="startD endD" listener="#{osecDowntimeEntryBean.shiftSelected}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_duration}" for="duration" />
+                            <!--<p:inputNumber id="duration" value="#{osecDowntimeEntryBean.newDowntime.duration}" symbol="min" decimalPlaces="0" symbolPosition="s" emptyValue="always" />-->
+                            <p:spinner id="duration" style="width: 90%" value="#{osecDowntimeEntryBean.newDowntime.duration}" min="0" buttons="horizontal-after" upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger">
+                                <p:ajax event="valueChange" listener="#{osecDowntimeEntryBean.shiftSelected}" update="startD endD" />
+                            </p:spinner>
+                            <!--<p:inputText id="duration" value="#{osecDowntimeEntryBean.newDowntime.duration}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_duration}" />-->
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_workOrder}" for="workOrderKeypad" />
+                            <!--
+                            <p:inputText id="workOrder" value="#{osecDowntimeEntryBean.newDowntime.workOrder}" style="width: 90%" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_workOrder}" />
+                            -->
+                            <p:keyboard id="workOrderKeypad" value="#{osecDowntimeEntryBean.newDowntime.workOrder}" required="true" requiredMessage="Napacna dolzina naloga"  style="width: 90%" keypadOnly="true">
+                            </p:keyboard>
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_plannedUnplanned}" for="plannedUnplanned" />
+                            <p:selectOneMenu id="plannedUnplanned" appendTo="@this" value="#{osecDowntimeEntryBean.newDowntime.plannedUnplanned}" style="width: 90%">
+                                <f:selectItem itemLabel="Select downtime type" itemValue=""/>
+                                <f:selectItem itemLabel="Planiran" itemValue="P"/>
+                                <f:selectItem itemLabel="Neplaniran" itemValue="N"/>
+                                <p:ajax listener="#{osecDowntimeEntryBean.onDowntimeTypeSelect}" update="reasonIDfk" />
+                            </p:selectOneMenu>
+                            <!--
+                            <p:inputText id="plannedUnplanned" value="#{osecDowntimeEntryBean.newDowntime.plannedUnplanned}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_plannedUnplanned}" />
+                            -->    
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_reasonIDfk}" for="reasonIDfk" />
+                            <p:selectOneMenu id="reasonIDfk" value="#{osecDowntimeEntryBean.newDowntime.reasonIDfk}" style="width: 90%">
+                                <f:selectItem itemLabel="Select reason" itemValue=""/>
+                                <f:selectItems value="#{osecDowntimeEntryBean.possibleDowntimes}"
+                                               var="reasonIDfkItem"
+                                               itemLabel="#{reasonIDfkItem.text}"
+                                               itemValue="#{reasonIDfkItem}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_OSECMachine}" for="OSECMachine" />
+                            <p:selectOneMenu  id="OSECMachine" value="#{osecDowntimeEntryBean.newDowntime.OSECMachine}" style="width: 90%" required="true" requiredMessage="#{bundleOSECZastoji.EditOSECDowntimeRequiredMessage_OSECMachine}">
+                                <f:selectItem itemLabel="Select machine" itemValue=""/>
+                                <f:selectItems value="#{oSECMachineController.getMachinesForSelectedLineSelectOne(osecDowntimeEntryBean.foundLine.lineID)}"
+                                               var="OSECMachineItem"
+                                               itemLabel="#{OSECMachineItem.machineName}"
+                                               itemValue="#{OSECMachineItem}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_comment}" for="commentKeypad" />
+                            <!--
+                            <p:inputTextarea id="comment" rows="6" cols="50" value="#{osecDowntimeEntryBean.newDowntime.comment}" style="width: 100%" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_comment}" />
+                            -->
+                            <p:keyboard  id="commentKeypad" value="#{osecDowntimeEntryBean.newDowntime.comment}" style="width: 90%;"/>
+
+
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_startD}" for="startD" />
+                            <p:calendar id="startD" pattern="dd.MM.yyyy HH:mm:ss" value="#{osecDowntimeEntryBean.newDowntime.startD}" disabled="true" title="#{bundleOSECZastoji.EditOSECDowntimeTitle_startD}"  showOn="button"/>
+                            <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_endD}" for="endD" />
+                            <p:calendar id="endD" pattern="dd.MM.yyyy HH:mm:ss" value="#{osecDowntimeEntryBean.newDowntime.endD}" disabled="true" title="#{bundleOSECZastoji.EditOSECDowntimeTitle_endD}"  showOn="button"/>
+
+                        </p:panelGrid>
+                        <br/>
+
+
+                        <p:commandButton value="Save Downtime OPEN LOGIN"  oncomplete="checkStringLength()" update="form1 form3" style="width: 100%"/>
+
+                        <!-- NASLEDNJI GUMBEK UPORABIMO ČE NE ŽELIMO PRIJAVE S KLJUCKOM
+                        <p:commandButton value="#{bundleOSECZastoji.Save} #{bundleOSECZastoji.downtime}"  oncomplete="PF('OSECDowntimeCreateDialog').hide()" action="#{osecDowntimeEntryBean.vpisSKljuckom()}" update="form1" style="width: 100%"/>
+                        -->
+                    </h:panelGroup>
+                    <!--</div>-->
+                </h:form>
+            </p:dialog>
+
+
+            <p:dialog id="OSECDowntimePrijavaDlg" widgetVar="OSECDowntimePrijavaDialog" focus="form3:kin" closable="true" modal="true" height="260" width="50%" resizable="false" appendTo="@(body)" header="Prijava">                     
+                <h:form id="form3" >
+
+                    <p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <center>
+                                    <h:graphicImage library="img" name="em-usb-reader.png" alt="" style="height: 150px"/>
+                                </center>
+                            </div>
+
+                            <div class="col-md-6">
+                                <center>
+                                    <h:graphicImage library="img" name="elatec-twn4-legic.png" alt="" style="height: 150px"/>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <center>
+                                    <p:selectOneRadio id="console" class="padding-table-columns" style="text-align:center;width: 100%" value="#{osecDowntimeEntryBean.izbrancitalec}">
+                                        <f:selectItem itemLabel="levi" itemValue="emcard" itemDisabled="true"/>
+                                        <f:selectItem itemLabel="desni" itemValue="elatec" />
+                                    </p:selectOneRadio>
+                                </center>
+                            </div>
+                        </div>
+                        <p:inputText id="kin" disabled="false" required="true" requiredMessage="Niste vpisali kljucka" value="#{osecDowntimeEntryBean.kljucekString}"  style="width: 100%;margin-top: 5px; margin-bottom: 5px;"/>                                  
+
+                        <br/>            
+                        <p:commandButton value="Save Downtime" action="#{osecDowntimeEntryBean.vpisSKljuckom()}" update="form1 f2 f form3 stevecoperaterji steveczastoji" style="width: 100%"/>
+                    </p>
+
+                </h:form>
+            </p:dialog>
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

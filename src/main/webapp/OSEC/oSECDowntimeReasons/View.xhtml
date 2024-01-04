@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECDowntimeReasonsViewDlg" widgetVar="OSECDowntimeReasonsViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.ViewOSECDowntimeReasonsTitle}">
+            <h:form id="OSECDowntimeReasonsViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECDowntimeReasonsController.selected != null}">
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeReasonsLabel_reasonID}"/>
+                        <h:outputText value="#{oSECDowntimeReasonsController.selected.reasonID}" title="#{bundleOSECZastoji.ViewOSECDowntimeReasonsTitle_reasonID}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeReasonsLabel_text}"/>
+                        <h:outputText value="#{oSECDowntimeReasonsController.selected.text}" title="#{bundleOSECZastoji.ViewOSECDowntimeReasonsTitle_text}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeReasonsLabel_reasonGroup}"/>
+                        <h:outputText value="#{oSECDowntimeReasonsController.selected.reasonGroup}" title="#{bundleOSECZastoji.ViewOSECDowntimeReasonsTitle_reasonGroup}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeReasonsLabel_reasonSubgroup}"/>
+                        <h:outputText value="#{oSECDowntimeReasonsController.selected.reasonSubgroup}" title="#{bundleOSECZastoji.ViewOSECDowntimeReasonsTitle_reasonSubgroup}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECDowntimeReasonsLabel_active}"/>
+                        <p:selectBooleanCheckbox value="#{oSECDowntimeReasonsController.selected.active}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOSECZastoji.Close}" onclick="OSECDowntimeReasonsViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

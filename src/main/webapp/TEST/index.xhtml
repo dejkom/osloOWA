@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+>
+
+<h:head>
+
+</h:head>
+
+<h:body>
+Session ID: <h:outputText value="#{session.id}" />
+<br />
+<h:link value="Test Session Scoped Bean" outcome="testSessionScoped" />
+<br />
+<h:link value="Test View Scoped Bean" outcome="testViewScoped" />
+<br />
+<h:link value="Test Application Scoped Bean" outcome="testApplicationScoped" />
+
+</h:body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QSmainEditDlg" widgetVar="QSmainEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQS.EditQSmainTitle}">
+            <h:form id="QSmainEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{qSmainController.selected != null}">
+                        <p:outputLabel value="#{bundleQS.EditQSmainLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{qSmainController.selected.id}" title="#{bundleQS.EditQSmainTitle_id}" required="true" disabled="true" requiredMessage="#{bundleQS.EditQSmainRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleQS.EditQSmainLabel_category}" for="category" />
+                        <p:inputText id="category" value="#{qSmainController.selected.category}" title="#{bundleQS.EditQSmainTitle_category}" required="true" requiredMessage="#{bundleQS.EditQSmainRequiredMessage_category}"/>
+                        <p:outputLabel value="#{bundleQS.EditQSmainLabel_disabled}" for="disabled" />
+                        <p:selectBooleanCheckbox id="disabled" value="#{qSmainController.selected.disabled}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{qSmainController.update}" value="#{bundleQS.Save}" update="display,:QSmainListForm:datalist,:growl" oncomplete="handleSubmit(args, 'QSmainEditDialog');"/>
+                    <p:commandButton value="#{bundleQS.Cancel}" onclick="QSmainEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

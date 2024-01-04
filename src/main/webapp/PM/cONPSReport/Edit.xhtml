@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CONPSReportEditDlg" widgetVar="CONPSReportEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleCONPSReport.EditCONPSReportTitle}">
+            <h:form id="CONPSReportEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{cONPSReportController.selected != null}">
+                        <p:outputLabel value="#{bundleCONPSReport.EditCONPSReportLabel_idRow}" for="idRow" />
+                        <p:inputText id="idRow" value="#{cONPSReportController.selected.idRow}" title="#{bundleCONPSReport.EditCONPSReportTitle_idRow}" required="true" disabled="true" requiredMessage="#{bundleCONPSReport.EditCONPSReportRequiredMessage_idRow}"/>
+                        <p:outputLabel value="#{bundleCONPSReport.EditCONPSReportLabel_projectNo}" for="projectNo" />
+                        <p:inputText id="projectNo" value="#{cONPSReportController.selected.projectNo}" title="#{bundleCONPSReport.EditCONPSReportTitle_projectNo}" />
+                        
+                        
+                        <p:outputLabel value="#{bundleCONPSReport.EditCONPSReportLabel_category}" for="category" />
+                        <p:selectOneMenu id="category" filter="true" filterMatchMode="contains" value="#{cONPSReportController.selected.category}" required="true">
+                            <f:selectItem itemLabel="Select type" itemValue=""/>
+                            <f:selectItem itemLabel="Design Engineering" itemValue="DesignEngineering"/>
+                            <f:selectItem itemLabel="Optical Engineering" itemValue="OpticalEngineering"/>
+                            <f:selectItem itemLabel="Elec. Engineering HW" itemValue="ElecEngineeringHW"/>
+                            <f:selectItem itemLabel="FEM and Simulation" itemValue="FEMandSimulation"/>
+                            <f:selectItem itemLabel="Project Management" itemValue="ProjectManagement"/>
+                            <f:selectItem itemLabel="Tool Engineering" itemValue="ToolEngineering"/>
+                            <f:selectItem itemLabel="PETD" itemValue="PETD"/>
+                            <f:selectItem itemLabel="Purchasing" itemValue="Purchasing"/>
+                            <f:selectItem itemLabel="Process Engineering" itemValue="ProcessEngineering"/>
+                            <f:selectItem itemLabel="FuSa" itemValue="FuSa"/>
+                            <f:selectItem itemLabel="Calculation" itemValue="Calculation"/>
+                            <f:selectItem itemLabel="Sales" itemValue="Sales"/>
+                            <f:selectItem itemLabel="Certification Authority Costs" itemValue="CertificationAuthorityCosts"/>
+                            <f:selectItem itemLabel="Prototype Costs" itemValue="PrototypeCosts"/>
+                            <f:selectItem itemLabel="Electronic Prototype" itemValue="ElectronicPrototype"/>
+                            <f:selectItem itemLabel="Testing" itemValue="Testing"/>
+                            <f:selectItem itemLabel="EMC Test" itemValue="EMCTest"/>
+                            <f:selectItem itemLabel="Travel &nbsp; Freight" itemValue="TravelAndFreight"/>
+                            <f:selectItem itemLabel="Proposal Period Cost" itemValue="ProposalPeriodCost"/>
+                            <f:selectItem itemLabel="Prototype Molds and Equipments" itemValue="PrototypeMoldsAndEquipments"/>
+                            <f:selectItem itemLabel="Molds: Initial Costs" itemValue="MoldsInitialCosts"/>
+                            <f:selectItem itemLabel="Molds: Customer Changes" itemValue="MoldsCustomerChanges"/>
+                            <f:selectItem itemLabel="Molds: Internal changes" itemValue="MoldsInternalChanges"/>
+                            <f:selectItem itemLabel="Assembly Equipments" itemValue="AssemblyEquipments"/>
+                            <f:selectItem itemLabel="Coating Equipments" itemValue="CoatingEquipments"/>
+                            <f:selectItem itemLabel="Injection Equipments" itemValue="InjectionEquipments"/>
+                            <f:selectItem itemLabel="Gripper" itemValue="Gripper"/>
+                            <f:selectItem itemLabel="Measuring Equipments" itemValue="MeasuringEquipments"/>
+                            <f:selectItem itemLabel="Test Equipments" itemValue="TestEquipments"/>
+                            <f:selectItem itemLabel="Supplier Tools" itemValue="SupplierTools"/>
+                            <f:selectItem itemLabel="Supplier Equipments" itemValue="SupplierEquipments"/>
+                            <f:selectItem itemLabel="Packing Costs" itemValue="PackingCosts"/>
+                            <f:selectItem itemLabel="Start-Up Costs" itemValue="StartUpCosts"/>
+                            <f:selectItem itemLabel="Timekeeping Plant" itemValue="TimekeepingPlant"/>
+                            <f:selectItem itemLabel="Embedded Testing" itemValue="EmbeddedTesting"/>
+                            <f:selectItem itemLabel="Intercompany" itemValue="Intercompany"/>
+                            <f:selectItem itemLabel="Molds: Repairment" itemValue="MoldsRepairment"/>
+                            <f:selectItem itemLabel="Elec. Engineering SW" itemValue="ElecEngineeringSW"/>
+                            <f:selectItem itemLabel="EE Coordination" itemValue="EECoordination"/>
+                            <f:selectItem itemLabel="Requirements Eng." itemValue="RequirementsEng"/>
+                            <f:selectItem itemLabel="Addendum for Budget" itemValue="AddendumForBudget"/>
+                            <f:selectItem itemLabel="QM" itemValue="QM"/>
+                            <f:selectItem itemLabel="System Engineer" itemValue="SystemEngineer"/>
+                            <f:selectItem itemLabel="Logistics" itemValue="Logistics"/>
+                            <f:selectItem itemLabel="Cyber Security NPI" itemValue="CyberSecurityNPI"/>
+                            <f:selectItem itemLabel="Configuration Man." itemValue="ConfigurationMan"/>
+                            <f:selectItem itemLabel="Quality Embedded" itemValue="QualityEmbedded"/>
+                            <f:selectItem itemLabel="Invoicing oBg" itemValue="InvoicingOBg"/>
+                        </p:selectOneMenu>
+                        <!--
+                        <p:inputText id="category" value="#{cONPSReportController.selected.category}" title="#{bundleCONPSReport.EditCONPSReportTitle_category}" />
+                        -->
+                        
+                        
+                        <p:outputLabel value="#{bundleCONPSReport.EditCONPSReportLabel_comment}" for="comment" />
+                        <p:inputText id="comment" value="#{cONPSReportController.selected.comment}" title="#{bundleCONPSReport.EditCONPSReportTitle_comment}" />
+                        
+                        <p:outputLabel value="Date From" for="dateFrom" />
+                        <p:calendar id="dateFrom" pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" value="#{cONPSReportController.selected.dateFrom}" title="Date From"/>
+                        
+                        <p:outputLabel value="Responsible" for="responsible" />
+                        <p:selectOneMenu id="responsible" filter="true" filterMatchMode="contains" value="#{cONPSReportController.selected.responsible}">
+                            <f:selectItem itemLabel="Select responsible..." itemValue=""/>
+                            <f:selectItem itemLabel="ProContr" itemValue="ProContr"/>
+                            <f:selectItem itemLabel="ProMgmt" itemValue="ProMgmt"/>
+                            <f:selectItem itemLabel="General remark" itemValue="General remark"/>
+                        </p:selectOneMenu>
+                        <!--
+                        <p:inputText id="responsible" value="#{cONPSReportController.selected.responsible}" title="Responsible" />
+                        -->
+                        
+                        <p:outputLabel value="Status" for="status" />
+                        <p:selectOneMenu id="status" filter="true" filterMatchMode="contains" value="#{cONPSReportController.selected.status}">
+                            <f:selectItem itemLabel="Select status..." itemValue=""/>
+                            <f:selectItem itemLabel="Completed" itemValue="Completed"/>
+                            <f:selectItem itemLabel="Ongoing" itemValue="Ongoing"/>
+                            <f:selectItem itemLabel="Open" itemValue="Open"/>
+                        </p:selectOneMenu>
+                        <!--
+                        <p:inputText id="status" value="#{cONPSReportController.selected.status}" title="Status" />
+                        -->
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{cONPSReportController.update}" value="#{bundleCONPSReport.Save}" update="display,:CONPSReportListForm:datalist,:growl" oncomplete="handleSubmit(args, 'CONPSReportEditDialog');"/>
+                    <p:commandButton value="#{bundleCONPSReport.Cancel}" onclick="CONPSReportEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

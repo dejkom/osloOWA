@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="CONEbitProfitViewDlg" widgetVar="CONEbitProfitViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleEbit.ViewCONEbitProfitTitle}">
+            <h:form id="CONEbitProfitViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{cONEbitProfitController.selected != null}">
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_idRow}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.idRow}" title="#{bundleEbit.ViewCONEbitProfitTitle_idRow}"/>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_projectNo}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.projectNo}" title="#{bundleEbit.ViewCONEbitProfitTitle_projectNo}"/>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_format}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.format}" title="#{bundleEbit.ViewCONEbitProfitTitle_format}"/>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_type}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.type}" title="#{bundleEbit.ViewCONEbitProfitTitle_type}"/>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_phase}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.phase}" title="#{bundleEbit.ViewCONEbitProfitTitle_phase}"/>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_value}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.value}" title="#{bundleEbit.ViewCONEbitProfitTitle_value}"/>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_dateFrom}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.dateFrom}" title="#{bundleEbit.ViewCONEbitProfitTitle_dateFrom}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleEbit.ViewCONEbitProfitLabel_dateTo}"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.dateTo}" title="#{bundleEbit.ViewCONEbitProfitTitle_dateTo}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        
+                        <h:outputText value="Remark:"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.remark}" title="Remark"/>
+                        
+                        <h:outputText value="Source:"/>
+                        <h:outputText value="#{cONEbitProfitController.selected.source}" title="Source"/>
+                        
+                        
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleEbit.Close}" onclick="CONEbitProfitViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            OSEC Downtimes - Lines
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+            <script type="text/javascript">
+                function setupLiveElapsedTimeDisplays() {
+                    // Function to calculate and format the duration
+
+                    const calculateDuration = (timestamp) => {
+                        console.log('timestamp:' + timestamp);
+                        const fromDate = new Date(timestamp);
+                        const now = new Date();
+                        const diff = now - fromDate;
+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                        const minutes = Math.floor((diff / 1000 / 60) % 60);
+                        const seconds = Math.floor((diff / 1000) % 60);
+
+                        let durationStr = 'Trajanje: ';
+                        if (days > 0)
+                            durationStr += days + ' dni, ';
+                        if (hours > 0)
+                            durationStr += hours + ' ur, ';
+                        if (minutes > 0)
+                            durationStr += minutes + ' min, ';
+                        if (seconds > 0)
+                            durationStr += seconds + ' sec, ';
+
+                        return durationStr.slice(0, -2); // Remove the trailing comma and space
+
+                        //return days+' days, '+hours+' hours, '+minutes+' minutes, '+seconds+' seconds';
+                    };
+
+                    // Function to update each display
+                    const updateDisplays = () => {
+                        document.querySelectorAll('[data-start-timestamp]').forEach(element => {
+                            const timestamp = parseInt(element.getAttribute('data-start-timestamp'), 10);
+                            element.innerText = calculateDuration(timestamp);
+                        });
+                    };
+
+                    // Update the displays every second
+                    setInterval(updateDisplays, 1000);
+                }
+                
+                window.onload = function () {
+                    console.log('sem v onload');
+                    setupLiveElapsedTimeDisplays();
+                };
+                
+            </script>
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Šifrant OSEC linij
+        </ui:define>
+
+
+        <ui:define name="content">
+
+            <h:form id="OSECLineListForm">
+                <p:dataTable id="datalist" value="#{oSECLineController.items}" var="item"
+                             selectionMode="single" selection="#{oSECLineController.selected}"
+                             paginator="true"
+                             rowKey="#{item.lineID}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECLineTitle_lineID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lineID}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECLineTitle_lineName}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lineName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECLineTitle_active}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.active}" disabled="true"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Akcije"/>
+                        </f:facet>
+                        <p:linkButton href="/osloWebApp/faces/OSEC/downtimeEntryForm.xhtml" icon="fa fa-gauge" value="Odpri pogled linije" style="margin-right:20px;">
+                            <f:param name="line" value="#{item.lineID}"/>
+                        </p:linkButton>
+                        <p:commandButton id="loggedinButton" icon="fa fa-user" actionListener="#{oSECLineController.setLineParam(item.lineID)}"  value="Prijavljeni operaterji"  update=":LoggedInDlg :formLoggedin :formLoggedin:operaterjiuir" oncomplete="PF('LoggedInDlg').show()"/>
+
+
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleOSECZastoji.Create}" actionListener="#{oSECLineController.prepareCreate}" update=":OSECLineCreateForm" oncomplete="PF('OSECLineCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleOSECZastoji.View}" update=":OSECLineViewForm" oncomplete="PF('OSECLineViewDialog').show()" disabled="#{empty oSECLineController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleOSECZastoji.Edit}" update=":OSECLineEditForm" oncomplete="PF('OSECLineEditDialog').show()" disabled="#{empty oSECLineController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleOSECZastoji.Delete}" actionListener="#{oSECLineController.destroy}" update=":growl,datalist" disabled="#{empty oSECLineController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+            <p:dialog id="LoggedInDlg" widgetVar="LoggedInDlg" closable="true" modal="true" height="460" width="50%" resizable="false" appendTo="@(body)" header="Prijavljeni operaterji linija #{oSECLineController.getOSECLine(oSECLineController.lineParam).lineName}">                     
+                <h:form id="formLoggedin" >
+                    <h:panelGroup id="userListContainer"> 
+                    <div class="row">
+                    <ui:repeat id="operaterjiuir" value="${oSECloginLogController.getLoggedinUsers(oSECLineController.lineParam)}" var="log" varStatus="status">
+                        <div class="col-md-4"> 
+                            <div class="ibox-content text-center">
+                                
+                                <h2>${vADCODEKSUsersController.getVADCODEKSUsersByExternalID(log.externalId).lastname} ${vADCODEKSUsersController.getVADCODEKSUsersByExternalID(log.externalId).firstname}</h2>
+                                <h3>#{log.externalId}</h3>
+                                <div class="m-b-sm" style="margin-bottom:0px">
+                                    <img alt="image" class="rounded-circle" style="width:50px" src="/osloWebApp/resources/img/avat_placeholder128.png" />
+                                </div>
+                                <!--<p class="font-bold">Consectetur adipisicing</p>-->
+                                <div class="text-center">
+                                    <address class="m-t-md" style="margin-top:0px; margin-bottom: 0px">
+                                        <strong></strong><br/>
+                                        Prijava: <strong><h:outputText value="#{log.loginStart}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></strong>
+                                        <br/>
+                                        Izmena: <strong>#{log.loginShift}</strong>
+                                        <!--End: <h:outputText value="#{log.loginEnd}"><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" /></h:outputText>-->
+                                        <br/>
+                                        <div id="time-display-#{status.index}" data-start-timestamp="#{log.loginStart.time}"></div>
+                                    </address>
+                                </div>
+                            </div>
+                            <div class="ibox-footer text-center">
+                                <p:commandButton icon="fa fa-trash" action="#{oSECloginLogController.selectLogAndDelete(log.loginId)}" update=":formLoggedin:userListContainer" styleClass="rounded-button ui-button-danger" />                            
+                            </div>
+
+                        </div>
+                    </ui:repeat>
+                    </div>
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

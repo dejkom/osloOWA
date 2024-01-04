@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVcatalogViewDlg" widgetVar="AGVcatalogViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.ViewAGVcatalogTitle}">
+            <h:form id="AGVcatalogViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVcatalogController.selected != null}">
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_catalogId}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.catalogId}" title="#{bundleAGV.ViewAGVcatalogTitle_catalogId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_disabled}"/>
+                        <p:selectBooleanCheckbox value="#{aGVcatalogController.selected.disabled}" disabled="true"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_catalogFrom}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.catalogFrom}" title="#{bundleAGV.ViewAGVcatalogTitle_catalogFrom}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_catalogTo}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.catalogTo}" title="#{bundleAGV.ViewAGVcatalogTitle_catalogTo}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_materialId}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.materialId}" title="#{bundleAGV.ViewAGVcatalogTitle_materialId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_orderTypeId}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.orderTypeId}" title="#{bundleAGV.ViewAGVcatalogTitle_orderTypeId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_placeFrom}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.placeFrom}" title="#{bundleAGV.ViewAGVcatalogTitle_placeFrom}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVcatalogLabel_placeTo}"/>
+                        <h:outputText value="#{aGVcatalogController.selected.placeTo}" title="#{bundleAGV.ViewAGVcatalogTitle_placeTo}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleAGV.Close}" onclick="AGVcatalogViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

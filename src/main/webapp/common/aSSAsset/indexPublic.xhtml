@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="head">
+            <script type="text/javascript"></script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            ASS Asset
+            
+            <style type="text/css">
+
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+
+                .thirty-percent {
+                    width: 30%;
+                }
+
+                .seventy-percent {
+                    width: 70%;
+                }
+
+                .noPadding{
+                    padding-left: 0px !important;
+                }
+
+                .ui-datatable-header.ui-widget-header.ui-corner-top{
+                    background-color: transparent !important;
+                    border-color: transparent !important;
+                    height: 0px;
+                }
+
+                .critical {
+                    background-color: #ffbbbb !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .warning {
+                    background-color: #FBFFA3 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .hiddenDTrow{
+                    visibility: collapse;
+                }
+            </style>
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            To je šifrant za ASS Asset tabelo
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:form id="ASSAssetListForm">
+                <p:panel header="">
+                    <p:dataTable id="datalist" value="#{aSSAssetController.items}" var="item"
+                                 selectionMode="single" selection="#{aSSAssetController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.IDAsset}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50,#{aSSAssetController.items.size()}">
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                        
+                        <f:facet name="header">
+                            <div class="p-d-flex p-jc-between p-ai-center">
+                                <div>                                    
+                                    <p:commandButton id="toggler" type="button" value="Stolpci" style="float:right" icon="pi pi-align-justify"/>
+                                    <p:columnToggler datasource="datalist" trigger="toggler" />
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <p:column sortable="true" sortBy="#{item.IDAsset}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAsset}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDAsset}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.assetDescription}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetDescription}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetReturn}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.assetReturn}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetDeleted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.assetDeleted}" disabled="true"/>
+                        </p:column>
+                        <p:column filterBy="#{item.assetSerialNumber}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetSerialNumber}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetSerialNumber}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.assetComment}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetComment}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetComment}"/>
+                        </p:column>
+                        <p:column sortable="true" sortBy="#{item.assetUpdated}">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetUpdated}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetUpdated}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetUpdatedUser}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetUpdatedUser}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireDays}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetExpireDays}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireMonths}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetExpireMonths}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireYears}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetExpireYears}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetMinimumQuantityWarning}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetMinimumQuantityWarning}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetMinimumQuantityCritical}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetMinimumQuantityCritical}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetParent}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDAssetParent}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.IDAssetLocation.IDLocation} #{item.IDAssetLocation.locationDescription}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetLocation}"/>
+                            </f:facet>
+                            <h:outputText value="(#{item.IDAssetLocation.IDLocation}) #{item.IDAssetLocation.locationDescription}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.IDAssetType.IDType} #{item.IDAssetType.typeDescription}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetType}"/>
+                            </f:facet>
+                            <h:outputText value="(#{item.IDAssetType.IDType}) #{item.IDAssetType.typeDescription}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{aSSAssetController.prepareCreate}" update=":ASSAssetCreateForm" oncomplete="PF('ASSAssetCreateDialog').show()"/>
+                            <!--<p:commandButton id="createCopyButton" icon="ui-icon-plus"   value="#{bundle.CreateCopy}" actionListener="#{aSSAssetController.prepareCreateCopy}" update=":ASSAssetCopyCreateForm" oncomplete="PF('ASSAssetCopyCreateDialog').show()"/>-->
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ASSAssetViewForm" oncomplete="PF('ASSAssetViewDialog').show()" disabled="#{empty aSSAssetController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ASSAssetEditForm" oncomplete="PF('ASSAssetEditDialog').show()" disabled="#{empty aSSAssetController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{aSSAssetController.inactivate()}" update=":growl,datalist" disabled="#{empty aSSAssetController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                    
+                    <p:contextMenu for="datalist" style="width: 400px">
+                        <p:menuitem value="Objavi na dodatni lokaciji" actionListener="#{aSSAssetController.prepareCreateCopy}" update=":ASSAssetCopyCreateForm" oncomplete="PF('ASSAssetCopyCreateDialog').show()" icon="pi pi-times" disabled="false"/>
+                    </p:contextMenu>
+                    
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="CreateCopy.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

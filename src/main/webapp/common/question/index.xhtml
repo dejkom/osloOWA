@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Question šifrant
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="Here you can manage questions for different Questionnaires"/>
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="QuestionListForm">
+                <p:dataTable id="datalist" value="#{questionController.items}" var="item"
+                             selectionMode="single" selection="#{questionController.selected}"
+                             paginator="true"
+                             rowKey="#{item.questionID}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_questionID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.questionID}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_question}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.question}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_answer}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.answer}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_sortColumn}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.sortColumn}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_questionType}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.questionType}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_options}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.options}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleQuestionnaire.ListQuestionTitle_questionnaireID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.questionnaireID}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleQuestionnaire.Create}" actionListener="#{questionController.prepareCreate}" update=":QuestionCreateForm" oncomplete="PF('QuestionCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleQuestionnaire.View}" update=":QuestionViewForm" oncomplete="PF('QuestionViewDialog').show()" disabled="#{empty questionController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleQuestionnaire.Edit}" update=":QuestionEditForm" oncomplete="PF('QuestionEditDialog').show()" disabled="#{empty questionController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleQuestionnaire.Delete}" actionListener="#{questionController.destroy}" update=":growl,datalist" disabled="#{empty questionController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

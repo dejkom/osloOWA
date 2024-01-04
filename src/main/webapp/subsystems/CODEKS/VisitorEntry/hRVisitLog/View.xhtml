@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRVisitLogViewDlg" widgetVar="HRVisitLogViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleVisitorEntryLog.ViewHRVisitLogTitle}">
+            <h:form id="HRVisitLogViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRVisitLogController.selected != null}">
+                        <h:outputText value="#{bundleVisitorEntryLog.ViewHRVisitLogLabel_HRVisitLogPK_visitID}"/>
+                        <h:outputText value="#{hRVisitLogController.selected.HRVisitLogPK.visitID}" title="#{bundleVisitorEntryLog.ViewHRVisitLogTitle_HRVisitLogPK_visitID}"/>
+                        <h:outputText value="#{bundleVisitorEntryLog.ViewHRVisitLogLabel_HRVisitLogPK_guest}"/>
+                        <h:outputText value="#{hRVisitLogController.selected.HRVisitLogPK.guest}" title="#{bundleVisitorEntryLog.ViewHRVisitLogTitle_HRVisitLogPK_guest}"/>
+                        <h:outputText value="#{bundleVisitorEntryLog.ViewHRVisitLogLabel_timeIn}"/>
+                        <h:outputText value="#{hRVisitLogController.selected.timeIn}" title="#{bundleVisitorEntryLog.ViewHRVisitLogTitle_timeIn}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleVisitorEntryLog.ViewHRVisitLogLabel_timeOut}"/>
+                        <h:outputText value="#{hRVisitLogController.selected.timeOut}" title="#{bundleVisitorEntryLog.ViewHRVisitLogTitle_timeOut}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleVisitorEntryLog.ViewHRVisitLogLabel_odeloPersonRecipient}"/>
+                        <h:outputText value="#{hRVisitLogController.selected.odeloPersonRecipient}" title="#{bundleVisitorEntryLog.ViewHRVisitLogTitle_odeloPersonRecipient}"/>
+                        <h:outputText value="#{bundleVisitorEntryLog.ViewHRVisitLogLabel_signature}"/>
+                        <h:outputText value="#{hRVisitLogController.selected.signature}" title="#{bundleVisitorEntryLog.ViewHRVisitLogTitle_signature}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleVisitorEntryLog.Close}" onclick="HRVisitLogViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

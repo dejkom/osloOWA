@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVstatusLogViewDlg" widgetVar="AGVstatusLogViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.ViewAGVstatusLogTitle}">
+            <h:form id="AGVstatusLogViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVstatusLogController.selected != null}">
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLogLabel_statusLogId}"/>
+                        <h:outputText value="#{aGVstatusLogController.selected.statusLogId}" title="#{bundleAGV.ViewAGVstatusLogTitle_statusLogId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLogLabel_timestamp}"/>
+                        <h:outputText value="#{aGVstatusLogController.selected.timestamp}" title="#{bundleAGV.ViewAGVstatusLogTitle_timestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLogLabel_status}"/>
+                        <h:outputText value="#{aGVstatusLogController.selected.status}" title="#{bundleAGV.ViewAGVstatusLogTitle_status}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLogLabel_person}"/>
+                        <h:outputText value="#{aGVstatusLogController.selected.person}" title="#{bundleAGV.ViewAGVstatusLogTitle_person}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLogLabel_message}"/>
+                        <h:outputText value="#{aGVstatusLogController.selected.message}" title="#{bundleAGV.ViewAGVstatusLogTitle_message}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLogLabel_orderId}"/>
+                        <h:outputText value="#{aGVstatusLogController.selected.orderId}" title="#{bundleAGV.ViewAGVstatusLogTitle_orderId}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleAGV.Close}" onclick="AGVstatusLogViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

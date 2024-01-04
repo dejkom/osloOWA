@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TempOSECtableViewDlg" widgetVar="TempOSECtableViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Pregled podatkov PCB-ja">
+            <h:form id="TempOSECtableViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="4" rendered="#{tempOSECtableController.selected != null}">
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_id}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.id}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_id}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitSN}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitSN}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitSN}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_firstTestDatetime}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.firstTestDatetime}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_firstTestDatetime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitLN}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitLN}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitLN}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitName}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitName}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitName}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitType}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitType}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitType}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitID}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitID}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitID}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitPN}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitPN}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitPN}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitPanel}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitPanel}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitPanel}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_unitIndex}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.unitIndex}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_unitIndex}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_stationName}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.stationName}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_stationName}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_stationOS}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.stationOS}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_stationOS}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_testDatetime}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.testDatetime}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_testDatetime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_status}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.status}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_status}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_remark}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.remark}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_remark}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_processID}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.processID}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_processID}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_operatorName}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.operatorName}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_operatorName}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_prenosVBaan}"/>
+                        <p:selectBooleanCheckbox value="#{tempOSECtableController.selected.prenosVBaan}" disabled="true"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_sprostilVBaan}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.sprostilVBaan}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_sprostilVBaan}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_sprostilTimestamp}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.sprostilTimestamp}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_sprostilTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewTempOSECtableLabel_prenosVBaanTimestamp}"/>
+                        <h:outputText value="#{tempOSECtableController.selected.prenosVBaanTimestamp}" title="#{bundleOsecSpea.ViewTempOSECtableTitle_prenosVBaanTimestamp}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOsecSpea.Close}" onclick="TempOSECtableViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

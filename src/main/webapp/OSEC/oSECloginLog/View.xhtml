@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECloginLogViewDlg" widgetVar="OSECloginLogViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle}">
+            <h:form id="OSECloginLogViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECloginLogController.selected != null}">
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_loginId}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.loginId}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_loginId}"/>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_lineID}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.lineID}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_lineID}"/>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_workerCard}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.workerCard}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_workerCard}"/>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_externalId}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.externalId}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_externalId}"/>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_loginStart}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.loginStart}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_loginStart}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_loginEnd}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.loginEnd}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_loginEnd}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_loginDate}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.loginDate}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_loginDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogLabel_loginShift}"/>
+                        <h:outputText value="#{oSECloginLogController.selected.loginShift}" title="#{bundleOsecOperaterjiPrijava.ViewOSECloginLogTitle_loginShift}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOsecOperaterjiPrijava.Close}" onclick="OSECloginLogViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

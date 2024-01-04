@@ -1,0 +1,174 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template_agv.xhtml">
+
+        <ui:define name="PageHeader">
+            Production Display - Administrator page
+
+            <style type="text/css">
+                .pending {
+                    background-color: #EDEDED !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .submitted {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .processing {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .sent {
+                    background-color: #E9FFB9 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .delivered {
+                    background-color: #9AFF95 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .canceled {
+                    background-color: #FFA6A6 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+            </style>
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:growl id="growl" widgetVar="growl" showDetail="true" life="5000" sticky="false"/>     
+
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Websocket communication</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <p>
+                                    <p:commandButton value="refresh All Displays" actionListener="#{prodDisplayAdministratorBean.refreshPage()}" />    
+                                </p>
+                                <p>
+                                    <p:commandButton value="Show popup BLANK" actionListener="#{prodDisplayAdministratorBean.showMessageOnAllScreens()}" />    
+                                </p>
+                                <p>
+                                    <p:commandButton value="Hide popup" actionListener="#{prodDisplayAdministratorBean.hideMessageOnAllScreens()}" />    
+                                </p>
+                                <p>
+                                    <!--
+                                    Vozilo: <p:inputText id="inputVozilo" value="#{prodDisplayAdministratorBean.vehicle}" binding="#{vehicle}"/> <br/>
+                                    Registrska oznaka: <p:inputText id="inputPlate" value="#{prodDisplayAdministratorBean.licenceplate}" binding="#{licenceplate}"/> <br/>
+                                    -->
+                                    <p:commandButton value="Show popup" actionListener="#{prodDisplayAdministratorBean.showMessageOnAllScreens(vehicle.value, licenceplate.value)}" />    
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <br/>
+
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Pošiljanje obvestil na prikazovalnike</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <p>
+                                    <p:fileUpload value="#{prodDisplayAdministratorBean.file}" mode="simple" skinSimple="true" auto="true" process="@this" update="growl cropperPanel" listener="#{prodDisplayAdministratorBean.handleFileUpload}"/>
+                                    <br/>
+                                    <p:outputPanel id="cropperPanel" style="#{prodDisplayAdministratorBean.base64image eq null ? 'display: none' : ''}">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <img src="#{prodDisplayAdministratorBean.base64image}" height="600" width="800"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h:panelGrid columns="2" cellpadding="7">
+                                                    <h:outputLabel for="inputVozilo" value="Vozilo:"/>
+                                                    <p:inputText id="inputVozilo" value="#{prodDisplayAdministratorBean.vehicle}" binding="#{vehicle}"/>
+                                                
+                                                    <h:outputLabel for="inputPlate" value="Registrska št:"/>
+                                                    <p:inputText id="inputPlate" value="#{prodDisplayAdministratorBean.licenceplate}" binding="#{licenceplate}"/>
+                                                </h:panelGrid>
+                                            </div>
+                                        </div>
+                                        <br/>
+
+                                    </p:outputPanel>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </h:form>
+
+
+        </ui:define>
+
+        <ui:define name="beforeEndOfBody">
+
+        </ui:define>
+
+
+    </ui:composition>
+</html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseOfferingCreateDlg" widgetVar="HRCourseOfferingCreateDialog" modal="true" resizable="false" height="600" appendTo="@(body)" header="#{bundleHRCourse.CreateHRCourseOfferingTitle}">
+            <h:form id="HRCourseOfferingCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseOfferingController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_courseOfferingID}" for="courseOfferingID" />
+                        <p:inputText id="courseOfferingID" value="#{hRCourseOfferingController.selected.courseOfferingID}" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_courseOfferingID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseOfferingRequiredMessage_courseOfferingID}"/>
+                        -->
+                        
+                        <p:outputLabel value="#{bundleHRCourse.DateOfOffering}" for="courseDate" />
+                        <p:calendar id="courseDate" required="true" pattern="dd.MM.yyyy HH:mm" value="#{hRCourseOfferingController.selected.courseDate}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_courseDate}"  showOn="button"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.LocationOfCourseOffering}" for="meetingroomID" />
+                        <p:inputText id="meetingroomID" value="#{hRCourseOfferingController.selected.meetingroomString}" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_meetingroomID}" />
+                                                
+                        <p:outputLabel value="#{bundleHRCourse.Course}:" for="courseID" />
+                        <p:selectOneMenu id="courseID" value="#{hRCourseOfferingController.selected.courseID}" converter="omnifaces.SelectItemsConverter" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="Select One" itemValue="" />
+                            <f:selectItems value="#{hRCourseController.itemsAvailableSelectOne}"
+                                           var="courseIDItem"
+                                           itemValue="#{courseIDItem}" itemLabel="#{courseIDItem.courseTitle}"/>
+                            <p:ajax listener="#{hRCourseOfferingController.courseSelected}" update="instructorID" process="@this" partialSubmit="true" />
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.CourseInstructor}:" for="instructorID" />
+                        <p:selectOneMenu id="instructorID" value="#{hRCourseOfferingController.selected.instructorID}" filter="true" filterMatchMode="contains">                           
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" />                   
+                            <f:selectItems value="#{hRCourseOfferingController.instruktorjiNaVoljo}" var="instructorIDItem" itemValue="#{instructorIDItem}" itemLabel="#{instructorIDItem.firstname} #{instructorIDItem.lastname}"/>                     
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.OnlineCourseOfferingTitle}" for="onlineCourseOffering" />
+                        <p:selectBooleanCheckbox id="onlineCourseOffering" value="#{hRCourseOfferingController.selected.onlineCourseOffering}" /> 
+                        
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{hRCourseOfferingController.selected.active}" />       
+                        
+                        <p:outputLabel value="#{bundleHRCourse.AddCourseToExchangeCalendar}?" for="exc" />
+                        <p:selectBooleanCheckbox id="exc" value="#{hRCourseOfferingController.kreiramDogodekExchange}" /> 
+                        
+                        <p:outputLabel value="#{bundleHRCourse.OfferingComment}" for="komentarIzvedbe" />
+                        <p:inputText id="komentarIzvedbe" value="#{hRCourseOfferingController.selected.komentarIzvedbe}" disabled="false" title="Komentar Izvedbe" />
+                        
+                        <p:outputLabel value="#{bundleHRCourse.AccessPIN}" for="accessPIN" />
+                        <p:inputText id="accessPIN" value="#{hRCourseOfferingController.selected.accessPIN}" disabled="false" title="#{bundleHRCourse.AccessPIN}" />
+                        
+                        
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_creator}" for="creator" />
+                        <p:inputText id="creator" value="#{hRCourseOfferingController.selected.creator}" disabled="true" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_creator}" />
+                        
+                        
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_dateCreated}" for="dateCreated" />
+                        <p:calendar id="dateCreated" disabled="true" pattern="dd.MM.yyyy HH:mm:ss" value="#{hRCourseOfferingController.selected.dateCreated}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_dateCreated}"  showOn="button"/>
+                        
+                        
+                        
+                        <p:outputLabel value="#{bundleHRCourse.FileAttachmentsTitle}" for="courseAttachments" />
+                        <p:fileUpload id="courseAttachments" listener="#{hRCourseOfferingController.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                      multiple="true" update="growl pguir" sizeLimit="10000000" fileLimit="50"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|xls|xlsx|pdf)$/"
+                                      maxChunkSize="1000000">
+
+                            <p:panelGrid id="pguir" columns="1" rendered="#{hRCourseOfferingController.selected != null}" style="width:100% !important">
+                                <ui:repeat id="uir"  value="#{hRCourseOfferingController.selected.files}" var="photo" varStatus="status">
+
+                                    <div class="file-box">
+                                        <div class="file">
+                                            <span class="corner"></span>
+
+                                            <div class="icon">
+                                                <p:graphicImage alt="image" height="64px" width="64px" stream="false" value="#{photo.content}"/>
+                                            </div>
+                                            <div class="file-name" style="overflow: hidden">
+                                                <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ui:repeat>
+                            </p:panelGrid>
+
+                        </p:fileUpload>
+                        
+                        
+                        
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseOfferingController.create}" value="#{bundleHRCourse.Save}" update="display,:HRCourseOfferingListForm:datalist,:growl" onclick="PF('HRCourseOfferingCreateDialog').hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PF('HRCourseOfferingCreateDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

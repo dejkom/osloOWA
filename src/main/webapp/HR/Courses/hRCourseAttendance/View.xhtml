@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseAttendanceViewDlg" widgetVar="HRCourseAttendanceViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.ViewHRCourseAttendanceTitle}">
+            <h:form id="HRCourseAttendanceViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseAttendanceController.selected != null}">
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseAttendanceLabel_attendanceID}"/>
+                        <h:outputText value="#{hRCourseAttendanceController.selected.attendanceID}" title="#{bundleHRCourse.ViewHRCourseAttendanceTitle_attendanceID}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseAttendanceLabel_codeksID}"/>
+                        <h:outputText value="#{hRCourseAttendanceController.selected.codeksID}" title="#{bundleHRCourse.ViewHRCourseAttendanceTitle_codeksID}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseAttendanceLabel_wasAttended}"/>
+                        <p:selectBooleanCheckbox value="#{hRCourseAttendanceController.selected.wasAttended}" disabled="true"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseAttendanceLabel_comment}"/>
+                        <h:outputText value="#{hRCourseAttendanceController.selected.comment}" title="#{bundleHRCourse.ViewHRCourseAttendanceTitle_comment}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseAttendanceLabel_rate}"/>
+                        <h:outputText value="#{hRCourseAttendanceController.selected.rate}" title="#{bundleHRCourse.ViewHRCourseAttendanceTitle_rate}"/>
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseAttendanceLabel_courseOfferingID}"/>
+                        <h:outputText value="#{hRCourseAttendanceController.selected.courseOfferingID}" title="#{bundleHRCourse.ViewHRCourseAttendanceTitle_courseOfferingID}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRCourse.Close}" onclick="HRCourseAttendanceViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

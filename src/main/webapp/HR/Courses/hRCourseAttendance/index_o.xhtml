@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/osloTemplateBasic.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Courses"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            HR - Udeležba izobraževanj (Course Attendance)
+        </ui:define>
+
+        <ui:define name="PageHeaderDescription">
+
+        </ui:define>
+
+        <ui:define name="breadcrumb">
+            <li class="active">HR Course Attendance</li>
+        </ui:define>
+
+        <ui:define name="content">
+            <p:growl id="growl" life="3000" />
+            <h:form id="HRCourseAttendanceListForm">
+                    <p:dataTable id="datalist" value="#{hRCourseAttendanceController.items}" var="item"
+                                 selectionMode="single" selection="#{hRCourseAttendanceController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.attendanceID}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseAttendanceTitle_attendanceID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.attendanceID}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseAttendanceTitle_codeksID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.codeksID}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Se je udeležil?"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.wasAttended}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Komentar"/>
+                            </f:facet>
+                            <h:outputText value="#{item.comment}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ocena"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rate}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Izvedba izobraževanja"/>
+                            </f:facet>
+                            <h:outputText value="(#{item.courseOfferingID.courseOfferingID}) #{item.courseOfferingID.courseID.courseTitle}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Datum izvedbe"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseOfferingID.courseDate}" >
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCourse.Create}" actionListener="#{hRCourseAttendanceController.prepareCreate}" update=":HRCourseAttendanceCreateForm" oncomplete="PF('HRCourseAttendanceCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRCourse.View}" update=":HRCourseAttendanceViewForm" oncomplete="PF('HRCourseAttendanceViewDialog').show()" disabled="#{empty hRCourseAttendanceController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCourse.Edit}" update=":HRCourseAttendanceEditForm" oncomplete="PF('HRCourseAttendanceEditDialog').show()" disabled="#{empty hRCourseAttendanceController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCourse.Delete}" actionListener="#{hRCourseAttendanceController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseAttendanceController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

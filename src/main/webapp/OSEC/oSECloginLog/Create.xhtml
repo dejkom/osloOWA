@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECloginLogCreateDlg" widgetVar="OSECloginLogCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogTitle}">
+            <h:form id="OSECloginLogCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECloginLogController.selected != null}">
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_loginId}" for="loginId" />
+                        <p:inputText id="loginId" value="#{oSECloginLogController.selected.loginId}" title="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogTitle_loginId}" required="true" requiredMessage="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogRequiredMessage_loginId}"/>
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_lineID}" for="lineID" />
+                        <p:inputText id="lineID" value="#{oSECloginLogController.selected.lineID}" title="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogTitle_lineID}" required="true" requiredMessage="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogRequiredMessage_lineID}"/>
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_workerCard}" for="workerCard" />
+                        <p:inputText id="workerCard" value="#{oSECloginLogController.selected.workerCard}" title="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogTitle_workerCard}" />
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_externalId}" for="externalId" />
+                        <p:inputText id="externalId" value="#{oSECloginLogController.selected.externalId}" title="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogTitle_externalId}" required="true" requiredMessage="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogRequiredMessage_externalId}"/>
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_loginStart}" for="loginStart" />
+                        <p:calendar id="loginStart" pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" value="#{oSECloginLogController.selected.loginStart}" title="#{bundleOsecOperaterjiPrijava.EditOSECloginLogTitle_loginStart}" required="true" requiredMessage="#{bundleOsecOperaterjiPrijava.EditOSECloginLogRequiredMessage_loginStart}" showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_loginEnd}" for="loginEnd" />
+                        <p:calendar id="loginEnd" pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" value="#{oSECloginLogController.selected.loginEnd}" title="#{bundleOsecOperaterjiPrijava.EditOSECloginLogTitle_loginEnd}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_loginDate}" for="loginDate" />
+                        <p:calendar id="loginDate" pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" value="#{oSECloginLogController.selected.loginDate}" title="#{bundleOsecOperaterjiPrijava.EditOSECloginLogTitle_loginDate}" required="true" requiredMessage="#{bundleOsecOperaterjiPrijava.EditOSECloginLogRequiredMessage_loginDate}" showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogLabel_loginShift}" for="loginShift" />
+                        <p:inputText id="loginShift" value="#{oSECloginLogController.selected.loginShift}" title="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogTitle_loginShift}" required="true" requiredMessage="#{bundleOsecOperaterjiPrijava.CreateOSECloginLogRequiredMessage_loginShift}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oSECloginLogController.create}" value="#{bundleOsecOperaterjiPrijava.Save}" update="display,:OSECloginLogListForm:datalist,:growl" oncomplete="handleSubmit(args,'OSECloginLogCreateDialog');"/>
+                    <p:commandButton value="#{bundleOsecOperaterjiPrijava.Cancel}" onclick="OSECloginLogCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DepartmentsEditDlg" widgetVar="DepartmentsEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleCodeks.EditDepartmentsTitle}">
+            <h:form id="DepartmentsEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{departmentsController.selected != null}">
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{departmentsController.selected.id}" title="#{bundleCodeks.EditDepartmentsTitle_id}" required="true" requiredMessage="#{bundleCodeks.EditDepartmentsRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_deleted}" for="deleted" />
+                        <p:selectBooleanCheckbox id="deleted" value="#{departmentsController.selected.deleted}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{departmentsController.selected.name}" title="#{bundleCodeks.EditDepartmentsTitle_name}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_code}" for="code" />
+                        <p:inputText id="code" value="#{departmentsController.selected.code}" title="#{bundleCodeks.EditDepartmentsTitle_code}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_departmentHeadId}" for="departmentHeadId" />
+                        <p:inputText id="departmentHeadId" value="#{departmentsController.selected.departmentHeadId}" title="#{bundleCodeks.EditDepartmentsTitle_departmentHeadId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_departmentHeadDeputyId}" for="departmentHeadDeputyId" />
+                        <p:inputText id="departmentHeadDeputyId" value="#{departmentsController.selected.departmentHeadDeputyId}" title="#{bundleCodeks.EditDepartmentsTitle_departmentHeadDeputyId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_parentId}" for="parentId" />
+                        <p:inputText id="parentId" value="#{departmentsController.selected.parentId}" title="#{bundleCodeks.EditDepartmentsTitle_parentId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_type}" for="type" />
+                        <p:inputText id="type" value="#{departmentsController.selected.type}" title="#{bundleCodeks.EditDepartmentsTitle_type}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_lft}" for="lft" />
+                        <p:inputText id="lft" value="#{departmentsController.selected.lft}" title="#{bundleCodeks.EditDepartmentsTitle_lft}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_rgt}" for="rgt" />
+                        <p:inputText id="rgt" value="#{departmentsController.selected.rgt}" title="#{bundleCodeks.EditDepartmentsTitle_rgt}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_position}" for="position" />
+                        <p:inputText id="position" value="#{departmentsController.selected.position}" title="#{bundleCodeks.EditDepartmentsTitle_position}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_fullName}" for="fullName" />
+                        <p:inputText id="fullName" value="#{departmentsController.selected.fullName}" title="#{bundleCodeks.EditDepartmentsTitle_fullName}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_defaultPassageId}" for="defaultPassageId" />
+                        <p:inputText id="defaultPassageId" value="#{departmentsController.selected.defaultPassageId}" title="#{bundleCodeks.EditDepartmentsTitle_defaultPassageId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditDepartmentsLabel_LAReplacementRequired}" for="LAReplacementRequired" />
+                        <p:selectBooleanCheckbox id="LAReplacementRequired" value="#{departmentsController.selected.LAReplacementRequired}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{departmentsController.update}" value="#{bundleCodeks.Save}" update="display,:DepartmentsListForm:datalist,:growl" oncomplete="handleSubmit(args, 'DepartmentsEditDialog');"/>
+                    <p:commandButton value="#{bundleCodeks.Cancel}" onclick="DepartmentsEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="HRSignProfNaziviListForm">
+                <p:panel header="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle}">
+                    <p:dataTable id="datalist" value="#{hRSignProfNaziviController.items}" var="item"
+                                 selectionMode="single" selection="#{hRSignProfNaziviController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_uradniNaziv}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.uradniNaziv}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_razsirjenSlo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.razsirjenSlo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_angUradni}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.angUradni}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_razsirjenAng}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.razsirjenAng}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_oddelekSlo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.oddelekSlo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_oddelekAng}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.oddelekAng}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRSignProfNazivi.Create}" actionListener="#{hRSignProfNaziviController.prepareCreate}" update=":HRSignProfNaziviCreateForm" oncomplete="PF('HRSignProfNaziviCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRSignProfNazivi.View}" update=":HRSignProfNaziviViewForm" oncomplete="PF('HRSignProfNaziviViewDialog').show()" disabled="#{empty hRSignProfNaziviController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRSignProfNazivi.Edit}" update=":HRSignProfNaziviEditForm" oncomplete="PF('HRSignProfNaziviEditDialog').show()" disabled="#{empty hRSignProfNaziviController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRSignProfNazivi.Delete}" actionListener="#{hRSignProfNaziviController.destroy}" update=":growl,datalist" disabled="#{empty hRSignProfNaziviController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

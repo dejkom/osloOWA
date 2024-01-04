@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+>
+
+    <h:head>
+
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <title>OrderingPortal | Invoice Print</title>
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.css"/>
+
+        <h:outputStylesheet library="css" name="animate.css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+
+    </h:head>
+
+    <h:body class="white-bg">
+        <div class="wrapper wrapper-content p-xl">
+            <div class="ibox-content p-xl" style="border-color:white !important">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <address>
+                            <strong>odelo Slovenija d.o.o.</strong><br/>
+                            Tovarniška cesta 12<br/>
+                            SI - 3312 Prebold<br/>
+                        </address>
+                    </div>
+
+
+                    <div class="col-sm-6 text-right">
+                        <div class="row" style="float:right">
+                            <h:graphicImage class="pull-right" name="img/odelo_report_1.png" alt="" style="height: 50px; float:right"/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="row" style="float:right">
+                            <p>
+                                <span><strong>Print Date: </strong> <h:outputText value="#{agvPrintMaterialsListBean.nowFormatted}"/></span><br/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive m-t">
+                    <c:forEach var="keycat" items="${agvPrintMaterialsListBean.catalogWhatICanSupplyTEST2}" varStatus="loop">                      
+                        <h:outputText value="${keycat.key}:" style="font-weight: bold; text-decoration: underline"/>
+                        <table class="table invoice-table">
+                            <thead>
+                                <tr>
+                                    <th>Material - Description</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--
+                                <tr>
+                                    <td><div><strong>500</strong></div>
+                                        <small>This is material 500</small></td>
+                                    <td>0</td>
+                                </tr>
+                                -->
+
+
+                                <c:forEach var="art2" items="${keycat.value}" >
+
+                                    <tr>
+                                        <td><div>
+                                                <strong>${art2.materialId}</strong> - <small>This is material ${art2.materialId}</small>
+                                            </div></td>
+                                        <td><input type="text" class="form-control" style="width:100px; float: right"/></td>
+                                    </tr>
+
+                                </c:forEach> 
+
+
+                            </tbody>                       
+                        </table>
+                        <br/>
+                    </c:forEach>
+                </div><!-- /table-responsive -->
+
+                <div class="well m-t"><strong>Comments</strong>
+                    This list was printed directly from osloWebApp portal. If you think that this list is incomplete please contact ordering system key-user.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Mainly scripts -->
+        <!--
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        -->
+        
+        <!-- Custom and plugin javascript -->
+        <!--
+        <script src="js/inspinia.js"></script>
+        -->
+
+        <script type="text/javascript">
+            window.print();
+        </script>
+
+    </h:body>
+
+</html>

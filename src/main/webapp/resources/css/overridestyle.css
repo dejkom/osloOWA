@@ -1,0 +1,41 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 24 Jul 2020, 13:55:42
+    Author     : itstudent
+*/
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
+    background: #007bff;
+    font-weight: bold;
+}
+
+.ui-widget-header {
+    text-align: left;
+}
+
+.fileupload-content-files {
+    overflow: scroll ;
+    height: 500px;
+}
+
+.ui-datatable-tablewrapper{
+    overflow: auto;
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+
+.body.mini-navbar .navbar-static-side{
+    width: 5%;
+}
+
+ui-selectbooleancheckbox ui-chkbox ui-widget{
+    color: black;
+}
+
+.navbar-static-side{
+    z-index: 0;
+}

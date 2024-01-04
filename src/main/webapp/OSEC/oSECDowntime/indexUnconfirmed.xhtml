@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            OSEC Downtimes - Potrjevanje zastojev
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+
+            <script type="text/javascript">
+                //https://github.com/primefaces/primefaces/issues/8376 --> FIX FOR CONTEXT MENU OPENING BEHIND BROWSER DEFAULT MENU
+                if (PrimeFaces.widget.DataTable) {
+                    PrimeFaces.widget.DataTable.prototype.onRowRightClick = function (event, rowElement, cmSelMode, fnShowMenu) {
+                        var row = $(rowElement),
+                                rowMeta = this.getRowMeta(row),
+                                selected = row.hasClass('ui-state-highlight');
+
+                        this.assignFocusedRow(row);
+
+                        if (cmSelMode === 'single' || !selected) {
+                            this.unselectAllRows();
+                        }
+
+                        this.selectRow(row, true);
+
+                        this.fireRowSelectEvent(rowMeta.key, 'contextMenu', fnShowMenu);
+
+                        if (this.cfg.disabledTextSelection) {
+                            PrimeFaces.clearSelection();
+                        }
+
+                        return this.hasBehavior('contextMenu');
+                    }
+                }
+            </script>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+
+        </ui:define>
+
+
+        <ui:define name="content">
+
+            <h:form id="OSECDowntimeListForm">
+                <p:dataTable id="datalist" value="#{oSECDowntimeController.getItemsUnconfirmed(0)}" var="item"
+                             selection="#{oSECDowntimeController.selectedItems}"
+                             paginator="true" rowSelectMode="new"
+                             rowKey="#{item.downtimeID}"
+                             rows="10"
+                             widgetVar="dtt"
+                             rowsPerPageTemplate="10,50,{ShowAll|'All'}"
+                             >
+
+
+                    <p:ajax event="rowSelect"   update="OSECDowntimeEditDlg datalist"/>
+                    <p:ajax event="rowUnselect" update="OSECDowntimeEditDlg datalist"/>
+                    <p:ajax event="contextMenu" update=":OSECDowntimeListForm:cm" />
+
+
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_downtimeID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.downtimeID}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.date}">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_date}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.date}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_startD}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.startD}">
+                            <f:convertDateTime pattern="HH:mm:ss" timeZone="Europe/Ljubljana" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_endD}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.endD}">
+                            <f:convertDateTime pattern="HH:mm:ss" timeZone="Europe/Ljubljana" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column filterBy="#{item.shift}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_shift}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.shift}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.duration}">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_duration}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.duration}"/>
+                    </p:column>
+
+                    <p:column filterBy="#{item.workOrder}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_workOrder}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.workOrder}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_plannedUnplanned}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.plannedUnplanned}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_comment}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.comment}"/>
+                    </p:column>
+                    <!--
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_machineIDfk}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.machineIDfk}"/>
+                    </p:column>
+                    -->
+                    <p:column filterBy="#{item.reasonIDfk.text}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_reasonIDfk}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.reasonIDfk.text} (#{item.reasonIDfk.reasonGroup} - #{item.reasonIDfk.reasonSubgroup})"/>
+                    </p:column>
+                    <p:column filterBy="#{item.OSECMachine.machineName} #{item.OSECMachine.lineIDfk.lineName}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleOSECZastoji.ListOSECDowntimeTitle_OSECMachine}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.OSECMachine.machineName} (Linija: #{item.OSECMachine.lineIDfk.lineName})"/>
+                    </p:column>
+
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <h:outputText value="#{item.status}"/>
+                    </p:column>
+                    <p:column visible="false">
+                        <f:facet name="header">
+                            <h:outputText value="Source"/>
+                        </f:facet>
+                        <h:outputText value="#{item.source}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <!--
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{msg.Create}" actionListener="#{oSECDowntimeController.prepareCreate}" update=":OSECDowntimeCreateForm" oncomplete="PF('OSECDowntimeCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{msg.View}" update=":OSECDowntimeViewForm" oncomplete="PF('OSECDowntimeViewDialog').show()" disabled="#{empty oSECDowntimeController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{msg.Edit}" update=":OSECDowntimeEditForm" oncomplete="PF('OSECDowntimeEditDialog').show()" disabled="#{empty oSECDowntimeController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{msg.Delete}" actionListener="#{oSECDowntimeController.destroy}" update=":growl,datalist" disabled="#{empty oSECDowntimeController.selected}"/>
+                        -->
+                    </f:facet>
+                </p:dataTable>
+                <p:contextMenu id="cm" for="datalist">
+                    <p:menuitem value="Potrdi vse izbrane" update="datalist" icon="fa fa-check" action="#{oSECDowntimeController.confirmSelected()}"/>
+                    <p:menuitem value="Zavrni vse izbrane" update="datalist" icon="fa fa-xmark" action="#{oSECDowntimeController.declineSelected()}"/>
+                    <p:menuitem value="Uredi" update=":OSECDowntimeEditForm:display" icon="fa fa-xmark" actionListener="#{oSECDowntimeController.editOneSetSelected()}" oncomplete="PF('OSECDowntimeEditDialog').show()" disabled="#{!oSECDowntimeController.isSingleItemSelected}" />
+                </p:contextMenu>
+            </h:form>
+
+
+            <ui:include src="Edit.xhtml"/>
+            <!--
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="View.xhtml"/>
+            -->
+
+        </ui:define>
+
+    </ui:composition>
+</html>

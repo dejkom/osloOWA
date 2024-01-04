@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECMachineViewDlg" widgetVar="OSECMachineViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.ViewOSECMachineTitle}">
+            <h:form id="OSECMachineViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECMachineController.selected != null}">
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECMachineLabel_machineID}"/>
+                        <h:outputText value="#{oSECMachineController.selected.machineID}" title="#{bundleOSECZastoji.ViewOSECMachineTitle_machineID}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECMachineLabel_machineName}"/>
+                        <h:outputText value="#{oSECMachineController.selected.machineName}" title="#{bundleOSECZastoji.ViewOSECMachineTitle_machineName}"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECMachineLabel_active}"/>
+                        <p:selectBooleanCheckbox value="#{oSECMachineController.selected.active}" disabled="true"/>
+                        <h:outputText value="#{bundleOSECZastoji.ViewOSECMachineLabel_lineIDfk}"/>
+                        <h:outputText value="#{oSECMachineController.selected.lineIDfk}" title="#{bundleOSECZastoji.ViewOSECMachineTitle_lineIDfk}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOSECZastoji.Close}" onclick="OSECMachineViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

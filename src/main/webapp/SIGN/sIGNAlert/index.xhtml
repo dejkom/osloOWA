@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Opozorila
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Spodaj je mogoče dodajati opozorila.
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="SIGNAlertCreateForm">
+                <p:textEditor value="#{sIGNAlertController.selected.innerHTML}" height="300" style="background: white;"/>
+                <div style="border-left: 1px solid lightgrey;border-top: none; border-right: 1px solid lightgrey; border-bottom: 1px solid lightgrey; padding-left: 15px; padding-bottom: 10px; background: white;">
+                    <p:commandButton actionListener="#{sIGNAlertController.create}" value="Shrani" update=":growl,:SIGNAlertCreateForm"/>
+                </div>     
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

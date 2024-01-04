@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECDowntimeCreateDlg" widgetVar="OSECDowntimeCreateDialog" modal="true" height="600" width="1200" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.CreateOSECDowntimeTitle}">
+            <h:form id="OSECDowntimeCreateForm">
+                <h:panelGroup id="display" style="width:1000px !important">
+                    <p:panelGrid columns="2" rendered="#{oSECDowntimeController.selected != null}" style="width:100% !important">
+                        <!--
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_downtimeID}" for="downtimeID" />
+                        <p:inputText id="downtimeID" value="#{oSECDowntimeController.selected.downtimeID}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_downtimeID}" required="true" requiredMessage="#{bundleOSECZastoji.CreateOSECDowntimeRequiredMessage_downtimeID}"/>
+                        -->
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_date}" for="date" />
+                        <p:calendar id="date" pattern="MM/dd/yyyy HH:mm:ss" value="#{oSECDowntimeController.selected.date}" title="#{bundleOSECZastoji.EditOSECDowntimeTitle_date}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_shift}" for="shift" />
+                        <p:inputText id="shift" value="#{oSECDowntimeController.selected.shift}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_shift}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_duration}" for="duration" />
+                        <p:inputText id="duration" value="#{oSECDowntimeController.selected.duration}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_duration}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_startD}" for="startD" />
+                        <p:calendar id="startD" pattern="MM/dd/yyyy HH:mm:ss" value="#{oSECDowntimeController.selected.startD}" title="#{bundleOSECZastoji.EditOSECDowntimeTitle_startD}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_endD}" for="endD" />
+                        <p:calendar id="endD" pattern="MM/dd/yyyy HH:mm:ss" value="#{oSECDowntimeController.selected.endD}" title="#{bundleOSECZastoji.EditOSECDowntimeTitle_endD}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_workOrder}" for="workOrder" />
+                        <p:inputText id="workOrder" value="#{oSECDowntimeController.selected.workOrder}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_workOrder}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_plannedUnplanned}" for="plannedUnplanned" />
+                        <p:inputText id="plannedUnplanned" value="#{oSECDowntimeController.selected.plannedUnplanned}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_plannedUnplanned}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_comment}" for="comment" />
+                        <p:inputText id="comment" value="#{oSECDowntimeController.selected.comment}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_comment}" />
+                        <!--
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_machineIDfk}" for="machineIDfk" />
+                        <p:inputText id="machineIDfk" value="#{oSECDowntimeController.selected.machineIDfk}" title="#{bundleOSECZastoji.CreateOSECDowntimeTitle_machineIDfk}" />
+                        -->
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_reasonIDfk}" for="reasonIDfk" />
+                        <p:selectOneMenu id="reasonIDfk" value="#{oSECDowntimeController.selected.reasonIDfk}" >
+                            <f:selectItems value="#{oSECDowntimeReasonsController.itemsAvailableSelectOne}"
+                                           var="reasonIDfkItem"
+                                           itemValue="#{reasonIDfkItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECDowntimeLabel_OSECMachine}" for="OSECMachine" />
+                        <p:selectOneMenu id="OSECMachine" value="#{oSECDowntimeController.selected.OSECMachine}" required="true" requiredMessage="#{bundleOSECZastoji.EditOSECDowntimeRequiredMessage_OSECMachine}">
+                            <f:selectItems value="#{oSECMachineController.itemsAvailableSelectOne}"
+                                           var="OSECMachineItem"
+                                           itemValue="#{OSECMachineItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oSECDowntimeController.create}" value="#{bundleOSECZastoji.Save}" update="display,:OSECDowntimeListForm:datalist,:growl" oncomplete="handleSubmit(args,'OSECDowntimeCreateDialog');"/>
+                    <p:commandButton value="#{bundleOSECZastoji.Cancel}" onclick="OSECDowntimeCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

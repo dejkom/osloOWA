@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseAttendanceCreateDlg" widgetVar="HRCourseAttendanceCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateHRCourseAttendanceTitle}">
+            <h:form id="HRCourseAttendanceCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseAttendanceController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseAttendanceLabel_attendanceID}" for="attendanceID" />
+                        <p:inputText id="attendanceID" value="#{hRCourseAttendanceController.selected.attendanceID}" title="#{bundleHRCourse.CreateHRCourseAttendanceTitle_attendanceID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseAttendanceRequiredMessage_attendanceID}"/>
+                        -->
+
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseAttendanceLabel_codeksID}" for="codeksID" />
+                        <!--
+                        <p:inputText id="codeksID" value="#{hRCourseAttendanceController.selected.codeksID}" title="#{bundleHRCourse.CreateHRCourseAttendanceTitle_codeksID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseAttendanceRequiredMessage_codeksID}"/>
+                        -->
+                        <p:selectOneMenu id="codeksID" value="#{hRCourseAttendanceController.selected.codeksID}" 
+                                         converter="omnifaces.SelectItemsConverter" required="true" 
+                                         filter="true" filterMatchMode="contains"
+                                         requiredMessage="#{bundleHRCourse.CreateHRCourseAttendanceRequiredMessage_codeksID}">
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}"/>
+                            <f:selectItems value="#{hRCourseAttendanceController.currentlyEmployed}" var="emp" itemValue="#{emp.id}" itemLabel="#{emp.lastname} #{emp.firstname}"/>
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseAttendanceLabel_wasAttended}" for="wasAttended" />
+                        <p:selectBooleanCheckbox id="wasAttended" value="#{hRCourseAttendanceController.selected.wasAttended}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseAttendanceRequiredMessage_wasAttended}"/>
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseAttendanceLabel_comment}" for="comment" />
+                        <p:inputText id="comment" value="#{hRCourseAttendanceController.selected.comment}" title="#{bundleHRCourse.CreateHRCourseAttendanceTitle_comment}" />
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseAttendanceLabel_rate}" for="rate" />
+                        <p:inputText id="rate" value="#{hRCourseAttendanceController.selected.rate}" title="#{bundleHRCourse.CreateHRCourseAttendanceTitle_rate}" />
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseAttendanceLabel_courseOfferingID}" for="courseOfferingID" />
+                        <p:selectOneMenu id="courseOfferingID" value="#{hRCourseAttendanceController.selected.courseOfferingID}" filter="true" filterMatchMode="contains">
+                            <f:selectItems value="#{hRCourseOfferingController.itemsAvailableSelectOne}"
+                                           var="courseOfferingIDItem"
+                                           itemValue="#{courseOfferingIDItem}" itemLabel="#{courseOfferingIDItem.courseID.courseTitle} - #{courseOfferingIDItem.courseDateString}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseAttendanceController.create}" value="#{bundleHRCourse.Save}" update="display,:HRCourseAttendanceListForm:datalist,:growl" onclick="PF('HRCourseAttendanceCreateDialog').hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PF('HRCourseAttendanceCreateDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

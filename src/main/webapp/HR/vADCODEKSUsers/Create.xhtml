@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VADCODEKSUsersCreateDlg" widgetVar="VADCODEKSUsersCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle}">
+            <h:form id="VADCODEKSUsersCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{vADCODEKSUsersController.selected != null}">
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{vADCODEKSUsersController.selected.id}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_id}" required="true" requiredMessage="#{bundleHRADCODEKS.CreateVADCODEKSUsersRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_dn}" for="dn" />
+                        <p:inputText id="dn" value="#{vADCODEKSUsersController.selected.dn}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_dn}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_externalId}" for="externalId" />
+                        <p:inputText id="externalId" value="#{vADCODEKSUsersController.selected.externalId}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_externalId}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_lastname}" for="lastname" />
+                        <p:inputText id="lastname" value="#{vADCODEKSUsersController.selected.lastname}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_lastname}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_firstname}" for="firstname" />
+                        <p:inputText id="firstname" value="#{vADCODEKSUsersController.selected.firstname}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_firstname}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_departmentId}" for="departmentId" />
+                        <p:inputText id="departmentId" value="#{vADCODEKSUsersController.selected.departmentId}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_departmentId}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_codeksDeleted}" for="codeksDeleted" />
+                        <p:selectBooleanCheckbox id="codeksDeleted" value="#{vADCODEKSUsersController.selected.codeksDeleted}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_isTimeAttendance}" for="isTimeAttendance" />
+                        <p:selectBooleanCheckbox id="isTimeAttendance" value="#{vADCODEKSUsersController.selected.isTimeAttendance}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_card}" for="card" />
+                        <p:inputText id="card" value="#{vADCODEKSUsersController.selected.card}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_card}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_username}" for="username" />
+                        <p:inputText id="username" value="#{vADCODEKSUsersController.selected.username}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_username}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_lastPwSetDateTime}" for="lastPwSetDateTime" />
+                        <p:calendar id="lastPwSetDateTime" pattern="MM/dd/yyyy HH:mm:ss" value="#{vADCODEKSUsersController.selected.lastPwSetDateTime}" title="#{bundleHRADCODEKS.EditVADCODEKSUsersTitle_lastPwSetDateTime}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_title}" for="title" />
+                        <p:inputText id="title" value="#{vADCODEKSUsersController.selected.title}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_title}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_telephoneNumber}" for="telephoneNumber" />
+                        <p:inputText id="telephoneNumber" value="#{vADCODEKSUsersController.selected.telephoneNumber}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_telephoneNumber}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_mobile}" for="mobile" />
+                        <p:inputText id="mobile" value="#{vADCODEKSUsersController.selected.mobile}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_mobile}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_mail}" for="mail" />
+                        <p:inputText id="mail" value="#{vADCODEKSUsersController.selected.mail}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_mail}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_countryShort}" for="countryShort" />
+                        <p:inputText id="countryShort" value="#{vADCODEKSUsersController.selected.countryShort}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_countryShort}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_country}" for="country" />
+                        <p:inputText id="country" value="#{vADCODEKSUsersController.selected.country}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_country}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_countryCode}" for="countryCode" />
+                        <p:inputText id="countryCode" value="#{vADCODEKSUsersController.selected.countryCode}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_countryCode}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_postalCode}" for="postalCode" />
+                        <p:inputText id="postalCode" value="#{vADCODEKSUsersController.selected.postalCode}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_postalCode}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_location}" for="location" />
+                        <p:inputText id="location" value="#{vADCODEKSUsersController.selected.location}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_location}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_streetAddress}" for="streetAddress" />
+                        <p:inputText id="streetAddress" value="#{vADCODEKSUsersController.selected.streetAddress}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_streetAddress}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_extensionAttribute1}" for="extensionAttribute1" />
+                        <p:inputText id="extensionAttribute1" value="#{vADCODEKSUsersController.selected.extensionAttribute1}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_extensionAttribute1}" />
+                        <p:outputLabel value="#{bundleHRADCODEKS.CreateVADCODEKSUsersLabel_extensionAttribute2}" for="extensionAttribute2" />
+                        <p:inputText id="extensionAttribute2" value="#{vADCODEKSUsersController.selected.extensionAttribute2}" title="#{bundleHRADCODEKS.CreateVADCODEKSUsersTitle_extensionAttribute2}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{vADCODEKSUsersController.create}" value="#{bundleHRADCODEKS.Save}" update="display,:VADCODEKSUsersListForm:datalist,:growl" oncomplete="handleSubmit(args,'VADCODEKSUsersCreateDialog');"/>
+                    <p:commandButton value="#{bundleHRADCODEKS.Cancel}" onclick="VADCODEKSUsersCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCContractdetailCreateDlg" widgetVar="PRCContractdetailCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC2.CreatePRCContractdetailTitle}">
+            <h:form id="PRCContractdetailCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCContractdetailController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pRCContractdetailController.selected.id}" title="#{bundlePRC2.CreatePRCContractdetailTitle_id}" required="true" requiredMessage="#{bundlePRC2.CreatePRCContractdetailRequiredMessage_id}"/>
+                        -->
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_type}" for="type" />
+                        <p:inputText id="type" value="#{pRCContractdetailController.selected.type}" title="#{bundlePRC2.CreatePRCContractdetailTitle_type}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_value}" for="value" />
+                        <p:inputText id="value" value="#{pRCContractdetailController.selected.value}" title="#{bundlePRC2.CreatePRCContractdetailTitle_value}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_frmlWeight}" for="frmlWeight" />
+                        <p:inputText id="frmlWeight" value="#{pRCContractdetailController.selected.frmlWeight}" title="#{bundlePRC2.CreatePRCContractdetailTitle_frmlWeight}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_frmlNotation}" for="frmlNotation" />
+                        <p:inputText id="frmlNotation" value="#{pRCContractdetailController.selected.frmlNotation}" title="#{bundlePRC2.CreatePRCContractdetailTitle_frmlNotation}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{pRCContractdetailController.selected.status}" title="#{bundlePRC2.CreatePRCContractdetailTitle_status}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractdetailLabel_pogId}" for="pogId" />
+                        <p:selectOneMenu id="pogId" value="#{pRCContractdetailController.selected.pogId}" >
+                            <f:selectItems value="#{pRCContractController.itemsAvailableSelectOne}"
+                                           var="pogIdItem"
+                                           itemValue="#{pogIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pRCContractdetailController.create}" value="#{bundlePRC2.Save}" update="display,:PRCContractdetailListForm:datalist,:growl" oncomplete="handleSubmit(args,'PRCContractdetailCreateDialog');"/>
+                    <p:commandButton value="#{bundlePRC2.Cancel}" onclick="PRCContractdetailCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

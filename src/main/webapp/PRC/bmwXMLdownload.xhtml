@@ -1,0 +1,678 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            BMW XML Downloader
+
+            <style type="text/css">
+
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+
+                .thirty-percent {
+                    width: 30%;
+                }
+
+                .seventy-percent {
+                    width: 70%;
+                }
+
+                .noPadding{
+                    padding-left: 0px !important;
+                }
+
+                .ui-datatable-header.ui-widget-header.ui-corner-top{
+                    background-color: transparent !important;
+                    border-color: transparent !important;
+                    height: 0px;
+                }
+
+                .critical {
+                    background-color: #ffbbbb !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .warning {
+                    background-color: #FBFFA3 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .success {
+                    background-color: #a7ebb9 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+
+                .hiddenDTrow{
+                    visibility: collapse;
+                }
+            </style>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <script>
+                jQuery(document).ready(function () {
+                    //PF('xmldt').filter();
+                });
+            </script>
+            <h:form id="form1">
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox collapsed">
+                            <div class="ibox-title">
+                                <h5>Pridobivanje datotek iz BMW portala</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div id="vm" class="ibox-content">
+
+                                <div class="form-group  row">
+                                    <label class="col-sm-2 col-form-label"><p:outputLabel for="df" value="dateFrom:"/></label>
+                                    <div class="col-sm-10"><p:datePicker id="df" value="#{bmwXMLDownloadBean.from}" pattern="dd.MM.yyyy" /></div>
+                                </div>
+
+                                <div class="form-group  row">
+                                    <label class="col-sm-2 col-form-label"><p:outputLabel for="dt" value="dateTo:"/></label>
+                                    <div class="col-sm-10"><p:datePicker id="dt" value="#{bmwXMLDownloadBean.to}" pattern="dd.MM.yyyy" /></div>
+                                </div>
+
+                                <!--
+                                <p:outputLabel for="df" value="dateFrom:"/>
+                                <p:datePicker id="df" value="#{bmwXMLDownloadBean.from}" pattern="dd.MM.yyyy" />
+                                
+                                <p:outputLabel for="dt" value="dateTo:"/>
+                                <p:datePicker id="dt" value="#{bmwXMLDownloadBean.to}" pattern="dd.MM.yyyy" />
+                                -->
+
+                                <p:commandButton id="getBtn" value="Get XML files" actionListener="#{bmwXMLDownloadBean.testAction()}" update="dtt"/>
+
+                                <p:blockUI block="dtt" trigger="getBtn" widgetVar="buiBasic"/>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>XML Datoteke na odelo strežniku</h5>
+                            </div>
+                            <div class="ibox-content">
+
+                                <p:dataTable id="dtt" var="xmlObject"
+                                             paginator="true"
+                                             stripedRows="true"
+                                             rows="10"                    
+                                             widgetVar="xmldt"
+                                             rowKey="#{xmlObject.filename}"       
+                                             multiViewState="true"
+                                             lazy="true"
+                                             rowsPerPageTemplate="10,20,30,40,50,#{bmwXMLDownloadBean.listOfBMWXMLObjects.size()}"
+                                             value="#{bmwXMLDownloadBean.lazyModel}">
+                                   
+
+                                    <f:facet name="header">
+                                        <div class="p-d-flex p-jc-between p-ai-center">
+                                            <div>
+                                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="pi pi-align-justify"/>
+                                                <p:columnToggler datasource="dtt" trigger="toggler" >
+                                                    <p:ajax />
+                                                </p:columnToggler>
+                                            </div>
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column style="width:2rem">
+
+                                        <p:badge value="#{xmlObject.basePricesFromDB.size()}" rendered="#{xmlObject.basePricesFromDB.size() > 0}" severity="info"/>
+                                        <p:rowToggler rendered="#{xmlObject.basePricesFromDB.size() > 0}"/>
+
+                                    </p:column>
+
+                                    <p:column headerText="FileName" filterBy="#{xmlObject.filename}" visible="false" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.filename}" />
+                                    </p:column>         
+
+                                    <p:column headerText="Product" filterBy="#{xmlObject.productFromXMLContent}" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.productFromXMLContent}" />
+                                    </p:column>
+
+                                    <!--
+                                    <p:column headerText="PDFNAME">
+                                        <h:outputText value="#{xmlObject.pdfFile.name}" />
+                                    </p:column>
+                                    -->
+                                    <p:column headerText="FileCreated" sortBy="#{xmlObject.fileCreationDate}" visible="false">
+                                        <h:outputText value="#{xmlObject.fileCreationDate}" >
+                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="AI" visible="false">
+                                        <h:outputText value="#{xmlObject.AIFromProduct}" />
+                                    </p:column>
+
+                                    <p:column headerText="Description" filterBy="#{xmlObject.descriptionFiltering}" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.description}" />
+                                    </p:column>
+
+                                    <p:column headerText="OrderDate" filterBy="#{xmlObject.parsedXML.header.orderDate}" filterMatchMode="contains" visible="false">
+                                        <h:outputText value="#{xmlObject.parsedXML.header.orderDate}" />
+                                    </p:column>
+
+                                    <p:column headerText="AmmendmentDate" visible="false">
+                                        <h:outputText value="#{xmlObject.parsedXML.header.amendmentDate}" />
+                                    </p:column>
+
+                                    <p:column headerText="Valid From" filterBy="#{xmlObject.validFromDateFiltering}" filterMatchMode="between" visible="true">
+                                        
+                                        <f:facet name="filter">
+                                            <p:datePicker pattern="dd.MM.yyyy" onchange="PF('xmldt').filter()" selectionMode="range"  timeZone="Europe/Ljubljana">
+                                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" type="date"/>
+                                            </p:datePicker>
+                                        </f:facet>
+                                        
+                                        
+                                        
+                                        <h:outputText value="#{xmlObject.parsedXML.item.basisPriceCondition.validityStartDate}" >
+                                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" />
+                                        </h:outputText>
+                                        
+                                    </p:column>
+
+                                    <p:column headerText="Valid To" filterBy="#{xmlObject.validToDateFiltering}" filterMatchMode="between" visible="true">
+                                        <f:facet name="filter">
+                                            <p:datePicker pattern="dd.MM.yyyy" onchange="PF('xmldt').filter()" selectionMode="range" timeZone="Europe/Ljubljana">
+                                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" type="date"/>
+                                            </p:datePicker>
+                                        </f:facet>
+                                        <h:outputText value="#{xmlObject.parsedXML.item.basisPriceCondition.validityEndDate}">
+                                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana" />
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="path" visible="false">
+                                        <h:outputText value="#{xmlObject.file.path}" />
+                                    </p:column>
+
+                                    <!--
+                                    <p:column headerText="content" visible="false">
+                                        <h:outputText value="#{xmlObject.document.documentElement.textContent}" />
+                                    </p:column>
+                                    -->
+
+                                    <p:column headerText="ContractNumber" filterBy="#{xmlObject.contractNumberFiltering}" filterMatchMode="contains" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.header.contractNo}" />
+                                    </p:column>
+
+                                    <p:column headerText="Total price XML">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.netPrice}" />
+                                    </p:column>
+
+                                    <p:column headerText="Base price XML">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.basisPriceCondition.value}" />
+                                    </p:column>
+
+                                    <p:column headerText="Base price ODELO">
+                                        <h:outputText value="#{xmlObject.curentlyActiveBasePrice}" styleClass="#{xmlObject.curentlyActiveBasePrice eq xmlObject.parsedXML.item.basisPriceCondition.value ? '' : 'critical'}"/>
+                                    </p:column>
+
+                                    <p:column headerText="RIK XML" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.RIKCalculatedFromConditionsInXML}" />                                        
+                                    </p:column>
+
+                                    <p:column headerText="RIK odelo" visible="true">
+                                        <h:outputText value="#{xmlObject.RIKCalculatedFromConditionsInDB}" styleClass="#{xmlObject.parsedXML.item.RIKCalculatedFromConditionsInXML eq xmlObject.RIKCalculatedFromConditionsInDB ? '' : 'critical'}"/>
+                                    </p:column>
+
+                                    <p:column headerText="RUKL" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.RUKLCondition.value}" />
+                                    </p:column>
+
+                                    <p:column headerText="PACK" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.PACKCondition.value}" />
+                                    </p:column>
+
+                                    <!--
+                                    <p:column headerText="Base price from XML" width="100px" filterBy="#{xmlObject.basePriceFromXMLContent}" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.basePriceFromXMLContent}" />
+                                    </p:column>
+                                    -->
+
+                                    <p:column headerText="ActivityText" filterBy="#{xmlObject.parsedXML.header.activityText}" visible="false" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.parsedXML.header.activityText}" />
+                                    </p:column>
+
+                                    <p:column headerText="Demand Loc" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).demandlocation}" />
+                                    </p:column>
+
+                                    <p:column headerText="Demand Loc Desc" visible="false">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).demandlocationdesc}" />
+                                    </p:column>
+
+                                    <p:column headerText="Delivery Loc" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).deliverylocation}" />
+                                    </p:column>
+
+                                    <p:column headerText="Delivery Loc Desc" visible="false">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).deliverylocationdesc}" />
+                                    </p:column>
+
+                                    <p:column headerText="Product Loc" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).productlocation}" />
+                                    </p:column>
+
+                                    <p:column headerText="Product Loc Desc" visible="false">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).productlocationdesc}" />
+                                    </p:column>
+
+                                    <p:column headerText="Incoterm Loc" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).incotermlocation}" />
+                                    </p:column>
+
+                                    <p:column headerText="Invoicing Party" visible="true">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).invoicingparty}" />
+                                    </p:column>
+
+                                    <p:column headerText="Invoicing Party Desc" visible="false">
+                                        <h:outputText value="#{xmlObject.parsedXML.item.demand_loc.get(0).invoicingpartydescr}" />
+                                    </p:column>
+
+                                    <!--
+
+                                    <p:column headerText="Base price exists in DB?" visible="false" filterBy="#{xmlObject.dbEntriesExist}" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.dbEntriesExist}" />
+                                    </p:column>
+
+                                    <p:column headerText="COUNT Base price in DB" visible="false" filterBy="#{xmlObject.dbEntriesExist}" filterMatchMode="contains">
+                                        <h:outputText value="#{xmlObject.basePricesFromDB.size()}" />
+                                    </p:column>  
+                                    
+                                    -->
+
+                                    <p:column headerText="Active Conditions">
+                                        <h:outputText value="#{xmlObject.prcdataFromDBCurentlyActive.size()} / #{xmlObject.parsedXML.item.conditionsWithoutBasePrice.size()}" styleClass="#{xmlObject.prcdataFromDBCurentlyActive.size() >= xmlObject.parsedXML.item.conditionsWithoutBasePrice.size() ? null : 'critical'}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="DB Conditions">
+                                        <h:outputText value="#{xmlObject.prcdataFromDB.size()}" />
+                                    </p:column>
+
+                                    <p:column headerText="Actions" width="120px" visible="true">
+                                        <p:commandButton oncomplete="PF('manageProductDialog').show()" update=":dialog1:manage-product-content" icon="pi pi-plus" title="Add New BasePrice" action="#{bmwXMLDownloadBean.onSelectItemAction()}" >
+                                            <f:setPropertyActionListener value="#{xmlObject}"  target="#{bmwXMLDownloadBean.selectedObject}"/>
+                                        </p:commandButton>
+                                        <p:commandButton update="dtt" icon="fa fa-trash" title="DELETE XML file" action="#{bmwXMLDownloadBean.deleteXMLfile()}" >
+                                            <f:setPropertyActionListener value="#{xmlObject}"  target="#{bmwXMLDownloadBean.selectedObject}"/>
+                                        </p:commandButton>
+                                        <p:commandButton icon="fa fa-file-pdf" update="dtt :dialog3:pdf-product-content" oncomplete="PF('pdfDialog').show()" disabled="false" title="Open PDF file" >
+                                            <f:setPropertyActionListener value="#{xmlObject}"  target="#{bmwXMLDownloadBean.selectedObject}"/>
+                                        </p:commandButton>
+                                        <p:commandButton update="dtt :dialog6:explore-condition-content :dialog7:create-condition-content" style="width:95%" value="Conditions" oncomplete="PF('explorePrcDataDialog').show()" disabled="false" title="Explore conditions" >
+                                            <f:setPropertyActionListener value="#{xmlObject}"  target="#{bmwXMLDownloadBean.selectedObject}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                    <p:rowExpansion>
+                                        <h5>Base prices in our database:</h5>
+                                        <p:dataTable var="b" value="#{xmlObject.basePricesFromDB}">
+                                            <p:column headerText="Product">
+                                                <h:outputText value="#{b.bmwProduct}" />
+                                            </p:column>
+                                            <p:column headerText="Date From">
+                                                <h:outputText value="#{b.dateFrom}" >
+                                                    <f:convertDateTime pattern="dd.MM.yyyy" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Date To">
+                                                <h:outputText value="#{b.dateTo}" >
+                                                    <f:convertDateTime pattern="dd.MM.yyyy" />
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="BMW Index" visible="false">
+                                                <h:outputText value="#{b.bmwIndex}" />
+                                            </p:column>
+                                            <p:column headerText="Price">
+                                                <h:outputText value="#{b.value}" />
+                                            </p:column>
+                                            <p:column headerText="Actions" visible="true">
+                                                <p:commandButton oncomplete="PF('editProductDialog').show()" update=":dialog2:edit-product-content" icon="fa fa-pencil" title="Edit BasePrice" >
+                                                    <f:setPropertyActionListener value="#{b}"  target="#{bmwXMLDownloadBean.selectedBasePriceForEdit}"/>
+                                                </p:commandButton>
+                                                <p:commandButton action="#{bmwXMLDownloadBean.deleteSelectedBasePrice}" icon="fa fa-trash" title="Delete BasePrice" update=":form1:dtt">
+                                                    <f:setPropertyActionListener value="#{b}"  target="#{bmwXMLDownloadBean.selectedBasePriceForEdit}"/>
+                                                    <f:setPropertyActionListener value="#{xmlObject}"  target="#{bmwXMLDownloadBean.selectedObject}"/>
+                                                </p:commandButton>
+                                            </p:column>
+                                        </p:dataTable>
+                                        <br/>
+
+
+                                    </p:rowExpansion>
+
+                                </p:dataTable>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox collapsed">
+                            <div class="ibox-title">
+                                <h5>Urejanje parov</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div id="vm" class="ibox-content">
+                                <!--
+                                <p:commandButton value="Test pisanja" action="#{bmwXMLDownloadBean.saveStringToJSON()}" />
+                                <p:commandButton value="Test branja" action="#{bmwXMLDownloadBean.readPruductPairConfigfromJSON()}" style="margin-left: 10px" />
+                                <p:commandButton value="Test parov Product B" action="#{bmwXMLDownloadBean.findRelatedProductPairs('Product B')}"  style="margin-left: 10px"/>
+                                <br/>
+                                <br/>
+                                <hr/>
+                                -->
+                                <h:panelGroup id="inp">
+                                <p:inplace>
+                                    <p:inputText value="#{bmwXMLDownloadBean.newPair.pairName}" title="Novo ime para"/>
+                                </p:inplace>
+                                <p:chips value="#{bmwXMLDownloadBean.newPair.products}" placeholder="produkti" unique="true"/>
+                                <p:commandButton icon="pi pi-check" action="#{bmwXMLDownloadBean.saveNewPairToJSON()}" update="display inp" styleClass="rounded-button" style="margin-left:10px"/>
+                                </h:panelGroup>
+                                
+                                <br/>
+                                <hr/>
+                                <h:panelGroup id="display">
+                                <c:forEach var="conf" items="${bmwXMLDownloadBean.objectsFromJSONList}" varStatus="loop">
+                                    <h3>${conf.pairName}</h3>
+                                    <p:chips value="${conf.products}" unique="true"/>
+                                    <p:commandButton icon="pi pi-times" styleClass="rounded-button ui-button-danger" action="#{bmwXMLDownloadBean.removePairFromJSON(loop.index)}" update="display inp" style="margin-left:10px"/>
+                                </c:forEach>
+                                </h:panelGroup>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>              
+
+            </h:form>
+
+
+
+            <p:dialog header="Create new Base Price in Database" showEffect="fade" modal="false" widgetVar="manageProductDialog" responsive="false">
+                <h:form id="dialog1">
+                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty bmwXMLDownloadBean.selectedObject}">
+                            <div class="field">
+                                <p:outputLabel for="prod">Product</p:outputLabel>
+                                <p:inputText id="prod" value="#{bmwXMLDownloadBean.selectedObject.newBasePrice.bmwProduct}" required="true" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="bmwind">BMW Index</p:outputLabel>
+                                <p:inputText id="bmwind" value="#{bmwXMLDownloadBean.selectedObject.newBasePrice.bmwIndex}" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df2">Date From</p:outputLabel>
+                                <p:datePicker id="df2" value="#{bmwXMLDownloadBean.selectedObject.newBasePrice.dateFrom}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df3">Date To</p:outputLabel>
+                                <p:datePicker id="df3" value="#{bmwXMLDownloadBean.selectedObject.newBasePrice.dateTo}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="price">Price</p:outputLabel>
+                                <p:inputNumber id="price" value="#{bmwXMLDownloadBean.selectedObject.newBasePrice.value}" symbol=" EUR"
+                                               symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                            </div>
+                            <br/>
+                            <div class="field">
+                                <p:commandButton value="Save" update=":form1:dtt manage-product-content" process="manage-product-content @this" action="#{bmwXMLDownloadBean.saveSelectedItemIntoDatabase()}" oncomplete="PF('manageProductDialog').hide()" />
+                                <!--<p:commandButton value="Cancel" onclick="PF('manageProductDialog').hide()" type="button" />-->
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Edit Base Price in Database" showEffect="fade" modal="false" widgetVar="editProductDialog" responsive="false">
+                <h:form id="dialog2">
+                    <p:outputPanel id="edit-product-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty bmwXMLDownloadBean.selectedBasePriceForEdit}">
+                            <div class="field">
+                                <p:outputLabel for="prod">Product</p:outputLabel>
+                                <p:inputText id="prod" value="#{bmwXMLDownloadBean.selectedBasePriceForEdit.bmwProduct}" required="true" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="bmwind">BMW Index</p:outputLabel>
+                                <p:inputText id="bmwind" value="#{bmwXMLDownloadBean.selectedBasePriceForEdit.bmwIndex}" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df2">Date From</p:outputLabel>
+                                <p:datePicker id="df2" value="#{bmwXMLDownloadBean.selectedBasePriceForEdit.dateFrom}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df3">Date To</p:outputLabel>
+                                <p:datePicker id="df3" value="#{bmwXMLDownloadBean.selectedBasePriceForEdit.dateTo}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="price">Price</p:outputLabel>
+                                <p:inputNumber id="price" value="#{bmwXMLDownloadBean.selectedBasePriceForEdit.value}" symbol=" EUR"
+                                               symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                            </div>
+                            <br/>
+                            <div class="field">
+                                <p:commandButton value="Save" update=":form1:dtt edit-product-content" process="edit-product-content @this" action="#{bmwXMLDownloadBean.saveEditedBasePriceIntoDatabase()}" oncomplete="PF('editProductDialog').hide()" />
+                                <!--<p:commandButton value="Cancel" onclick="PF('manageProductDialog').hide()" type="button" />-->
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="View PDF Document" appendTo="@(body)" showEffect="fade" width="70%" modal="false" widgetVar="pdfDialog" responsive="false">
+                <h:form id="dialog3">
+                    <p:outputPanel id="pdf-product-content" class="ui-fluid">
+                        <p:media id="pdfm" value="http://prapps02.pr.lighting.int:7070/osloWebApp/BMWXML/#{bmwXMLDownloadBean.selectedObject.pdfFile.name}" cache="false" width="100%" height="700px" player="pdf"/>         
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Create new Condition in Database" showEffect="fade" modal="false" widgetVar="createPrcDataDialog" responsive="false">
+                <h:form id="dialog4">
+                    <p:outputPanel id="create-condition-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty bmwXMLDownloadBean.selectedObject}">
+                            <div class="field">
+                                <p:outputLabel for="prod">Product</p:outputLabel>
+                                <p:inputText id="prod" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.product}" required="true" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="type">Type</p:outputLabel>
+                                <p:inputText id="type" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.type}" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df2">Date From</p:outputLabel>
+                                <p:datePicker id="df2" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.dateFrom}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df3">Date To</p:outputLabel>
+                                <p:datePicker id="df3" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.dateTo}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="price">Value</p:outputLabel>
+                                <p:inputNumber id="price" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.value}" symbol=" EUR"
+                                               symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                            </div>
+                            <br/>
+                            <div class="field">
+                                <p:commandButton value="Save" update=":form1:dtt create-condition-content :dialog6:explore-condition-content :dialog6:availableConditions" process="create-condition-content @this" action="#{bmwXMLDownloadBean.saveSelectedConditionItemIntoDatabase()}" oncomplete="PF('createPrcDataDialog').hide()" />
+                                <!--<p:commandButton value="Cancel" onclick="PF('manageProductDialog').hide()" type="button" />-->
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Edit Condition in Database" showEffect="fade" modal="false" widgetVar="editPrcDataDialog" responsive="false">
+                <h:form id="dialog5">
+                    <p:outputPanel id="edit-condition-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty bmwXMLDownloadBean.selectedConditionFromXML}">
+                            <div class="field">
+                                <p:outputLabel for="prod">Product</p:outputLabel>
+                                <p:inputText id="prod" value="#{bmwXMLDownloadBean.selectedConditionFromXML.product}" required="true" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="type">Type</p:outputLabel>
+                                <p:inputText id="type" value="#{bmwXMLDownloadBean.selectedConditionFromXML.type}" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df2">Date From</p:outputLabel>
+                                <p:datePicker id="df2" value="#{bmwXMLDownloadBean.selectedConditionFromXML.dateFrom}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df3">Date To</p:outputLabel>
+                                <p:datePicker id="df3" value="#{bmwXMLDownloadBean.selectedConditionFromXML.dateTo}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="price">Value</p:outputLabel>
+                                <p:inputNumber id="price" value="#{bmwXMLDownloadBean.selectedConditionFromXML.value}" symbol=" EUR"
+                                               symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+                            </div>
+                            <br/>
+                            <div class="field">
+                                <p:commandButton value="Save" update=":form1:dtt edit-condition-content" process="create-condition-content @this" action="#{bmwXMLDownloadBean.saveSelectedItemIntoDatabase()}" oncomplete="PF('editPrcDataDialog').hide()" />
+                                <!--<p:commandButton value="Cancel" onclick="PF('manageProductDialog').hide()" type="button" />-->
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog header="Explore Conditions" showEffect="fade" modal="false"  width="70%" widgetVar="explorePrcDataDialog" responsive="false">
+                <h:form id="dialog6">
+                    <p:outputPanel id="explore-condition-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty bmwXMLDownloadBean.selectedObject}">
+                            <h5 class="mt-0">Conditions in XML</h5>
+
+                            <p:dataTable id="availableConditions" var="condition" value="#{bmwXMLDownloadBean.selectedObject.parsedXML.item.conditionsWithoutBasePrice}">
+
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{condition.type}"/>
+                                </p:column>
+
+                                <p:column headerText="Value XML">
+                                    <h:outputText value="#{condition.value}"/>
+                                </p:column>
+
+                                <p:column headerText="Value ODELO">
+                                    <h:outputText value="#{bmwXMLDownloadBean.selectedObject.getCurentlyActivePrcData(condition.type)}" styleClass="#{bmwXMLDownloadBean.selectedObject.getCurentlyActivePrcData(condition.type) eq condition.value ? null : 'critical'}"/>
+                                </p:column>
+
+                                <p:column headerText="Quantity">
+                                    <h:outputText value="#{condition.frmlweight} #{condition.frmlum}"/>
+                                </p:column>
+
+                                <p:column headerText="Price Unit">
+                                    <h:outputText value="#{condition.priceunitcond} #{condition.priceuomcond}"/>
+                                </p:column>
+
+                                <p:column headerText="Actions">
+                                    <p:commandButton oncomplete="PF('createPrcDataDialog').show()" disabled="#{condition.type eq 'Basispreis'}" update=":dialog4:create-condition-content" icon="pi pi-plus" title="Add New Condition" action="#{bmwXMLDownloadBean.onSelectConditionItemAction()}" >
+                                        <!--<f:setPropertyActionListener value="#{xmlObject}"  target="#{bmwXMLDownloadBean.selectedObject}"/>-->
+                                        <f:setPropertyActionListener value="#{condition}"  target="#{bmwXMLDownloadBean.selectedConditionFromXML}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+
+
+                            <br/>
+                            <div class="field">
+                                <!--
+                                <p:commandButton value="Save" update=":form1:dtt explore-condition-content" process="explore-condition-content @this" action="#{bmwXMLDownloadBean.saveSelectedItemIntoDatabase()}" oncomplete="PF('explorePrcDataDialog').hide()" />
+                                -->
+                                <p:commandButton value="Vse cene so OK (shrani vse v bazo)" update=":dialog7:create-condition-content" onclick="PF('createPrcDataMultipleDialog').show()" type="button" />
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+            
+            <p:dialog header="Create multiple new Conditions in Database" showEffect="fade" modal="false" widgetVar="createPrcDataMultipleDialog" responsive="false">
+                <h:form id="dialog7">
+                    <p:outputPanel id="create-condition-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty bmwXMLDownloadBean.selectedObject}">                           
+                            <div class="field">
+                                <p:outputLabel for="df2">Date From</p:outputLabel>
+                                <p:datePicker id="df2" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.dateFrom}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="df3">Date To</p:outputLabel>
+                                <p:datePicker id="df3" value="#{bmwXMLDownloadBean.selectedObject.newPRCData.dateTo}" pattern="dd.MM.yyyy" />
+                            </div>
+                            <br/>
+                            <div class="field">
+                                <p:commandButton value="Save" update=":form1:dtt create-condition-content :dialog6:explore-condition-content :dialog6:availableConditions" process="create-condition-content @this" action="#{bmwXMLDownloadBean.saveAllConditionsAtOnce()}" oncomplete="PF('createPrcDataMultipleDialog').hide()" />
+                                <!--<p:commandButton value="Cancel" onclick="PF('manageProductDialog').hide()" type="button" />-->
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </h:form>
+            </p:dialog>
+
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

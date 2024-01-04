@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Ebit Profit šifrant
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="Here you can manage data in EbitProfit table"/>
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="CONEbitProfitListForm">
+                <p:dataTable id="datalist" value="#{cONEbitProfitController.items}" var="item"
+                             selectionMode="single" selection="#{cONEbitProfitController.selected}"
+                             paginator="true"
+                             rowKey="#{item.idRow}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_idRow}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.idRow}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.projectNo}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_projectNo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.projectNo}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.format}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_format}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.format}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.type}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_type}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.type}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.phase}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_phase}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.phase}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_value}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.getValueAsString()}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_dateFrom}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateFrom}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleEbit.ListCONEbitProfitTitle_dateTo}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateTo}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Remark"/>
+                        </f:facet>
+                        <h:outputText value="#{item.remark}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Source"/>
+                        </f:facet>
+                        <h:outputText value="#{item.source}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleEbit.Create}" actionListener="#{cONEbitProfitController.prepareCreate}" update=":CONEbitProfitCreateForm" oncomplete="PF('CONEbitProfitCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleEbit.View}" update=":CONEbitProfitViewForm" oncomplete="PF('CONEbitProfitViewDialog').show()" disabled="#{empty cONEbitProfitController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleEbit.Edit}" update=":CONEbitProfitEditForm" oncomplete="PF('CONEbitProfitEditDialog').show()" disabled="#{empty cONEbitProfitController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleEbit.Delete}" actionListener="#{cONEbitProfitController.destroy}" update=":growl,datalist" disabled="#{empty cONEbitProfitController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

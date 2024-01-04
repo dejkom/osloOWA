@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListASSAssetTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="ASSAssetListForm">
+                <p:panel header="#{bundle.ListASSAssetTitle}">
+                    <p:dataTable id="datalist" value="#{aSSAssetController.items}" var="item"
+                                 selectionMode="single" selection="#{aSSAssetController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.IDAsset}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAsset}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDAsset}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetDescription}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetReturn}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.assetReturn}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetDeleted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.assetDeleted}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetSerialNumber}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetSerialNumber}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetComment}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetComment}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetUpdated}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetUpdated}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetUpdatedUser}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetUpdatedUser}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireDays}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetExpireDays}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireMonths}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetExpireMonths}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetExpireYears}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetExpireYears}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetMinimumQuantityWarning}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetMinimumQuantityWarning}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_assetMinimumQuantityCritical}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.assetMinimumQuantityCritical}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetParent}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDAssetParent}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetLocation}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDAssetLocation}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListASSAssetTitle_IDAssetType}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.IDAssetType}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{aSSAssetController.prepareCreate}" update=":ASSAssetCreateForm" oncomplete="PF('ASSAssetCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":ASSAssetViewForm" oncomplete="PF('ASSAssetViewDialog').show()" disabled="#{empty aSSAssetController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ASSAssetEditForm" oncomplete="PF('ASSAssetEditDialog').show()" disabled="#{empty aSSAssetController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{aSSAssetController.destroy}" update=":growl,datalist" disabled="#{empty aSSAssetController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

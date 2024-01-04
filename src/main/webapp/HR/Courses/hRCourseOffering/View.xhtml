@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseOfferingViewDlg" widgetVar="HRCourseOfferingViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Izvedba izobraževanja">
+            <h:form id="HRCourseOfferingViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseOfferingController.selected != null}">
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseOfferingLabel_courseOfferingID}"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.courseOfferingID}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_courseOfferingID}"/> 
+                        
+                        <h:outputText value="Datum izobraževanja:"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.courseDate}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_courseDate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana" />
+                        </h:outputText>
+                        
+                        <h:outputText value="Lokacija izobraževanja:"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.meetingroomID}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_meetingroomID}"/>
+                        
+                        <h:outputText value="Lokacija izobraževanjaString:"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.meetingroomString}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_meetingroomID}"/>
+                        
+                        <h:outputText value="Aktiven:"/>
+                        <p:selectBooleanCheckbox value="#{hRCourseOfferingController.selected.active}" disabled="true"/>
+                      
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseOfferingLabel_courseID}"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.courseID.courseTitle}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_courseID}"/>
+                        
+                        <h:outputText value="Izobraževalec"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.instructorID.firstname} #{hRCourseOfferingController.selected.instructorID.lastname}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_instructorID}"/>
+                    
+                        <h:outputText value="Kreirano:"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.dateCreated}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_dateCreated}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana" />
+                        </h:outputText>
+                        
+                        <h:outputText value="Kreiral:"/>
+                        <h:outputText value="#{hRCourseOfferingController.selected.creator}" title="#{bundleHRCourse.ViewHRCourseOfferingTitle_creator}"/>                    
+                    
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRCourse.Close}" onclick="PF('HRCourseOfferingViewDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

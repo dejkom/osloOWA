@@ -1,0 +1,249 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            AGV postaja - <h:outputText value="#{agvBean.place.placeName}"/>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+                <p:panel id="pg" header="Workplace information">
+
+                    <div class="row">
+                        <div class="col-sm">
+                            Station Name: <h:outputText value="#{agvBean.place.placeName}"/>
+                        </div>
+                        <div class="col-sm">
+                            Websocket Channel: <h:outputText value="#{agvBean.place.chanel}"/>
+                        </div>
+                        <div class="col-sm">
+                            RFID Key: <h:outputText id="rf" value="#{agvBean.rfidKey}"/>
+                        </div>
+                    </div>
+
+                </p:panel>
+                <br/>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p:panel header="Materials I can order">
+                            <!--There will be list of materials this station can order-->
+                            <br/>
+                            <p:dataTable var="catalog" value="#{agvBean.catalogWhatICanOrder}" widgetVar="catalogTable">
+                                <p:column headerText="Material Id" filterBy="#{catalog.materialId}" filterMatchMode="contains">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb1" onchange="PF('catalogTable').filter()" keypadOnly="true"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column headerText="Material Description" filterBy="#{catalog.materialId}" filterMatchMode="contains">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb2" onchange="PF('catalogTable').filter()" layout="qwertyBasic"/>
+                                    </f:facet>
+                                </p:column>
+
+                                <!--
+                                <p:column headerText="Material Category" filterBy="#{catalog.AGVmaterial.materialCategory}" filterMatchMode="contains">
+                                    <h:outputText value="#{catalog.AGVmaterial.materialCategory}" />
+                                    <f:facet name="filter">
+                                        <p:keyboard id="kb3" onchange="PF('catalogTable').filter()" layout="qwertyBasic"/>
+                                    </f:facet>
+                                </p:column>
+                                -->
+
+                                <p:column headerText="order from">
+                                    <h:outputText value="#{catalog.placeFrom.placeName}" />
+                                </p:column>
+
+                                <p:column style="width:6rem;text-align: center">
+                                    <p:commandButton update=":form3:productDetail" oncomplete="PF('productDialog').show()"
+                                                     icon="pi pi-download" value="Order" title="View">
+                                        <f:setPropertyActionListener value="#{catalog.materialId}" target="#{agvBean.selectedMaterial}"/>
+                                        <f:setPropertyActionListener value="#{catalog}" target="#{agvBean.selectedCatalog}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </p:panel>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <p:panel header="Materials I can supply">
+                            There will be list of materials this station can supply
+                            <br/>
+                            <p:dataTable var="catalog" value="#{agvBean.catalogWhatICanSupply}">
+                                <p:column headerText="Material Id">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Material Description">
+                                    <h:outputText value="#{catalog.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Supplying To">
+                                    <h:outputText value="#{catalog.placeTo.placeName}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p:panel header="Materials I have ordered - 'Košarica' ">
+                            This materials will be ordered when you complete order - press button "order all"
+                            <br/>                   
+                            <p:commandButton id="orderAllButton" value="Order All" update="orderedDT" actionListener="#{agvBean.orderAllFromKosarica()}"/>
+                            <p:commandButton id="orderByMe" value="Ordered By Me" update="orderedDT" actionListener="#{agvBean.testirajOrderByMe()}"/>
+                            <br/>
+                            <br/>
+                            <f:facet name="options">
+                                <p:menu>
+                                    <p:submenu label="Actions">
+                                        <p:menuitem value="Order All"  actionListener="#{agvBean.orderAllFromKosarica()}" ajax="true" update="orderedDT" icon="pi pi-clone"/>
+                                        <p:menuitem value="Discard All" actionListener="#{agvBean.discardAllKosarica()}" ajax="true" update="orderedDT" icon="pi pi-trash"/>
+                                    </p:submenu>
+                                </p:menu>
+                            </f:facet>
+                            <p:dataTable id="orderedDT" var="ordered" value="#{agvBean.listOfOrders}">
+                                <p:column headerText="Order ID">
+                                    <h:outputText value="#{ordered.orderId}" />
+                                </p:column>
+
+                                <p:column headerText="Origin of material">
+                                    <h:outputText value="#{ordered.placeFrom.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Destination of material">
+                                    <h:outputText value="#{ordered.placeTo.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Material">
+                                    <h:outputText value="#{ordered.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Ordered Quantity">
+                                    <h:outputText value="#{ordered.quantity}" />
+                                </p:column>
+
+                                <p:column headerText="Order Status">
+                                    <h:outputText value="#{ordered.statusId.statusName}" />
+                                </p:column>
+
+                                <p:column headerText="Order Creation Time">
+                                    <h:outputText value="#{ordered.createdTimestamp}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <p:panel header="Actual orders">
+                            There will be list of orders for this station
+                            <br/>
+                            <p:dataTable id="toSupplyDT" var="tosupply" value="#{agvBean.listOfOrdersToSupply}">
+                                <p:column headerText="Order ID">
+                                    <h:outputText value="#{tosupply.orderId}" />
+                                </p:column>
+
+                                <p:column headerText="Origin of material">
+                                    <h:outputText value="#{tosupply.placeFrom.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Destination of material">
+                                    <h:outputText value="#{tosupply.placeTo.placeName}" />
+                                </p:column>
+
+                                <p:column headerText="Material">
+                                    <h:outputText value="#{tosupply.materialId}" />
+                                </p:column>
+
+                                <p:column headerText="Ordered Quantity">
+                                    <h:outputText value="#{tosupply.quantity}" />
+                                </p:column>
+
+                                <p:column headerText="Order Status">
+                                    <h:outputText value="#{tosupply.statusId.statusName}" />
+                                </p:column>
+
+                                <p:column headerText="Order Creation Time" sortBy="#{tosupply.createdTimestamp}" sortOrder="ascending">
+                                    <h:outputText value="#{tosupply.createdTimestamp}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                </div>
+
+                <br/>
+
+                <p:dialog header="Info" id="dialog" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true" appendTo="@(body)" >
+                    <p class="p-m-0">This web page was requested without necessary URL parameters. Looks like there is no placeId set.</p>
+                    <f:facet name="footer">
+                        <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                            Close this page
+                        </a>
+                    </f:facet>
+                </p:dialog>
+
+
+            </h:form>
+
+
+            <p:dialog header="Operator login" id="dialogprijava" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form2">
+                    <h:panelGroup id="display">
+                        <p:defaultCommand target="submitButton" />
+                        <p class="p-m-0">If you want to use this page you need to login with your RFID key.</p>
+                        <br/>
+                        <p:inputText id="rfidin" widgetVar="myInput" value="#{agvBean.rfidKey}" >
+                        </p:inputText>
+                        <p:commandButton id="submitButton" actionListener="#{agvBean.handleLogin}" update=":form:pg display"  value="Shrani" onclick="dlg1.hide()" />
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+
+            <p:dialog id="dlg" header="Confirm order creation" widgetVar="productDialog" modal="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)" dynamic="true" >
+                <h:form id="form3" >
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:defaultCommand target="orderButton" />
+                        <p:column rendered="#{not empty agvBean.selectedMaterial}">
+                            You are odering:
+                            <br/>
+                            material - <h:outputText value="#{agvBean.selectedMaterial}" style="font-weight: bold"/>
+                            <br/>
+                            description - <h:outputText value="#{agvBean.selectedMaterial}" style="font-weight: bold" />
+                            <br/>
+                            <br/>
+                            Please select desired quantity
+                            <br/>
+                            <br/>
+                            <p:spinner id="quantityin" min="1" value="#{agvBean.quantity}"/>
+                            <br/>
+                            <br/> 
+                            <p:commandButton id="orderButton" actionListener="#{agvBean.orderButtonAction()}" update=":form:pg productDetail :form:orderedDT"  value="Order" />
+
+                        </p:column>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+
+
+        </ui:define>
+
+
+
+    </ui:composition>
+</html>

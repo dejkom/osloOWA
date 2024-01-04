@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRSignProfNaziviEditDlg" widgetVar="HRSignProfNaziviEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle}">
+            <h:form id="HRSignProfNaziviEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRSignProfNaziviController.selected != null}">
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{hRSignProfNaziviController.selected.id}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_id}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_uradniNaziv}" for="uradniNaziv" />
+                        <p:inputText id="uradniNaziv" value="#{hRSignProfNaziviController.selected.uradniNaziv}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_uradniNaziv}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_uradniNaziv}"/>
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_razsirjenSlo}" for="razsirjenSlo" />
+                        <p:inputText id="razsirjenSlo" value="#{hRSignProfNaziviController.selected.razsirjenSlo}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_razsirjenSlo}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_razsirjenSlo}"/>
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_angUradni}" for="angUradni" />
+                        <p:inputText id="angUradni" value="#{hRSignProfNaziviController.selected.angUradni}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_angUradni}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_angUradni}"/>
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_razsirjenAng}" for="razsirjenAng" />
+                        <p:inputText id="razsirjenAng" value="#{hRSignProfNaziviController.selected.razsirjenAng}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_razsirjenAng}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_razsirjenAng}"/>
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_oddelekSlo}" for="oddelekSlo" />
+                        <p:inputText id="oddelekSlo" value="#{hRSignProfNaziviController.selected.oddelekSlo}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_oddelekSlo}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_oddelekSlo}"/>
+                        <p:outputLabel value="#{bundleHRSignProfNazivi.EditHRSignProfNaziviLabel_oddelekAng}" for="oddelekAng" />
+                        <p:inputText id="oddelekAng" value="#{hRSignProfNaziviController.selected.oddelekAng}" title="#{bundleHRSignProfNazivi.EditHRSignProfNaziviTitle_oddelekAng}" required="true" requiredMessage="#{bundleHRSignProfNazivi.EditHRSignProfNaziviRequiredMessage_oddelekAng}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRSignProfNaziviController.update}" value="#{bundleHRSignProfNazivi.Save}" update="display,:HRSignProfNaziviListForm:datalist,:growl" oncomplete="handleSubmit(args, 'HRSignProfNaziviEditDialog');"/>
+                    <p:commandButton value="#{bundleHRSignProfNazivi.Cancel}" onclick="HRSignProfNaziviEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

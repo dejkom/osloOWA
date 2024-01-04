@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Courses - Course Instructors
+
+            <script type="text/javascript">
+                var currentEvent;
+
+                $(document).ready(function () {
+                    PrimeFaces.widget.ContextMenu.prototype.show = function (e) {
+                        //hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if (e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                                left = e.pageX,
+                                top = e.pageY,
+                                width = this.jq.outerWidth(),
+                                height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if ((left + width) > (win.width()) + win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if ((top + height) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if (this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                            'top': top,
+                            'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+            
+            <style>
+                .ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer {
+                    text-align: center;
+                    padding: 0px 0px;
+                }
+                
+                body .ui-datatable .ui-datatable-header {
+                    background: transparent;
+                    border: 0px solid transparent;
+                    border-width: 0px 0 1px 0;
+                    color: transparent;
+                    padding: 0rem 0rem;
+                    font-weight: 600;
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can browse data of DB View [OWA].[dbo].[v_AD_CODEKS_Users]
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="VADCODEKSUsersListForm">
+                <p:panel header="">
+                    <p:dataTable id="datalist" value="#{vADCODEKSUsersController.items}" var="item"
+                                 selectionMode="single" selection="#{vADCODEKSUsersController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50,#{vADCODEKSUsersController.items.size()}"
+                                 >
+
+                        <!--
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+                        -->
+
+                        <f:facet name="header" >
+                            <div class="p-d-flex p-jc-between p-ai-center" style="float:right">
+                                <div>
+                                    <p:commandButton id="toggler" type="button" value="Columns" icon="pi pi-align-justify"/>
+                                    <p:columnToggler datasource="datalist" trigger="toggler"/>
+                                </div>
+                            </div>
+                        </f:facet>
+
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_dn}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dn}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_externalId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.externalId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_lastname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastname}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_firstname}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.firstname}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_departmentId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departmentId}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_codeksDeleted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.codeksDeleted}" disabled="true"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_isTimeAttendance}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.isTimeAttendance}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_card}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.card}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_username}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.username}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_lastPwSetDateTime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastPwSetDateTime}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_title}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.title}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_telephoneNumber}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telephoneNumber}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_mobile}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mobile}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_mail}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mail}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_countryShort}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.countryShort}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_country}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.country}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_countryCode}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.countryCode}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_postalCode}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.postalCode}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_location}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.location}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_streetAddress}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.streetAddress}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_extensionAttribute1}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.extensionAttribute1}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRADCODEKS.ListVADCODEKSUsersTitle_extensionAttribute2}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.extensionAttribute2}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRADCODEKS.Create}" actionListener="#{vADCODEKSUsersController.prepareCreate}" update=":VADCODEKSUsersCreateForm" oncomplete="PF('VADCODEKSUsersCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRADCODEKS.View}" update=":VADCODEKSUsersViewForm" oncomplete="PF('VADCODEKSUsersViewDialog').show()" disabled="#{empty vADCODEKSUsersController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRADCODEKS.Edit}" update=":VADCODEKSUsersEditForm" oncomplete="PF('VADCODEKSUsersEditDialog').show()" disabled="#{empty vADCODEKSUsersController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRADCODEKS.Delete}" actionListener="#{vADCODEKSUsersController.destroy}" update=":growl,datalist" disabled="#{empty vADCODEKSUsersController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>           
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

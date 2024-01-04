@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="HRCourseHRCourseInstructorListForm">
+                <p:panel header="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle}">
+                    <p:dataTable id="datalist" value="#{hRCourseHRCourseInstructorController.items}" var="item"
+                                 selectionMode="single" selection="#{hRCourseHRCourseInstructorController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle_courseID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseID}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.ListHRCourseHRCourseInstructorTitle_instructorID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.instructorID}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCourse.Create}" actionListener="#{hRCourseHRCourseInstructorController.prepareCreate}" update=":HRCourseHRCourseInstructorCreateForm" oncomplete="PF('HRCourseHRCourseInstructorCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleHRCourse.View}" update=":HRCourseHRCourseInstructorViewForm" oncomplete="PF('HRCourseHRCourseInstructorViewDialog').show()" disabled="#{empty hRCourseHRCourseInstructorController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCourse.Edit}" update=":HRCourseHRCourseInstructorEditForm" oncomplete="PF('HRCourseHRCourseInstructorEditDialog').show()" disabled="#{empty hRCourseHRCourseInstructorController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCourse.Delete}" actionListener="#{hRCourseHRCourseInstructorController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseHRCourseInstructorController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

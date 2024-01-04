@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVorderEditDlg" widgetVar="AGVorderEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.EditAGVorderTitle}">
+            <h:form id="AGVorderEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVorderController.selected != null}">
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_orderId}" for="orderId" />
+                        <p:inputText id="orderId" value="#{aGVorderController.selected.orderId}" title="#{bundleAGV.EditAGVorderTitle_orderId}" required="true" requiredMessage="#{bundleAGV.EditAGVorderRequiredMessage_orderId}"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_materialId}" for="materialId" />
+                        <p:inputText id="materialId" value="#{aGVorderController.selected.materialId}" title="#{bundleAGV.EditAGVorderTitle_materialId}" required="true" requiredMessage="#{bundleAGV.EditAGVorderRequiredMessage_materialId}"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_createdTimestamp}" for="createdTimestamp" />
+                        <p:calendar id="createdTimestamp" pattern="MM/dd/yyyy HH:mm:ss" value="#{aGVorderController.selected.createdTimestamp}" title="#{bundleAGV.EditAGVorderTitle_createdTimestamp}" required="true" requiredMessage="#{bundleAGV.EditAGVorderRequiredMessage_createdTimestamp}" showOn="button"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_modifiedTimestamp}" for="modifiedTimestamp" />
+                        <p:calendar id="modifiedTimestamp" pattern="MM/dd/yyyy HH:mm:ss" value="#{aGVorderController.selected.modifiedTimestamp}" title="#{bundleAGV.EditAGVorderTitle_modifiedTimestamp}" required="true" requiredMessage="#{bundleAGV.EditAGVorderRequiredMessage_modifiedTimestamp}" showOn="button"/>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_quantity}" for="quantity" />
+                        <p:inputText id="quantity" value="#{aGVorderController.selected.quantity}" title="#{bundleAGV.EditAGVorderTitle_quantity}" />
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_orderTypeId}" for="orderTypeId" />
+                        <p:selectOneMenu id="orderTypeId" value="#{aGVorderController.selected.orderTypeId}" >
+                            <f:selectItem itemLabel="#{bundleAGV.SelectOneMessage}"/>
+                            <f:selectItems value="#{aGVorderTypeController.itemsAvailableSelectOne}"
+                                           var="orderTypeIdItem"
+                                           itemValue="#{orderTypeIdItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_placeTo}" for="placeTo" />
+                        <p:selectOneMenu id="placeTo" value="#{aGVorderController.selected.placeTo}" >
+                            <f:selectItem itemLabel="#{bundleAGV.SelectOneMessage}"/>
+                            <f:selectItems value="#{aGVplaceController.itemsAvailableSelectOne}"
+                                           var="placeToItem"
+                                           itemValue="#{placeToItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_placeFrom}" for="placeFrom" />
+                        <p:selectOneMenu id="placeFrom" value="#{aGVorderController.selected.placeFrom}" >
+                            <f:selectItem itemLabel="#{bundleAGV.SelectOneMessage}"/>
+                            <f:selectItems value="#{aGVplaceController.itemsAvailableSelectOne}"
+                                           var="placeFromItem"
+                                           itemValue="#{placeFromItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleAGV.EditAGVorderLabel_statusId}" for="statusId" />
+                        <p:selectOneMenu id="statusId" value="#{aGVorderController.selected.statusId}" >
+                            <f:selectItem itemLabel="#{bundleAGV.SelectOneMessage}"/>
+                            <f:selectItems value="#{aGVstatusController.itemsAvailableSelectOne}"
+                                           var="statusIdItem"
+                                           itemValue="#{statusIdItem}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="User Card" for="userCard" />
+                        <p:inputText id="userCard" value="#{aGVorderController.selected.userCard}" title="User Card" required="false"/>
+                        <p:outputLabel value="User External Id" for="userExternalId" />
+                        <p:inputText id="userExternalId" value="#{aGVorderController.selected.userExternalId}" title="User External Id" required="false"/>
+                        <p:outputLabel value="UserFLName" for="userFLName" />
+                        <p:inputText id="userFLName" value="#{aGVorderController.selected.userExternalId}" title="UserFLName" required="false"/>
+                        
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aGVorderController.update}" value="#{bundleAGV.Save}" update="display,:AGVorderListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AGVorderEditDialog');"/>
+                    <p:commandButton value="#{bundleAGV.Cancel}" onclick="AGVorderEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

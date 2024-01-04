@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="my_persistence_unit" transaction-type="JTA">
+    <jta-data-source>jdbc/prsql02_jndi</jta-data-source>
+    <class>com.odelowebapp.entity.TESTPersons</class>
+    <class>com.odelowebapp.entity.SIGNPresentation</class>
+    <class>com.odelowebapp.entity.SIGNTagType</class>
+    <class>com.odelowebapp.entity.SIGNTelevision</class>
+    <class>com.odelowebapp.entity.SIGNAlert</class>
+    <class>com.odelowebapp.entity.SIGNUser</class>
+    <class>com.odelowebapp.entity.SIGNSlide</class>
+    <class>com.odelowebapp.AGV.entity.AGVmaterial</class>
+    <class>com.odelowebapp.AGV.entity.AGVorder</class>
+    <class>com.odelowebapp.AGV.entity.AGVstatus</class>
+    <class>com.odelowebapp.AGV.entity.AGVcatalog</class>
+    <class>com.odelowebapp.AGV.entity.AGVorderType</class>
+    <class>com.odelowebapp.AGV.entity.AGVstatusLog</class>
+    <class>com.odelowebapp.AGV.entity.AGVplace</class>
+    <class>com.odelowebapp.HR.entity.HRCourse</class>
+    <class>com.odelowebapp.HR.entity.HRCourseAttendance</class>
+    <class>com.odelowebapp.HR.entity.HRCourseHRCourseInstructor</class>
+    <class>com.odelowebapp.HR.entity.HRCourseInstructor</class>
+    <class>com.odelowebapp.HR.entity.HRCourseOffering</class>
+    <class>com.odelowebapp.HR.entity.HRCourseType</class>
+    <class>com.odelowebapp.HR.entity.HRJob</class>
+    <class>com.odelowebapp.HR.entity.HRJobHRCourse</class>
+    <class>com.odelowebapp.HR.entity.VADCODEKSUsers</class>
+    <class>com.odelowebapp.HR.entity.VCodeksUsers</class>
+    <class>com.odelowebapp.HR.entity.VCodeksUsersAktualniZaposleni</class>
+    <class>com.odelowebapp.HR.entity.VCodeksObiskovalci</class>
+    <class>com.odelowebapp.HR.entity.HRVisitLog</class>
+    <class>com.odelowebapp.student.jan.entity.ENGASmeters</class>
+    <class>com.odelowebapp.student.jan.entity.ENTRANSmeters</class>
+    <class>com.odelowebapp.student.jan.entity.ENALSmeters</class>
+    <class>com.odelowebapp.CODEKS.entity.Users</class>
+    <class>com.odelowebapp.CODEKS.entity.Departments</class>
+    <class>com.odelowebapp.student.qlik_mails.entity.VADusersdirect</class>
+    <class>com.odelowebapp.student.qlik_mails.entity.QLIKmailReceivers</class>
+    <class>com.odelowebapp.HR.entity.VCodeksObiskovalciPK</class>
+    <class>com.odelowebapp.HR.entity.HRVisitLogPK</class>
+    <class>com.odelowebapp.HR.entity.HRCourseAnswer</class>
+    <class>com.odelowebapp.student.evidenca.entity.ASSAsset</class>
+    <class>com.odelowebapp.student.evidenca.entity.ASSLocation</class>
+    <class>com.odelowebapp.student.evidenca.entity.ASSLog</class>
+    <class>com.odelowebapp.student.evidenca.entity.ASSStatus</class>
+    <class>com.odelowebapp.student.evidenca.entity.ASSType</class>
+    <class>com.odelowebapp.student.evidenca.entity.ASS_Q_IzposojenoSredstvo</class>
+    <class>com.odelowebapp.PRC.entity.PRCbase</class>
+    <class>com.odelowebapp.PRC.entity.PRCdata</class>
+    <class>si.odelo.osec.spea.entity.OSECKontrolaJoblog</class>
+    <class>si.odelo.osec.spea.entity.FinishedOSECtable</class>
+    <class>si.odelo.osec.spea.entity.TempOSECtable</class>
+    <class>com.odelowebapp.OSEC.entity.OSECDowntime</class>
+    <class>com.odelowebapp.OSEC.entity.OSECDowntimeReasons</class>
+    <class>com.odelowebapp.OSEC.entity.OSECLine</class>
+    <class>com.odelowebapp.OSEC.entity.OSECMachine</class>
+    <class>com.odelowebapp.PM.entity.CONEbitProfit</class>
+    <class>com.odelowebapp.common.entity.Question</class>
+    <class>com.odelowebapp.common.entity.Questionnaire</class>
+    <class>com.odelowebapp.PRC.entity.PRCContract</class>
+    <class>com.odelowebapp.PRC.entity.PRCContractdetail</class>
+    <class>com.odelowebapp.PRC.entity.PRCRik</class>
+    <class>com.odelowebapp.HR.entity.HRCourseInstructorsWorkLog</class>
+    <class>com.odelowebapp.HR.entity.HRCourseQuestionnaireStatus</class>
+    <class>com.odelowebapp.PM.entity.CONPSReport</class>
+    <class>com.odelowebapp.HR.entity.HRSignProfNazivi</class>
+    <class>com.odelowebapp.common.entity.OWANotification</class>
+    <class>com.odelowebapp.QS.entity.QSmain</class>
+    <class>com.odelowebapp.QS.entity.QSoverview</class>
+    <class>com.odelowebapp.QS.entity.QSLogTable</class>
+    <class>com.odelowebapp.OSEC.entity.OSECloginLog</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="toplink.jdbc.url" value="jdbc:sqlserver://prsql02:1433;database=OWA"/>
+      <property name="toplink.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="toplink.jdbc.user" value="talend"/>
+      <property name="toplink.jdbc.password" value="odelo628"/>
+      <property name="hibernate.connection.url" value="jdbc:sqlserver://prsql02:1433;database=OWA"/>
+      <property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="hibernate.connection.username" value="talend"/>
+      <property name="hibernate.connection.password" value="odelo628"/>
+      <property name="openjpa.ConnectionURL" value="jdbc:sqlserver://prsql02:1433;database=OWA"/>
+      <property name="openjpa.ConnectionDriverName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="openjpa.ConnectionUserName" value="talend"/>
+      <property name="openjpa.ConnectionPassword" value="odelo628"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://prsql02:1433;database=OWA"/>
+      <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+      <property name="javax.persistence.jdbc.user" value="talend"/>
+      <property name="javax.persistence.jdbc.password" value="odelo628"/>
+      <!-- TO JE ČE HOČEŠ VIDET SQL V KONZOLI -->
+      <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+    </properties>
+  </persistence-unit>
+  <resources>
+    <jdbc-resource enabled="true" jndi-name="jdbc/prsql02_jndi" object-type="user" pool-name="prsql02"/>
+  </resources>
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="codeks_persistence_unit" transaction-type="JTA">
+    <jta-data-source>jdbc/prsql02_codeks_jndi</jta-data-source>
+    <class>com.odelowebapp.CODEKS.entity.Departments</class>
+    <class>com.odelowebapp.CODEKS.entity.Users</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+    </properties>
+  </persistence-unit>
+  <resources>
+    <jdbc-resource enabled="true" jndi-name="jdbc/prsql02_codeks_jndi" object-type="user" pool-name="prsql02_codeks"/>
+  </resources>
+</persistence>

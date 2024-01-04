@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseAnswerEditDlg" widgetVar="HRCourseAnswerEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleCourseAnswer.EditHRCourseAnswerTitle}">
+            <h:form id="HRCourseAnswerEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseAnswerController.selected != null}">
+                        <p:outputLabel value="#{bundleCourseAnswer.EditHRCourseAnswerLabel_HRCourseAnswerPK_userID}" for="HRCourseAnswerPK_userID" />
+                        <p:inputText id="HRCourseAnswerPK_userID" value="#{hRCourseAnswerController.selected.HRCourseAnswerPK.userID}" title="#{bundleCourseAnswer.EditHRCourseAnswerTitle_HRCourseAnswerPK_userID}" required="true" requiredMessage="#{bundleCourseAnswer.EditHRCourseAnswerRequiredMessage_HRCourseAnswerPK_userID}"/>
+                        <p:outputLabel value="#{bundleCourseAnswer.EditHRCourseAnswerLabel_HRCourseAnswerPK_courseID}" for="HRCourseAnswerPK_courseID" />
+                        <p:inputText id="HRCourseAnswerPK_courseID" value="#{hRCourseAnswerController.selected.HRCourseAnswerPK.courseID}" title="#{bundleCourseAnswer.EditHRCourseAnswerTitle_HRCourseAnswerPK_courseID}" required="true" requiredMessage="#{bundleCourseAnswer.EditHRCourseAnswerRequiredMessage_HRCourseAnswerPK_courseID}"/>
+                        <p:outputLabel value="#{bundleCourseAnswer.EditHRCourseAnswerLabel_HRCourseAnswerPK_questionNbr}" for="HRCourseAnswerPK_questionNbr" />
+                        <p:inputText id="HRCourseAnswerPK_questionNbr" value="#{hRCourseAnswerController.selected.HRCourseAnswerPK.questionNbr}" title="#{bundleCourseAnswer.EditHRCourseAnswerTitle_HRCourseAnswerPK_questionNbr}" required="true" requiredMessage="#{bundleCourseAnswer.EditHRCourseAnswerRequiredMessage_HRCourseAnswerPK_questionNbr}"/>
+                        <p:outputLabel value="#{bundleCourseAnswer.EditHRCourseAnswerLabel_answer}" for="answer" />
+                        <p:inputText id="answer" value="#{hRCourseAnswerController.selected.answer}" title="#{bundleCourseAnswer.EditHRCourseAnswerTitle_answer}" />
+                        <p:outputLabel value="#{bundleCourseAnswer.EditHRCourseAnswerLabel_timestamp}" for="timestamp" />
+                        <p:calendar id="timestamp" pattern="MM/dd/yyyy HH:mm:ss" value="#{hRCourseAnswerController.selected.timestamp}" title="#{bundleCourseAnswer.EditHRCourseAnswerTitle_timestamp}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCourseAnswer.EditHRCourseAnswerLabel_question}" for="question" />
+                        <p:inputText id="question" value="#{hRCourseAnswerController.selected.question}" title="#{bundleCourseAnswer.EditHRCourseAnswerTitle_question}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseAnswerController.update}" value="#{bundleCourseAnswer.Save}" update="display,:HRCourseAnswerListForm:datalist,:growl" oncomplete="handleSubmit(args, 'HRCourseAnswerEditDialog');"/>
+                    <p:commandButton value="#{bundleCourseAnswer.Cancel}" onclick="HRCourseAnswerEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

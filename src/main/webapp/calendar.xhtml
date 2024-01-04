@@ -1,0 +1,116 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="calendarForm">
+
+        <p:schedule id="schedule" value="#{osebniKoledar.eventModel}" widgetVar="myschedule">
+            <!--
+            <p:ajax event="dateSelect" listener="#{osebniKoledar.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();"/>
+            -->
+            <p:ajax event="eventSelect" listener="#{osebniKoledar.onEventSelect}" update="eventDialogForm:eventDetails" oncomplete="PF('eventDialog').show();"/>
+        </p:schedule>
+
+        <!--
+        <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="fade" hideEffect="fade">
+            <h:panelGrid id="eventDetails" columns="2" cellpadding="7">
+                <p:outputLabel for="title" value="Titles" styleClass="p-text-bold"/>
+                <p:inputText id="title" value="#{osebniKoledar.event.title}" required="true"/>
+
+                <p:outputLabel for="from" value="From" styleClass="p-text-bold"/>
+                <p:datePicker id="from" value="#{osebniKoledar.event.startDate}" pattern="dd/MM/yyyy"
+                              showTime="true" appendTo="@(body)"/>
+
+                <p:outputLabel for="to" value="To" styleClass="p-text-bold"/>
+                <p:datePicker id="to" value="#{osebniKoledar.event.endDate}" pattern="dd/MM/yyyy"
+                              showTime="true" appendTo="@(body)"/>
+
+                <p:outputLabel for="allDay" value="All Day" styleClass="p-text-bold"/>
+                <h:selectBooleanCheckbox id="allDay" value="#{osebniKoledar.event.allDay}"/>
+            </h:panelGrid>
+
+            <div class="p-d-flex p-jc-between p-mt-3">
+                <p:commandButton type="reset" value="Reset" styleClass="p-text-bold ui-button-outlined"/>
+                <p:commandButton id="addButton" value="Save" actionListener="#{osebniKoledar.addEvent}"
+                                 oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+            </div>
+        </p:dialog>
+        -->
+
+    </h:form>
+    <h:form id="eventDialogForm">
+        <p:dialog widgetVar="eventDialog" header="Podrobnosti dogodka" showEffect="clip" hideEffect="clip" resizable="false">
+            <h:panelGrid id="eventDetails" columns="2">
+                <p:outputLabel for="title" value="Naslov:" />
+                <h:outputText id="title" value="#{osebniKoledar.event.title}" />
+
+                <p:outputLabel for="from" value="Od:" />
+                <h:outputText id="from" value="#{osebniKoledar.event.startDate}" >
+                    <f:convertDateTime type="localDate" pattern="dd.MM.yyyy HH:mm" />
+                </h:outputText>
+
+                <p:outputLabel for="to" value="Do:" />
+                <h:outputText id="to" value="#{osebniKoledar.event.endDate}" >
+                    <f:convertDateTime type="localDate" pattern="dd.MM.yyyy HH:mm" />
+                </h:outputText>
+
+                <!--
+                <p:outputLabel for="opis" value="Opis:" />
+                <h:outputText id="opis" value="blaben" />
+                -->
+
+                <!--
+                <p:outputLabel for="id" value="AppointmentId:" />
+                <h:outputText id="id" value="#{osebniKoledar.event.id}" />
+                -->
+
+                <p:commandButton value="Izbrisi na Exchange-u" rendered="true" id="izbrisiButton" update="calendarForm:schedule growl" actionListener="#{osebniKoledar.deleteAppointment(osebniKoledar.event.id)}" onclick="PF('eventDialog').hide();"/>
+                <p:commandButton value="Prijavi se" rendered="false" id="prijaviButton" update="calendarForm:schedule" actionListener="#{osebniKoledar.register2Appointment}" onclick="PF('eventDialog').hide();"/>
+                <p:commandButton value="Preveri odzive" id="odziviButton" update="calendarForm:schedule :eventResponsesDialogForm" actionListener="#{osebniKoledar.checkEventResponses(osebniKoledar.event.id)}" onclick="PF('eventDialog').hide();" oncomplete="PF('eventResponsesDialog').show();"/>
+
+            </h:panelGrid>
+        </p:dialog> 
+    </h:form>
+
+    <h:form id="eventResponsesDialogForm">
+        <p:dialog widgetVar="eventResponsesDialog" header="Odzivi na dogodek" showEffect="clip" hideEffect="clip" resizable="false">
+            <h:panelGrid id="eventResponses" columns="2">
+
+                <p:dataTable var="attendee" value="#{osebniKoledar.odziviRequiredAttendees}">
+                    <p:column headerText="Email">
+                        <h:outputText value="#{attendee.address}" />
+                    </p:column>
+
+                    <p:column headerText="Odziv">
+                        <h:outputText value="#{attendee.responseType}" />
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:panelGrid>
+        </p:dialog> 
+    </h:form>
+
+
+    <h:form id="eventDialogNewForm">
+        <p:dialog widgetVar="eventDialogNew" header="Dodajanje dogodka" showEffect="clip" hideEffect="clip" resizable="false">
+            <h:panelGrid id="eventDetailsNew" columns="2">
+                <p:outputLabel for="titleNew" value="Naslov:" />
+                <p:inputText id="titleNew" value="#{osebniKoledar.event.title}" required="true" />
+
+                <p:outputLabel for="fromNew" value="Od:" />
+                <p:calendar id="fromNew" value="#{osebniKoledar.event.startDate}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
+
+                <p:outputLabel for="toNew" value="Do:" />
+                <p:calendar id="toNew" value="#{osebniKoledar.event.endDate}" timeZone="GMT+2" pattern="dd.MM.yyyy HH:mm"/>
+
+                <p:commandButton type="reset" value="Reset" />
+                <p:commandButton id="addButton" value="Shrani" actionListener="#{osebniKoledar.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialogNew').hide();" />
+            </h:panelGrid>
+        </p:dialog> 
+
+    </h:form>
+
+
+</html>

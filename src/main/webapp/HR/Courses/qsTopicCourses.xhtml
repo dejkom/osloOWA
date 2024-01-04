@@ -1,0 +1,163 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fnc="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Courses (QS related Topics)"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <script type="text/javascript">
+                //ta koda povzroči da se pred toggle eventom sproži še select event
+                PrimeFaces.widget.DataTable.prototype.toggleExpansion = (function () {
+                    var cached_function = PrimeFaces.widget.DataTable.prototype.toggleExpansion;
+                    return function () {
+                        var row = arguments[0].closest('tr');
+                        if (this.cfg.selectionMode === 'single') {
+                            this.unselectAllRows();
+                        }
+                        if (this.cfg.selectionMode) {
+                            this.selectRow(row, false);
+                        }
+                        var result = cached_function.apply(this, arguments);
+                        return result;
+                    };
+                })();
+            </script>
+            <script>
+                PrimeFaces.locales['en'] = {
+                    firstDay: 1
+                };
+                PrimeFaces.locales['sl'] = {
+                    firstDay: 1,
+                    monthNames: ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij',
+                        'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'],
+                    monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg',
+                        'Sep', 'Okt', 'Nov', 'Dec'],
+                    dayNames: ['Nedelja', 'Ponedeljek', 'Torek', 'Sreda', 'Četrtek', 'Petek',
+                        'Sobota'],
+                    dayNamesShort: ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'],
+                    dayNamesMin: ['N', 'P', 'T', 'S', 'Č', 'P', 'S'],
+                    timeText: 'Čas',
+                    hourText: 'Ura',
+                    minuteText: 'Minuta',
+                    secondText: 'Sekunda'
+                };
+            </script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            <h:outputText value="#{bundleHRCourse.qsTopicRelatedCourseOfferings}" />
+            <style type="text/css">
+                body .ui-panel {
+                    padding: 0;
+                    margin-bottom: 50px;
+                }
+
+                .delButton:hover {
+                    background-color: red !important;
+                }
+
+                .ui-selectlistbox-listcontainer{
+                    height: 450px !important;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="#{bundleHRCourse.qsTopicRelatedCourseOfferings_subtitle}" />
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <h:outputText value="#{hRCourseQSTopicsBean.testVar}"/>
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p2" header="" toggleable="true" closable="false" collapsed="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.qsTopicRelatedCourseOfferings}" /><span class="label" style="margin-left: 5px"><h:outputText value="#{hRCourseQSTopicsBean.allCourseOfferingsWithQSTopic.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">                                
+                            </f:facet>
+                            <p:dataTable id="usersNextCourses" lazy="false" var="course" value="#{hRCourseQSTopicsBean.allCourseOfferingsWithQSTopic}"
+                                         rowKey="#{course.courseOfferingID}"
+                                         paginator="true" paginatorPosition="both"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                         rowsPerPageTemplate="5,10,{ShowAll|'All'}" rows="10">
+
+                                <!--<p:ajax event="rowToggle" listener="#{hRCourseInstructorViewBean.onRowToggle}" update=":form:usersNextCourses" />-->
+
+                                <p:column style="width:2rem">
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:column filterBy="#{course.courseID.courseTitle}" filterMatchMode="contains" headerText="#{bundleHRCourse.ListHRCourseTitle_courseTitle}">
+                                    <h:outputText value="#{course.courseID.courseTitle}" />
+                                </p:column>
+                                <p:column filterBy="#{course.courseID.courseDescription}" filterMatchMode="contains" headerText="#{bundleHRCourse.ListHRCourseTitle_courseDescription}">
+                                    <h:outputText value="#{course.courseID.courseDescription}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CreateHRCourseOfferingTitle_creator}">
+                                    <h:outputText value="#{hRCourseQSTopicsBean.selectedEmployeesHM.get(course.creator).lastname} #{hRCourseQSTopicsBean.selectedEmployeesHM.get(course.creator).firstname}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CourseInstructor}">
+                                    <h:outputText value="#{hRCourseQSTopicsBean.selectedEmployeesHM.get(course.instructorID.codeksID).lastname} #{hRCourseQSTopicsBean.selectedEmployeesHM.get(course.instructorID.codeksID).firstname}" />                               
+                                </p:column>
+                                <p:column headerText="PIN">
+                                    <h:outputText value="#{course.accessPIN}" />                               
+                                </p:column>
+                                <p:column sortBy="#{course.courseDate}" headerText="#{bundleHRCourse.CreateHRCourseOfferingTitle_courseDate}">
+                                    <h:outputText value="#{course.courseDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.numberOfAttendees}">
+                                    <h:outputText value="#{course.HRCourseAttendanceList.size()}" />
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <p:dataTable id="usersNextCoursesExpansion" var="udelezenci" value="#{course.HRCourseAttendanceList}">
+                                        <p:column headerText="#{msg['Firstname']} #{msg['Lastname']}">
+                                            <h:outputText value="#{hRCourseQSTopicsBean.vrnjeniUserjiMap.get(udelezenci.codeksID).firstname} #{hRCourseQSTopicsBean.vrnjeniUserjiMap.get(udelezenci.codeksID).lastname}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['Mail']}">
+                                            <h:outputText value="#{hRCourseQSTopicsBean.selectedEmployeesHM.get(udelezenci.codeksID).email}" />
+                                        </p:column>
+                                        <p:column headerText="Timestamp">
+                                            <h:outputText value="#{udelezenci.timestamp}" >
+                                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </p:rowExpansion>
+
+                            </p:dataTable>
+
+                        </p:panel>
+                    </div>
+                </div>
+
+            </h:form>   
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

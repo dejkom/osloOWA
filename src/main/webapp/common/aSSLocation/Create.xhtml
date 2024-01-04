@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSLocationCreateDlg" widgetVar="ASSLocationCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateASSLocationTitle}">
+            <h:form id="ASSLocationCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSLocationController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundle.CreateASSLocationLabel_IDLocation}" for="IDLocation" />
+                        <p:inputText id="IDLocation" value="#{aSSLocationController.selected.IDLocation}" title="#{bundle.CreateASSLocationTitle_IDLocation}" required="true" requiredMessage="#{bundle.CreateASSLocationRequiredMessage_IDLocation}"/>
+                        -->
+                        <p:outputLabel value="#{bundle.CreateASSLocationLabel_locationDescription}" for="locationDescription" />
+                        <p:inputText id="locationDescription" value="#{aSSLocationController.selected.locationDescription}" title="#{bundle.CreateASSLocationTitle_locationDescription}" />
+                        <p:outputLabel value="#{bundle.CreateASSLocationLabel_locationDisable}" for="locationDisable" />
+                        <p:selectBooleanCheckbox id="locationDisable" value="#{aSSLocationController.selected.locationDisable}" />
+                        <p:outputLabel value="#{bundle.CreateASSLocationLabel_IDLocationParent}" for="IDLocationParent" />
+                        <p:selectOneMenu id="IDLocationParent" value="#{aSSLocationController.selected.IDLocationParent}" >
+                            <f:selectItems value="#{aSSLocationController.itemsAvailableSelectOne}"
+                                           var="IDLocationParentItem"
+                                           itemValue="#{IDLocationParentItem}"
+                                           itemLabel="(#{IDLocationParentItem.IDLocation}) #{IDLocationParentItem.locationDescription}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aSSLocationController.create}" value="#{bundle.Save}" update="display,:ASSLocationListForm:datalist,:growl" oncomplete="handleSubmit(args,'ASSLocationCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ASSLocationCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

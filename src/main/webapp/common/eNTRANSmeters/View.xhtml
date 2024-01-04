@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ENTRANSmetersViewDlg" widgetVar="ENTRANSmetersViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewENTRANSmetersTitle}">
+            <h:form id="ENTRANSmetersViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{eNTRANSmetersController.selected != null}">
+                        <h:outputText value="#{bundle.ViewENTRANSmetersLabel_meterID}"/>
+                        <h:outputText value="#{eNTRANSmetersController.selected.meterID}" title="#{bundle.ViewENTRANSmetersTitle_meterID}"/>
+                        <h:outputText value="#{bundle.ViewENTRANSmetersLabel_ip}"/>
+                        <h:outputText value="#{eNTRANSmetersController.selected.ip}" title="#{bundle.ViewENTRANSmetersTitle_ip}"/>
+                        <h:outputText value="#{bundle.ViewENTRANSmetersLabel_name}"/>
+                        <h:outputText value="#{eNTRANSmetersController.selected.name}" title="#{bundle.ViewENTRANSmetersTitle_name}"/>
+                        <h:outputText value="#{bundle.ViewENTRANSmetersLabel_location}"/>
+                        <h:outputText value="#{eNTRANSmetersController.selected.location}" title="#{bundle.ViewENTRANSmetersTitle_location}"/>
+                        <h:outputText value="#{bundle.ViewENTRANSmetersLabel_tp}"/>
+                        <h:outputText value="#{eNTRANSmetersController.selected.tp}" title="#{bundle.ViewENTRANSmetersTitle_tp}"/>
+                        <h:outputText value="#{bundle.ViewENTRANSmetersLabel_sapnumber}"/>
+                        <h:outputText value="#{eNTRANSmetersController.selected.sapnumber}" title="#{bundle.ViewENTRANSmetersTitle_sapnumber}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ENTRANSmetersViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

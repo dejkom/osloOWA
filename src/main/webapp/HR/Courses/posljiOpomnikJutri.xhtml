@@ -1,0 +1,215 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fnc="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Courses (poslji opomnik jutri)"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <script type="text/javascript">
+                //ta koda povzroči da se pred toggle eventom sproži še select event
+                PrimeFaces.widget.DataTable.prototype.toggleExpansion = (function () {
+                    var cached_function = PrimeFaces.widget.DataTable.prototype.toggleExpansion;
+                    return function () {
+                        var row = arguments[0].closest('tr');
+                        if (this.cfg.selectionMode === 'single') {
+                            this.unselectAllRows();
+                        }
+                        if (this.cfg.selectionMode) {
+                            this.selectRow(row, false);
+                        }
+                        var result = cached_function.apply(this, arguments);
+                        return result;
+                    };
+                })();
+            </script>
+            <script>
+                PrimeFaces.locales['en'] = {
+                    firstDay: 1
+                };
+                PrimeFaces.locales['sl'] = {
+                    firstDay: 1,
+                    monthNames: ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij',
+                        'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'],
+                    monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg',
+                        'Sep', 'Okt', 'Nov', 'Dec'],
+                    dayNames: ['Nedelja', 'Ponedeljek', 'Torek', 'Sreda', 'Četrtek', 'Petek',
+                        'Sobota'],
+                    dayNamesShort: ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'],
+                    dayNamesMin: ['N', 'P', 'T', 'S', 'Č', 'P', 'S'],
+                    timeText: 'Čas',
+                    hourText: 'Ura',
+                    minuteText: 'Minuta',
+                    secondText: 'Sekunda'
+                };
+            </script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            <h:outputText value="#{bundleHRCourse.tomorrowexternalPageTitle}" />
+            <style type="text/css">
+                body .ui-panel {
+                    padding: 0;
+                    margin-bottom: 50px;
+                }
+
+                .delButton:hover {
+                    background-color: red !important;
+                }
+
+                .ui-selectlistbox-listcontainer{
+                    height: 450px !important;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="#{bundleHRCourse.tomorrowexternalPageTitle_subtitle}" />
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p2" header="" toggleable="true" closable="false" collapsed="false">
+                            <f:facet name="header">
+                                Jutrišnja izobraževanja eksterna
+                            </f:facet>
+                            <f:facet name="actions">   
+
+                            </f:facet>   
+
+                            <p:commandButton icon="fa fa-envelope" value="Pošlji vse opomnike za jutrišnja eksterna izobraževanja" title="Pošlji vse opomnike" disabled="#{hRCourseOfferingController.tomorrowsExternalOfferings.size() == 0}" action="#{hRCourseQuestionnaireMailSender.sendOpomnikEksternaNaslednjiDan()}"/>
+                            <br/><br/>
+                            <p:dataTable var="offering"  rowKey="#{offering.courseOfferingID}" value="#{hRCourseOfferingController.tomorrowsExternalOfferings}">
+                                
+                                <p:column style="width:2rem">
+                                    <p:rowToggler/>
+                                </p:column>
+                                
+                                <p:column headerText="Naziv izobraževanja">
+                                    <h:outputText value="#{offering.courseID.courseTitle}" />
+                                </p:column>
+
+                                <p:column headerText="Datum izobraževanja">
+                                    <h:outputText value="#{offering.courseDateString}" />
+                                </p:column>
+
+                                <p:column headerText="Lokacija">
+                                    <h:outputText value="#{offering.meetingroomString}" />
+                                </p:column>
+
+                                <p:column headerText="Izobraževalec">
+                                    <h:outputText value="#{offering.instructorID.lastname} #{offering.instructorID.firstname}" />
+                                </p:column>
+                                
+                                <p:rowExpansion>
+                                    <p:dataTable id="usersNextCoursesExpansion" var="udelezenci" value="#{offering.HRCourseAttendanceList}">
+                                        <p:column headerText="#{msg['Lastname']} #{msg['Firstname']} ">
+                                            <h:outputText value="#{hRCourseInstructorViewBean.selectedEmployeesHM.get(udelezenci.codeksID).lastname} #{hRCourseInstructorViewBean.selectedEmployeesHM.get(udelezenci.codeksID).firstname}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['Mail']}">
+                                            <h:outputText value="#{hRCourseInstructorViewBean.selectedEmployeesHM.get(udelezenci.codeksID).email}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:rowExpansion>
+                                
+                            </p:dataTable>
+
+                        </p:panel>
+                    </div>
+                </div>
+                
+                
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p3" header="" toggleable="true" closable="false" collapsed="false">
+                            <f:facet name="header">
+                                Izobraževanja eksterna za izbran časovni razpon 
+                                <p:datePicker id="range" selectionMode="range" value="#{hRCourseOfferingController.rangeFromTo}" pattern="dd.MM.yyyy" readonlyInput="true" >
+                                    <p:ajax event="dateSelect" update="rangeDT sendMailRangeButton" />
+                                </p:datePicker>
+                            </f:facet>
+                            <f:facet name="actions">   
+
+                            </f:facet>   
+                            <!--
+                            <p:commandButton icon="fa fa-envelope" value="Pošlji vse opomnike" title="Pošlji vse opomnike" disabled="#{hRCourseOfferingController.getExternalOfferingsCustomTimeRange(hRCourseOfferingController.rangeFromTo.get(0), hRCourseOfferingController.rangeFromTo.get(1)).size() == 0}" action="#{hRCourseQuestionnaireMailSender.sendOpomnikEksternaNaslednjiDan()}"/>
+                            -->
+                            <p:commandButton id="sendMailRangeButton" icon="fa fa-envelope" 
+                                             value="Pošlji opomnike za izbrana eksterna izobraževanja" 
+                                             title="Pošlji vse opomnike" 
+                                             action="#{hRCourseQuestionnaireMailSender.sendOpomnikEksternaIzbrana(hRCourseOfferingController.selectedCourseOfferings)}"
+                                             disabled="#{hRCourseOfferingController.selectedCourseOfferings.size() == 0}"/>
+                            <br/><br/>
+                            <p:dataTable  id="rangeDT" selection="#{hRCourseOfferingController.selectedCourseOfferings}" 
+                                          var="offering" rowKey="#{offering.courseOfferingID}"
+                                          selectionPageOnly="false" rowSelectMode="none"
+                                          value="#{hRCourseOfferingController.getExternalOfferingsCustomTimeRange(hRCourseOfferingController.rangeFromTo.get(0), hRCourseOfferingController.rangeFromTo.get(1))}">
+                                
+                                <p:ajax event="rowSelectCheckbox" update="form:sendMailRangeButton" />
+                                <p:ajax event="rowUnselectCheckbox" update="form:sendMailRangeButton" />
+                                
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                
+                                <p:column style="width:2rem">
+                                    <p:rowToggler/>
+                                </p:column>
+                                
+                                <p:column headerText="Naziv izobraževanja">
+                                    <h:outputText value="#{offering.courseID.courseTitle}" />
+                                </p:column>
+
+                                <p:column headerText="Datum izobraževanja">
+                                    <h:outputText value="#{offering.courseDateString}" />
+                                </p:column>
+
+                                <p:column headerText="Lokacija">
+                                    <h:outputText value="#{offering.meetingroomString}" />
+                                </p:column>
+
+                                <p:column headerText="Izobraževalec">
+                                    <h:outputText value="#{offering.instructorID.lastname} #{offering.instructorID.firstname}" />
+                                </p:column>
+                                
+                                <p:rowExpansion>
+                                    <p:dataTable id="usersNextCoursesExpansion" var="udelezenci" value="#{offering.HRCourseAttendanceList}">
+                                        <p:column headerText="#{msg['Lastname']} #{msg['Firstname']} ">
+                                            <h:outputText value="#{hRCourseInstructorViewBean.selectedEmployeesHM.get(udelezenci.codeksID).lastname} #{hRCourseInstructorViewBean.selectedEmployeesHM.get(udelezenci.codeksID).firstname}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['Mail']}">
+                                            <h:outputText value="#{hRCourseInstructorViewBean.selectedEmployeesHM.get(udelezenci.codeksID).email}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:rowExpansion>
+                                
+                            </p:dataTable>
+
+                        </p:panel>
+                    </div>
+                </div>
+                
+
+            </h:form>   
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

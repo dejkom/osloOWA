@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            PRC - Contract
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage PRC Contract catalog
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="PRCContractListForm">
+                <p:dataTable id="datalist" value="#{pRCContractController.items}" var="item"
+                             selectionMode="single" selection="#{pRCContractController.selected}"
+                             paginator="true"
+                             rowKey="#{item.id}"
+                             rows="10"
+                             rowsPerPageTemplate="10,50,{ShowAll|'All'}"
+                             >
+
+                    <f:facet name="header">
+                        <div class="flex justify-content-between align-items-center">
+                            <div>
+                                <p:commandButton id="toggler" type="button" value="#{bundleHRCourse.Columns}" icon="pi pi-align-justify"/>
+                                <p:columnToggler datasource="datalist" trigger="toggler" >
+                                    <p:ajax />
+                                </p:columnToggler>
+                                <p:commandButton value="Excel Export" styleClass="mr-2 mb-2" style="margin-left: 5px">
+                                    <p:dataExporter type="xlsxstream" target="datalist" fileName="ContractExport"/>
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column style="width:2rem" filterBy="#{item.PRCContractdetailList.size()}" filterMatchMode="exact">
+                        <p:badge value="#{item.PRCContractdetailList.size()}" rendered="#{item.PRCContractdetailList.size() > 0}" severity="info"/>
+                        <p:rowToggler />
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.ident}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_ident}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.ident}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_pdfpath}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.pdfpath}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_xml}"/>
+                        </f:facet>
+                        <h:outputText value="${fn:substring(item.xml, 0, 100)}"/>
+                    </p:column>
+                    <p:column sortBy="#{item.dateRetrieved}" sortOrder="desc">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_dateRetrieved}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dateRetrieved}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column filterBy="#{item.status}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_status}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.status}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.contractNumber}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_contractNumber}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.contractNumber}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_amendmentDate}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.amendmentDate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column sortBy="#{item.orderDate}">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundlePRC2.ListPRCContractTitle_orderDate}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.orderDate}">
+                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column filterBy="#{item.demandLoc}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Demand Loc"/>
+                        </f:facet>
+                        <h:outputText value="#{item.demandLoc}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.deliveryLoc}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Delivery Loc"/>
+                        </f:facet>
+                        <h:outputText value="#{item.deliveryLoc}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.productLoc}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Product Loc"/>
+                        </f:facet>
+                        <h:outputText value="#{item.productLoc}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.incoterm}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Incoterm"/>
+                        </f:facet>
+                        <h:outputText value="#{item.incoterm}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.incotermLoc}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Incoterm Loc"/>
+                        </f:facet>
+                        <h:outputText value="#{item.incotermLoc}"/>
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <!--
+                        <div class="product">
+                            <div class="product-list-item">
+                                <div class="product-list-detail">
+                                    <div class="product-name">#{item.incoterm}</div>
+                                    <div class="product-description">#{item.ident}</div>
+                                    <i class="pi pi-tag product-category-icon"/><span
+                                        class="product-category">#{product.category}</span>
+                                </div>
+                                <div class="product-list-action">
+                                    <h:outputText value="0" styleClass="product-price">
+
+                                    </h:outputText>
+                                    <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart" type="button">
+                                    </p:commandButton>
+                                    <span class="product-badge status-instock">bla bla</span>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        <p:dataTable id="datal" value="#{item.PRCContractdetailList}" var="det"
+                                     rowKey="#{det.id}"
+                                     rows="10"
+                                     >
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundlePRC2.ListPRCContractdetailTitle_id}"/>
+                                </f:facet>
+                                <h:outputText value="#{det.id}"/>
+                            </p:column>
+                            <p:column filterBy="#{det.type}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundlePRC2.ListPRCContractdetailTitle_type}"/>
+                                </f:facet>
+                                <h:outputText value="#{det.type}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundlePRC2.ListPRCContractdetailTitle_value}"/>
+                                </f:facet>
+                                <h:outputText value="#{det.value}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundlePRC2.ListPRCContractdetailTitle_frmlWeight}"/>
+                                </f:facet>
+                                <h:outputText value="#{det.frmlWeight}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundlePRC2.ListPRCContractdetailTitle_frmlNotation}"/>
+                                </f:facet>
+                                <h:outputText value="#{det.frmlNotation}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{bundlePRC2.ListPRCContractdetailTitle_status}"/>
+                                </f:facet>
+                                <h:outputText value="#{det.status}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:rowExpansion>
+
+
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundlePRC2.Create}" actionListener="#{pRCContractController.prepareCreate}" update=":PRCContractCreateForm" oncomplete="PF('PRCContractCreateDialog').show()"/>
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundlePRC2.View}" update=":PRCContractViewForm" oncomplete="PF('PRCContractViewDialog').show()" disabled="#{empty pRCContractController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundlePRC2.Edit}" update=":PRCContractEditForm" oncomplete="PF('PRCContractEditDialog').show()" disabled="#{empty pRCContractController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundlePRC2.Delete}" actionListener="#{pRCContractController.destroy}" update=":growl,datalist" disabled="#{empty pRCContractController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

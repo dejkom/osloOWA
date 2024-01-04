@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVstatusCreateDlg" widgetVar="AGVstatusCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.CreateAGVstatusTitle}">
+            <h:form id="AGVstatusCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVstatusController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleAGV.CreateAGVstatusLabel_statusId}" for="statusId" />
+                        <p:inputText id="statusId" value="#{aGVstatusController.selected.statusId}" title="#{bundleAGV.CreateAGVstatusTitle_statusId}" required="true" requiredMessage="#{bundleAGV.CreateAGVstatusRequiredMessage_statusId}"/>
+                        -->
+                        <p:outputLabel value="#{bundleAGV.CreateAGVstatusLabel_statusName}" for="statusName" />
+                        <p:inputText id="statusName" value="#{aGVstatusController.selected.statusName}" title="#{bundleAGV.CreateAGVstatusTitle_statusName}" required="true" requiredMessage="#{bundleAGV.CreateAGVstatusRequiredMessage_statusName}"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVstatusLabel_disabled}" for="disabled" />
+                        <p:selectBooleanCheckbox id="disabled" value="#{aGVstatusController.selected.disabled}" required="true" requiredMessage="#{bundleAGV.EditAGVstatusRequiredMessage_disabled}"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVstatusLabel_statusOrder}" for="statusOrder" />
+                        <p:inputText id="statusOrder" value="#{aGVstatusController.selected.statusOrder}" title="#{bundleAGV.CreateAGVstatusTitle_statusOrder}" required="true" requiredMessage="#{bundleAGV.CreateAGVstatusRequiredMessage_statusOrder}"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVstatusLabel_orderTypeId}" for="orderTypeId" />
+                        <p:selectOneMenu id="orderTypeId" value="#{aGVstatusController.selected.orderTypeId}" >
+                            <f:selectItems value="#{aGVorderTypeController.itemsAvailableSelectOne}"
+                                           var="orderTypeIdItem"
+                                           itemValue="#{orderTypeIdItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aGVstatusController.create}" value="#{bundleAGV.Save}" update="display,:AGVstatusListForm:datalist,:growl" oncomplete="handleSubmit(args,'AGVstatusCreateDialog');"/>
+                    <p:commandButton value="#{bundleAGV.Cancel}" onclick="AGVstatusCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

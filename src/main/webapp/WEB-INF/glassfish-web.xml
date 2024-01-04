@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+<glassfish-web-app error-url="">
+  <context-root>/osloWebApp</context-root>
+  <class-loader delegate="false"/>
+  <jsp-config>
+    <property name="keepgenerated" value="true">
+      <description>Keep a copy of the generated servlet class' java code.</description>
+    </property>
+  </jsp-config>
+    <!--
+  TO UPORABIMO NA WINDOWS STREŽNIKU
+  <property name="alternatedocroot_1" value="from=/Presentations/* dir=C:/WebAppFiles/Sources"/>
+  -->
+  <!--
+  TO UPORABIMO NA LINUX STREŽNIKU
+    <property name="alternatedocroot_1" value="from=/Presentations/* dir=/opt/WebAppFiles/Sources"/>
+  -->
+<property name="alternatedocroot_1" value="from=/Presentations/* dir=C:/WebAppFiles/Sources"/>
+<property name="alternatedocroot_2" value="from=/sounds/* dir=C:/WebAppFiles/Sources"/>
+<property name="alternatedocroot_3" value="from=/CourseAttachments/* dir=C:/WebAppFiles"/>
+<property name="alternatedocroot_4" value="from=/visitorinformations/* dir=C:/WebAppFiles/Sources"/>
+<property name="alternatedocroot_5" value="from=/manuals/* dir=C:/WebAppFiles/Sources"/>
+<property name="alternatedocroot_6" value="from=/OfferingAttachments/* dir=C:/WebAppFiles"/>
+<property name="alternatedocroot_7" value="from=/PublicPravilniki/* dir=C:/WebAppFiles/Sources"/>
+<property name="alternatedocroot_8" value="from=/BMWXML/* dir=C:/WebAppFiles"/>
+<property name="alternatedocroot_9" value="from=/BMWXML2/* dir=C:/WebAppFiles"/>
+<property name="alternatedocroot_10" value="from=/28. Ponudbe/Standard/* dir=\\sapsdcfs\Data\IT"/>
+<property name="alternatedocroot_11" value="from=/Process Harmonisations/Procedures/29 Information Management and Information Technology Procedure/* dir=\\10.1.100.106\Office"/>
+  <parameter-encoding default-charset="UTF-8"/>
+</glassfish-web-app>

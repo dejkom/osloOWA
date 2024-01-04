@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECKontrolaJoblogViewDlg" widgetVar="OSECKontrolaJoblogViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecSpea.ViewOSECKontrolaJoblogTitle}">
+            <h:form id="OSECKontrolaJoblogViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECKontrolaJoblogController.selected != null}">
+                        <h:outputText value="#{bundleOsecSpea.ViewOSECKontrolaJoblogLabel_id}"/>
+                        <h:outputText value="#{oSECKontrolaJoblogController.selected.id}" title="#{bundleOsecSpea.ViewOSECKontrolaJoblogTitle_id}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewOSECKontrolaJoblogLabel_executiontime}"/>
+                        <h:outputText value="#{oSECKontrolaJoblogController.selected.executiontime}" title="#{bundleOsecSpea.ViewOSECKontrolaJoblogTitle_executiontime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleOsecSpea.ViewOSECKontrolaJoblogLabel_message}"/>
+                        <h:outputText value="#{oSECKontrolaJoblogController.selected.message}" title="#{bundleOsecSpea.ViewOSECKontrolaJoblogTitle_message}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewOSECKontrolaJoblogLabel_rowstransfered}"/>
+                        <h:outputText value="#{oSECKontrolaJoblogController.selected.rowstransfered}" title="#{bundleOsecSpea.ViewOSECKontrolaJoblogTitle_rowstransfered}"/>
+                        <h:outputText value="#{bundleOsecSpea.ViewOSECKontrolaJoblogLabel_maxtimestampintransfereddata}"/>
+                        <h:outputText value="#{oSECKontrolaJoblogController.selected.maxtimestampintransfereddata}" title="#{bundleOsecSpea.ViewOSECKontrolaJoblogTitle_maxtimestampintransfereddata}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleOsecSpea.Close}" onclick="OSECKontrolaJoblogViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

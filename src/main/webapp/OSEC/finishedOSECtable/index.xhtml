@@ -1,0 +1,214 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            <h:outputText value="SPEA2SAP Transfered (finished)"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <style type="text/css">
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+                
+                hr.style14 { 
+                    border: 0; 
+                    height: 1px; 
+                    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+                    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+                    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+                    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+                  }
+            </style>
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            Tukaj lahko spremljate kateri podatki so bili poslani v SAP. 
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="FinishedOSECtableListForm">
+                <div class="row" style="margin: 10px">
+                    <p:panelGrid columns ="4" styleClass="noBorders">
+                        <h:outputText value="Št. rezultatov:" />
+                        <p:inputNumber value="#{finishedOSECtableController.numberOfResults}" decimalPlaces="0" minValue="1" maxValue="10000"/>
+                        <p:commandButton value="Osveži" id="b1" update="datalist" action="#{finishedOSECtableController.osveziTabelo}" styleClass="ui-priority-primary" />
+                        * UKINILI SMO PREGLED CELOTNE ZGODOVINE SAJ JE POVZROČALA ZRUŠITEV PORTALA.Če potrebujete celoten izpis se obrnite na IT.
+                    </p:panelGrid>
+                </div>
+                
+                <div class="row" style="margin: 10px">
+                    <p:dataTable id="datalist" value="#{finishedOSECtableController.items}" var="item"
+                                 selectionMode="single" selection="#{finishedOSECtableController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50,#{finishedOSECtableController.items.size()}"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitSN}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitSN}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_firstTestDatetime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.firstTestDatetime}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitLN}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitLN}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.unitName}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitName}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitType}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitType}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitID}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitPN}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitPN}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitPanel}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitPanel}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_unitIndex}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitIndex}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_stationName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stationName}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_stationOS}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stationOS}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_testDatetime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.testDatetime}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_remark}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.remark}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_processID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.processID}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_operatorName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.operatorName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_prenosVBaan}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.prenosVBaan}" disabled="true"/>
+                        </p:column>
+                        <p:column filterBy="#{item.sprostilVBaan}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_sprostilVBaan}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sprostilVBaan}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_sprostilTimestamp}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sprostilTimestamp}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListFinishedOSECtableTitle_prenosVBaanTimestamp}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenosVBaanTimestamp}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleOsecSpea.Create}" actionListener="#{finishedOSECtableController.prepareCreate}" update=":FinishedOSECtableCreateForm" oncomplete="PF('FinishedOSECtableCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleOsecSpea.View}" update=":FinishedOSECtableViewForm" oncomplete="PF('FinishedOSECtableViewDialog').show()" disabled="#{empty finishedOSECtableController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleOsecSpea.Edit}" update=":FinishedOSECtableEditForm" oncomplete="PF('FinishedOSECtableEditDialog').show()" disabled="#{empty finishedOSECtableController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleOsecSpea.Delete}" actionListener="#{finishedOSECtableController.destroy}" update=":growl,datalist" disabled="#{empty finishedOSECtableController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </div>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCRikCreateDlg" widgetVar="PRCRikCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC2.CreatePRCRikTitle}">
+            <h:form id="PRCRikCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCRikController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCRikLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pRCRikController.selected.id}" title="#{bundlePRC2.CreatePRCRikTitle_id}" required="true" requiredMessage="#{bundlePRC2.CreatePRCRikRequiredMessage_id}"/>
+                        -->
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCRikLabel_from}" for="from" />
+                        <p:calendar id="from" pattern="dd.MM.yyyy" value="#{pRCRikController.selected.frm}" title="#{bundlePRC2.EditPRCRikTitle_from}"  showOn="button"/>
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCRikLabel_to}" for="to" />
+                        <p:calendar id="to" pattern="dd.MM.yyyy" value="#{pRCRikController.selected.too}" title="#{bundlePRC2.EditPRCRikTitle_to}"  showOn="button"/>
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCRikLabel_value}" for="value" />
+                        <p:inputText id="value" value="#{pRCRikController.selected.val}" title="#{bundlePRC2.CreatePRCRikTitle_value}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCRikLabel_type}" for="type" />
+                        <p:inputText id="type" value="#{pRCRikController.selected.type}" title="#{bundlePRC2.CreatePRCRikTitle_type}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pRCRikController.create}" value="#{bundlePRC2.Save}" update="display,:PRCRikListForm:datalist,:growl" oncomplete="handleSubmit(args,'PRCRikCreateDialog');"/>
+                    <p:commandButton value="#{bundlePRC2.Cancel}" onclick="PRCRikCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ENTRANSmetersCreateDlg" widgetVar="ENTRANSmetersCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateENTRANSmetersTitle}">
+            <h:form id="ENTRANSmetersCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{eNTRANSmetersController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateENTRANSmetersLabel_meterID}" for="meterID" />
+                        <p:inputText id="meterID" value="#{eNTRANSmetersController.selected.meterID}" title="#{bundle.CreateENTRANSmetersTitle_meterID}" required="true" requiredMessage="#{bundle.CreateENTRANSmetersRequiredMessage_meterID}"/>
+                        <p:outputLabel value="#{bundle.CreateENTRANSmetersLabel_ip}" for="ip" />
+                        <p:inputText id="ip" value="#{eNTRANSmetersController.selected.ip}" title="#{bundle.CreateENTRANSmetersTitle_ip}" />
+                        <p:outputLabel value="#{bundle.CreateENTRANSmetersLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{eNTRANSmetersController.selected.name}" title="#{bundle.CreateENTRANSmetersTitle_name}" />
+                        <p:outputLabel value="#{bundle.CreateENTRANSmetersLabel_location}" for="location" />
+                        <p:inputText id="location" value="#{eNTRANSmetersController.selected.location}" title="#{bundle.CreateENTRANSmetersTitle_location}" />
+                        <p:outputLabel value="#{bundle.CreateENTRANSmetersLabel_tp}" for="tp" />
+                        <p:inputText id="tp" value="#{eNTRANSmetersController.selected.tp}" title="#{bundle.CreateENTRANSmetersTitle_tp}" />
+                        <p:outputLabel value="#{bundle.CreateENTRANSmetersLabel_sapnumber}" for="sapnumber" />
+                        <p:inputText id="sapnumber" value="#{eNTRANSmetersController.selected.sapnumber}" title="#{bundle.CreateENTRANSmetersTitle_sapnumber}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{eNTRANSmetersController.create}" value="#{bundle.Save}" update="display,:ENTRANSmetersListForm:datalist,:growl" oncomplete="handleSubmit(args,'ENTRANSmetersCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ENTRANSmetersCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

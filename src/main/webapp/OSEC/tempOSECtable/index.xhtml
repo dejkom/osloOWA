@@ -1,0 +1,418 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - SPEA2Baan"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <style type="text/css">
+                .ui-column-title{
+                    font-size: smaller
+                }
+            </style>
+            <script type="text/javascript">
+                var currentEvent;
+                $(document).ready(function () {
+                    
+                    if (PrimeFaces.widget.DataTable) {
+    PrimeFaces.widget.DataTable.prototype.onRowRightClick = function(event, rowElement, cmSelMode, fnShowMenu) {
+        var row = $(rowElement),
+            rowMeta = this.getRowMeta(row),
+            selected = row.hasClass('ui-state-highlight');
+
+        this.assignFocusedRow(row);
+
+        if (cmSelMode === 'single' || !selected) {
+            this.unselectAllRows();
+        }
+
+        this.selectRow(row, true);
+
+        this.fireRowSelectEvent(rowMeta.key, 'contextMenu', fnShowMenu);
+
+        if (this.cfg.disabledTextSelection) {
+            PrimeFaces.clearSelection();
+        }
+
+        return this.hasBehavior('contextMenu');
+    }
+}
+                    
+                    
+                    
+                    PrimeFaces.widget.ContextMenu.prototype.show = function (e) {
+                        // hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if (e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                                left = e.pageX,
+                                top = e.pageY,
+                                width = this.jq.outerWidth(),
+                                height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if ((left + width) > (win.width()) + win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if ((top + height) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if (this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                            'top': top,
+                            'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            SPEA2SAP TempTable
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            Tukaj lahko spremljate podatke ki bodo prenešeni v SAP (statusi 10 avtomatsko, ostali statusi potrebujejo ročno posredovanje)
+        </ui:define>
+
+
+        <ui:define name="content">
+            <div class="row" style="padding-left: 10px; padding-right: 10px">
+                <div class="alert alert-info alert-dismissible" style="width:100%">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="icon fa fa-info"></i> Obvestilo!</h4>
+                    Tabela prikazuje podatke, ki so se prenesli iz SPEA podatkovne baze v začasno tabelo. Podatki ki so označeni s kljukico (prenos v BaaN) bodo ob naslednjem zagonu joba prenešeni v BaaN.
+                    <p></p>
+                    PCB-jev ki imajo status > 30 ne morete potrditi (poslati v BaaN) lahko jih arhivirate, da izginejo iz seznama.
+                </div>
+                <!--
+                <div class="col-md-4">
+                    <div class="info-box bg-green">
+                        <span class="info-box-icon"><i class="fa fa-check"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Status 10</span>
+                            <span class="info-box-number">300</span>
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 50%"></div>
+                            </div>
+                            <span class="progress-description">
+                                50% vseh podatkov v temp tabeli
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box bg-yellow">
+                        <span class="info-box-icon"><i class="fa fa-question"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Status 20</span>
+                            <span class="info-box-number">100</span>
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 50%"></div>
+                            </div>
+                            <span class="progress-description">
+                                50% vseh podatkov v temp tabeli
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="info-box bg-red">
+                        <span class="info-box-icon"><i class="fa fa-times"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Status 50</span>
+                            <span class="info-box-number">50</span>
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 50%"></div>
+                            </div>
+                            <span class="progress-description">
+                                50% vseh podatkov v temp tabeli
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+
+            <div class="row" style="padding-left: 10px; padding-right: 10px">
+
+                
+                <h:form id="form">
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <i class="fa fa-search"></i>
+
+                            <h3 class="box-title">Iskanje s PCB kodo</h3>
+                        </div>
+                        <div class="box-body">
+                            <p:panelGrid columns="6">
+                                <h:outputLabel for="PCBin" value="Skenirajte PCB:" />
+                                <p:inputText id="PCBin" value="#{searchByPCB.PCBin}">
+                                </p:inputText>
+
+                                <h:outputLabel for="PCBiscem" value="Iščem:" />
+                                <p:inputText id="PCBiscem" disabled="true" value="#{searchByPCB.extractedFromPCB}"/>
+
+                                <p:commandButton value="Išči" id="b1" update="form @([id$=datalist])" onsuccess="PF('DL').filter()" actionListener="#{searchByPCB.extractFromPCB()}" styleClass="ui-priority-primary" />
+                                <h:outputText id="infoout" value="#{searchByPCB.info}" style="color: red" />
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </h:form>
+                
+
+            </div>
+
+
+            <div class="row" style="padding-left: 10px; padding-right: 10px">
+                <h:form id="TempOSECtableListForm">
+                    <p:dataTable id="datalist" value="#{tempOSECtableController.items}" var="item"
+                                 selection="#{tempOSECtableController.selectedMultiple}"                                 
+                                 paginator="true"
+                                 widgetVar="DL"
+                                 rowKey="#{item.idpk}"
+                                 rows="10"
+                                 resizableColumns="true"
+                                 rowsPerPageTemplate="10,50,100,500,1000,#{tempOSECtableController.items.size()}"
+                                 >
+
+                        <p:ajax event="rowSelect" listener="#{tempOSECtableController.rowSelect}"  update="createButton viewButton :TempOSECtableListForm:cm"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton"/>
+                        <p:ajax event="rowSelectCheckbox"  listener="#{tempOSECtableController.rowSelect}" update="createButton viewButton" />
+                        <p:ajax event="rowUnselectCheckbox" listener="#{tempOSECtableController.rowSelect}" update="createButton viewButton" />
+                        <p:ajax event="toggleSelect" listener="#{tempOSECtableController.rowSelect}"  update="createButton viewButton"/>
+                        <p:ajax event="contextMenu" listener="#{tempOSECtableController.cmListener}" update="TempOSECtableListForm:cm" oncomplete="PF('searchResultTableContextMenuVar').show(currentEvent);"/>
+
+                        <f:facet name="header">
+                            <p:commandButton id="toggler" type="button" value="Stolpci" style="float:right" icon="ui-icon-calculator" />
+                            <p:columnToggler datasource="datalist" trigger="toggler" />
+                            
+                            <h:commandLink style="float:right" >
+                                <p:graphicImage name="img/Excel32.png" width="24"/>
+                                <p:dataExporter type="xlsx" target="datalist" fileName="SPEA_Temp_export" />
+                            </h:commandLink>
+                            
+
+                            <!--
+                            <p:commandButton id="createButton2" icon="ui-icon-plus"   value="#{bundleOsecSpea.Create}" actionListener="#{tempOSECtableController.prepareCreate}" update=":TempOSECtableCreateForm" oncomplete="PF('TempOSECtableCreateDialog').show()"/>
+                            <p:commandButton id="viewButton2"   icon="ui-icon-search" value="#{bundleOsecSpea.View}" update=":TempOSECtableViewForm" oncomplete="PF('TempOSECtableViewDialog').show()" disabled="#{empty tempOSECtableController.selected}"/>
+                            
+                            <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="#{bundleOsecSpea.Edit}" update=":TempOSECtableEditForm" oncomplete="PF('TempOSECtableEditDialog').show()" disabled="#{empty tempOSECtableController.selected}"/>
+                            <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="#{bundleOsecSpea.Delete}" actionListener="#{tempOSECtableController.destroy}" update=":growl,datalist" disabled="#{empty tempOSECtableController.selected}"/>
+                            -->
+                        </f:facet>
+
+
+                        <p:column selectionMode="multiple"  style="width:35px;text-align:center"/>
+
+                        <!--<p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>-->
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idpk.id}"/>
+                        </p:column>
+
+                        <p:column filterBy="#{item.unitSN}" filterValue="#{searchByPCB.extractedFromPCB}" filterMatchMode="contains" filterStyle="width: 90%" width="280">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitSN}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitSN}"/>
+                        </p:column>
+
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitLN}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitLN}"/>
+                        </p:column>
+                        <p:column style="width:120px">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitName}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitType}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitType}"/>
+                        </p:column>
+                        <p:column visible="false" filterBy="#{item.unitID}" filterMatchMode="exact" filterStyle="width: 90%">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitID}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitPN}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitPN}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitPanel}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitPanel}"/>
+                        </p:column>
+                        <p:column width="5%">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_unitIndex}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.unitIndex}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_stationName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stationName}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_stationOS}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stationOS}"/>
+                        </p:column>
+                        <p:column sortable="true" sortBy="#{item.firstTestDatetime}" visible="false" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_firstTestDatetime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.firstTestDatetime}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+
+<!--<p:column sortable="true" sortBy="#{item.testDatetime}">
+    <f:facet name="header">
+        <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_testDatetime}"/>
+    </f:facet>
+    <h:outputText value="#{item.testDatetime}">
+        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+    </h:outputText>
+</p:column>-->
+                        <p:column sortable="true" sortBy="#{item.idpk.testDatetime}" style="width:150px">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_testDatetime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idpk.testDatetime}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column filterBy="#{item.status}" filterMatchMode="exact" filterStyle="width: 90%" width="60">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_status}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column visible="true" filterBy="#{item.remark}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_remark}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.remark}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_processID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.processID}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_operatorName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.operatorName}"/>
+                        </p:column>
+                        <p:column width="60" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_prenosVBaan}" style="margin: 5px"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.prenosVBaan}" disabled="true"/>
+                        </p:column>
+                        <p:column width="10%">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_sprostilVBaan}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sprostilVBaan}"/>
+                        </p:column>
+                        <p:column visible="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_sprostilTimestamp}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sprostilTimestamp}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column rendered="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleOsecSpea.ListTempOSECtableTitle_prenosVBaanTimestamp}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenosVBaanTimestamp}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleOsecSpea.Create}" actionListener="#{tempOSECtableController.prepareCreate}" update=":TempOSECtableCreateForm" oncomplete="PF('TempOSECtableCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleOsecSpea.View}" update=":TempOSECtableViewForm" oncomplete="PF('TempOSECtableViewDialog').show()" disabled="#{empty tempOSECtableController.selected}"/>
+                            <!--
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleOsecSpea.Edit}" update=":TempOSECtableEditForm" oncomplete="PF('TempOSECtableEditDialog').show()" disabled="#{empty tempOSECtableController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleOsecSpea.Delete}" actionListener="#{tempOSECtableController.destroy}" update=":growl,datalist" disabled="#{empty tempOSECtableController.selected}"/>
+                            -->
+                        </f:facet>
+                    </p:dataTable>
+
+                    <p:contextMenu id="cm" for="datalist" widgetVar="searchResultTableContextMenuVar" style="width: 450px">
+                        <!-- DELALO NAJPREJ, ko še nismo preverjali sosledja statusov
+                        <p:menuitem id="mi" value="Dovoli prenos v BaaN"  disabled="#{(empty tempOSECtableController.selected) or tempOSECtableController.selected.status.intValue() &gt; 30}"  update="datalist" icon="fa fa-check" action="#{tempOSECtableController.sprostiVBaan}"/>
+                        -->
+                        <c:forEach var="item" items="#{tempOSECtableController.predhodnistatusi}" varStatus="status">
+                            <p:menuitem id="mi#{status.index}" value="#{item.idpk.formattedTestDatetime} - status:#{item.status}"  disabled="true" icon="fa fa-history" />
+                        </c:forEach>
+                        
+                        <p:menuitem id="mei" value="Dovoli prenos v BaaN"  disabled="#{(empty tempOSECtableController.selected) or tempOSECtableController.selected.status.intValue() &gt; 30 or !tempOSECtableController.dovolimSprostitev}"  update="datalist" icon="fa fa-check" action="#{tempOSECtableController.sprostiVBaan}"/>
+                        <p:menuitem id="mei2" value="Arhiviraj" update="datalist" icon="fa fa-check" action="#{tempOSECtableController.arhiviraj}"/>
+                    </p:contextMenu>
+
+                </h:form>
+            </div>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

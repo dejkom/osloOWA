@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html   lang="#{loginController.maliCountry}"
+        xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view locale="#{loginController.currentL.language}">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+
+        <title>osloWebApp | #{msg['LogIn']}</title>
+
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+        <h:outputStylesheet library="font-awesome" name="css/font-awesome.css"/>
+        <h:outputStylesheet library="css" name="animate.css"/>
+        <h:outputStylesheet library="css" name="/flags/flags.css"/>
+        <h:outputStylesheet library="css" name="style.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['img/favicon.ico']}"/>
+        <script>
+            $(document).ready(function () {
+                $('#form > div:nth-child(3) > div > span').addClass('form-control');
+
+            });
+        </script>
+    </h:head>
+
+    <body class="white-bg" style="padding-top: 5vh;">
+        <div class="middle-box text-center loginscreen animated fadeInDown" style="padding: 20px; width: 35vw;">
+            <div>
+                <div>
+                    <h:graphicImage alt="image" library="img" name="odelo_black.png" height="80%" width="80%" style="margin-bottom: 15px;" styleClass="border-bottom"/>
+                </div>
+
+                <p><h:outputText id="uf" value = "#{msg['LoginExplanationMessage']}" /></p>
+                <h:form id="form" role="form">
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label"><h:outputText id="uf" value = "#{msg['Username']}" />: </label>
+                        <div class="col-lg-9">
+                            <p:inputText id="username" class="form-control" style="padding: 10px 20px" value="#{loginController.username}" required="true" />
+                            <h:message for="username" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label"><h:outputText value = "#{msg['Password']}" />: </label>
+                        <div class="col-lg-9">
+                            <p:password id="password" style="border-color: transparent" toggleMask="true" redisplay="false" value="#{loginController.password}"/>
+                            <h:message for="password" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-lg-3 col-form-label"><h:outputText value = "#{msg['Language']}" />: </label>
+                        <div class="col-lg-9">
+                            <p:selectOneListbox id="advanced" value="#{loginController.country}" converter="omnifaces.SelectItemsConverter" var="c" >
+                                <f:selectItems value="#{loginController.countries}" var="country" itemLabel="#{country.name}" itemValue="#{country}"/>
+                                <p:ajax event="valueChange" update="@form" process="@this" listener="#{loginController.localeChanged}" />
+                                <p:column>
+                                    <!--<span class="flag flag-#{c.code}" style="width: 30px; height: 20px"/>-->
+                                    <h:graphicImage alt="image" library="css" name="/flags/4x3/#{c.code}.svg" height="30px" width="40px"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{c.name}"/>
+                                </p:column>
+                            </p:selectOneListbox>
+                            <h:message for="advanced" />
+                        </div>
+                    </div>
+
+                <br/>
+                <h:commandButton actionListener="#{loginController.submitAD}"  class="btn btn-primary block full-width m-b" value="#{msg['LogIn']}" >
+                    <f:ajax execute="@form" render=":form" />
+                </h:commandButton>
+                    <!--<h:commandButton action="#{loginController.showRfidLoginDialog}"  class="btn btn-primary block full-width m-b" value="#{msg['LogInRfid']}" />-->
+                    <button type="button"  class="btn btn-primary block full-width m-b" data-toggle="modal" data-target="#skenirajKljucek" style="background-color: white; color:#495057; border-color: #e5e6e7">
+                        #{msg['LogInRfid']}
+                    </button> 
+
+                </h:form>
+                <p class="m-t"> <small>odelo Slovenia 2022 </small> </p>
+            </div>
+        </div>
+        
+        
+        <h:form id="form2">
+                <div id="skenirajKljucek" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['LogInRfid']}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:focus context="form2" for="kin"/>
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <center>
+                                                <h:graphicImage library="img" name="em-usb-reader.png" alt="" style="height: 150px"/>
+                                            </center>
+                                        </div>
+                                        <div class="col-md-4">
+
+                                        </div>
+                                        <div class="col-md-4">
+                                            <center>
+                                                <h:graphicImage library="img" name="elatec-twn4-legic.png" alt="" style="height: 150px"/>
+                                            </center>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <center>
+                                                <p:selectOneRadio id="console" class="padding-table-columns" style="text-align:center;width: 100%" value="#{loginController.izbrancitalec}">
+                                                    <f:selectItem itemLabel="levi" itemValue="emcard" />
+                                                    <f:selectItem itemLabel="desni" itemValue="elatec" />
+                                                    <p:ajax listener="#{loginController.readerChange}" update=""/>
+                                                </p:selectOneRadio>
+                                            </center>
+                                        </div>
+                                    </div>
+                                <p:inputText id="kin" value="#{loginController.kljucekStringBelezenje}" style="width: 100%;margin-top: 5px; margin-bottom: 5px;"/>
+                                <br/>
+                                <p:staticMessage severity="info" summary="INFO" detail="RFID prijava ima omejene funkcije na portalu. " style="width: 100%; font-size: inherit;"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">#{msg['Cancel']}</button>
+                                
+                                <p:commandButton id="submitButtonChips" class="btn btn-primary" actionListener="#{loginController.prijaviSKljuckom}"  value="#{msg['LogIn']}" oncomplete="$('#skenirajKljucek').modal('hide');">
+                                    <f:ajax execute="@form2" render="@form2" />
+                                </p:commandButton>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+        <h:outputScript library="js" name="jquery-3.1.1.min.js"/>
+        <h:outputScript library="js" name="popper.min.js"/>
+        <h:outputScript library="js" name="bootstrap.js"/>
+        <h:outputScript library="js" name="script.js"/>
+
+    </body>
+</f:view>
+</html>

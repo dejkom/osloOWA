@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVcatalogCreateDlg" widgetVar="AGVcatalogCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.CreateAGVcatalogTitle}">
+            <h:form id="AGVcatalogCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVcatalogController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_catalogId}" for="catalogId" />
+                        <p:inputText id="catalogId" value="#{aGVcatalogController.selected.catalogId}" title="#{bundleAGV.CreateAGVcatalogTitle_catalogId}" required="true" requiredMessage="#{bundleAGV.CreateAGVcatalogRequiredMessage_catalogId}"/>
+                        -->
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_disabled}" for="disabled" />
+                        <p:selectBooleanCheckbox id="disabled" value="#{aGVcatalogController.selected.disabled}" required="true" requiredMessage="#{bundleAGV.EditAGVcatalogRequiredMessage_disabled}"/>
+                        
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_materialId}" for="materialId" />
+                        <p:selectOneMenu id="materialId" value="#{aGVcatalogController.selected.materialId}" >
+                            <f:selectItems value="#{aGVmaterialController.itemsAvailableSelectOne}"
+                                           var="materialItem"
+                                           itemValue="#{materialItem.materialId}"
+                                           itemLabel="#{materialItem.materialId} - #{materialItem.materialDescription}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_catalogFrom}" for="catalogFrom" />
+                        <p:calendar id="catalogFrom" pattern="dd.MM.yyyy HH:mm" value="#{aGVcatalogController.selected.catalogFrom}" title="#{bundleAGV.EditAGVcatalogTitle_catalogFrom}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_catalogTo}" for="catalogTo" />
+                        <p:calendar id="catalogTo" pattern="dd.MM.yyyy HH:mm" value="#{aGVcatalogController.selected.catalogTo}" title="#{bundleAGV.EditAGVcatalogTitle_catalogTo}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_orderTypeId}" for="orderTypeId" />
+                        <p:selectOneMenu id="orderTypeId" value="#{aGVcatalogController.selected.orderTypeId}" >
+                            <f:selectItems value="#{aGVorderTypeController.itemsAvailableSelectOne}"
+                                           var="orderTypeIdItem"
+                                           itemValue="#{orderTypeIdItem}"
+                                           itemLabel="#{orderTypeIdItem.orderName}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_placeFrom}" for="placeFrom" />
+                        <p:selectOneMenu id="placeFrom" value="#{aGVcatalogController.selected.placeFrom}" >
+                            <f:selectItems value="#{aGVplaceController.itemsAvailableSelectOne}"
+                                           var="placeFromItem"
+                                           itemValue="#{placeFromItem}"
+                                           itemLabel="#{placeFromItem.placeName}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVcatalogLabel_placeTo}" for="placeTo" />
+                        <p:selectOneMenu id="placeTo" value="#{aGVcatalogController.selected.placeTo}" >
+                            <f:selectItems value="#{aGVplaceController.itemsAvailableSelectOne}"
+                                           var="placeToItem"
+                                           itemValue="#{placeToItem}"
+                                           itemLabel="#{placeToItem.placeName}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aGVcatalogController.create}" value="#{bundleAGV.Save}" update="display,:AGVcatalogListForm:datalist,:growl" oncomplete="handleSubmit(args,'AGVcatalogCreateDialog');"/>
+                    <p:commandButton value="#{bundleAGV.Cancel}" onclick="AGVcatalogCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

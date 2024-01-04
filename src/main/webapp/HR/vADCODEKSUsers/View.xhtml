@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="VADCODEKSUsersViewDlg" widgetVar="VADCODEKSUsersViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle}">
+            <h:form id="VADCODEKSUsersViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{vADCODEKSUsersController.selected != null}">
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_id}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.id}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_id}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_dn}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.dn}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_dn}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_externalId}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.externalId}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_externalId}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_lastname}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.lastname}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_lastname}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_firstname}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.firstname}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_firstname}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_departmentId}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.departmentId}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_departmentId}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_codeksDeleted}"/>
+                        <p:selectBooleanCheckbox value="#{vADCODEKSUsersController.selected.codeksDeleted}" disabled="true"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_isTimeAttendance}"/>
+                        <p:selectBooleanCheckbox value="#{vADCODEKSUsersController.selected.isTimeAttendance}" disabled="true"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_card}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.card}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_card}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_username}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.username}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_username}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_lastPwSetDateTime}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.lastPwSetDateTime}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_lastPwSetDateTime}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_title}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.title}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_title}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_telephoneNumber}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.telephoneNumber}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_telephoneNumber}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_mobile}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.mobile}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_mobile}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_mail}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.mail}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_mail}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_countryShort}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.countryShort}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_countryShort}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_country}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.country}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_country}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_countryCode}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.countryCode}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_countryCode}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_postalCode}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.postalCode}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_postalCode}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_location}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.location}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_location}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_streetAddress}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.streetAddress}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_streetAddress}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_extensionAttribute1}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.extensionAttribute1}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_extensionAttribute1}"/>
+                        <h:outputText value="#{bundleHRADCODEKS.ViewVADCODEKSUsersLabel_extensionAttribute2}"/>
+                        <h:outputText value="#{vADCODEKSUsersController.selected.extensionAttribute2}" title="#{bundleHRADCODEKS.ViewVADCODEKSUsersTitle_extensionAttribute2}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRADCODEKS.Close}" onclick="VADCODEKSUsersViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

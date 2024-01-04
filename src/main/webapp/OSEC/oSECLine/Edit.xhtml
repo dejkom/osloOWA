@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECLineEditDlg" widgetVar="OSECLineEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.EditOSECLineTitle}">
+            <h:form id="OSECLineEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECLineController.selected != null}">
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECLineLabel_lineID}" for="lineID" />
+                        <p:inputText id="lineID" value="#{oSECLineController.selected.lineID}" title="#{bundleOSECZastoji.EditOSECLineTitle_lineID}" required="true" requiredMessage="#{bundleOSECZastoji.EditOSECLineRequiredMessage_lineID}"/>
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECLineLabel_lineName}" for="lineName" />
+                        <p:inputText id="lineName" value="#{oSECLineController.selected.lineName}" title="#{bundleOSECZastoji.EditOSECLineTitle_lineName}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.EditOSECLineLabel_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{oSECLineController.selected.active}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oSECLineController.update}" value="#{bundleOSECZastoji.Save}" update="display,:OSECLineListForm:datalist,:growl" oncomplete="handleSubmit(args, 'OSECLineEditDialog');"/>
+                    <p:commandButton value="#{bundleOSECZastoji.Cancel}" onclick="OSECLineEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

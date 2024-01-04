@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            PRC - Data
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage PRC Data catalog
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="PRCdataListForm">
+                    <p:dataTable id="datalist" value="#{pRCdataController.items}" var="item"
+                                 selectionMode="single" selection="#{pRCdataController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundlePRC.ListPRCdataTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.product}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Product"/>
+                            </f:facet>
+                            <h:outputText value="#{item.product}"/>
+                        </p:column>
+                        <p:column filterBy="#{item.type}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundlePRC.ListPRCdataTitle_type}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.type}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundlePRC.ListPRCdataTitle_value}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.value}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundlePRC.ListPRCdataTitle_dateFrom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateFrom}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundlePRC.ListPRCdataTitle_dateTo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateTo}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundlePRC.ListPRCdataTitle_deleted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.deleted}" disabled="true"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundlePRC.Create}" actionListener="#{pRCdataController.prepareCreate}" update=":PRCdataCreateForm" oncomplete="PF('PRCdataCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundlePRC.View}" update=":PRCdataViewForm" oncomplete="PF('PRCdataViewDialog').show()" disabled="#{empty pRCdataController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundlePRC.Edit}" update=":PRCdataEditForm" oncomplete="PF('PRCdataEditDialog').show()" disabled="#{empty pRCdataController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundlePRC.Delete}" actionListener="#{pRCdataController.destroy}" update=":growl,datalist" disabled="#{empty pRCdataController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRSignProfNaziviSeznamZaposlenihDlg" widgetVar="HRSignProfNaziviSeznamZaposlenihDialog" width="90%" height="80vh" dynamic="true" modal="true" resizable="false" appendTo="@(body)" header="Seznam zaposlenih">
+            <h:form id="HRSignProfNaziviSeznamZaposlenihForm">
+                <p:dataTable var="zap" value="#{hRSignProfNaziviController.seznamZaposlenih}"
+                             rows="10"
+                             scrollable="true"
+                             paginator="true"
+                             rowsPerPageTemplate="10,50,{ShowAll|'All'}">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="codeks Code"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[0]}"/>
+                    </p:column>
+                    <p:column filterBy="#{zap[1]}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Priimek"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[1]}"/>
+                    </p:column>
+                    <p:column filterBy="#{zap[2]}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Ime"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[2]}"/>
+                    </p:column>
+
+
+                    <p:column filterBy="#{zap[3]}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="Profit center"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[3]}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_uradniNaziv}"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[4]}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_razsirjenSlo}"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[5]}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_angUradni}"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[6]}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_razsirjenAng}"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[7]}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_oddelekSlo}"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[8]}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRSignProfNazivi.ListHRSignProfNaziviTitle_oddelekAng}"/>
+                        </f:facet>
+                        <h:outputText value="#{zap[9]}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

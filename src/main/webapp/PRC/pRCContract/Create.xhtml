@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCContractCreateDlg" widgetVar="PRCContractCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC2.CreatePRCContractTitle}">
+            <h:form id="PRCContractCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCContractController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pRCContractController.selected.id}" title="#{bundlePRC2.CreatePRCContractTitle_id}" required="true" requiredMessage="#{bundlePRC2.CreatePRCContractRequiredMessage_id}"/>
+                        -->
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_ident}" for="ident" />
+                        <p:inputText id="ident" value="#{pRCContractController.selected.ident}" title="#{bundlePRC2.CreatePRCContractTitle_ident}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_pdfpath}" for="pdfpath" />
+                        <p:inputText id="pdfpath" value="#{pRCContractController.selected.pdfpath}" title="#{bundlePRC2.CreatePRCContractTitle_pdfpath}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_xml}" for="xml" />
+                        <p:inputText id="xml" value="#{pRCContractController.selected.xml}" title="#{bundlePRC2.CreatePRCContractTitle_xml}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_dateRetrieved}" for="dateRetrieved" />
+                        <p:calendar id="dateRetrieved" pattern="dd.MM.yyyy" value="#{pRCContractController.selected.dateRetrieved}" title="#{bundlePRC2.EditPRCContractTitle_dateRetrieved}"  showOn="button"/>
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{pRCContractController.selected.status}" title="#{bundlePRC2.CreatePRCContractTitle_status}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_contractNumber}" for="contractNumber" />
+                        <p:inputText id="contractNumber" value="#{pRCContractController.selected.contractNumber}" title="#{bundlePRC2.CreatePRCContractTitle_contractNumber}" />
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_amendmentDate}" for="amendmentDate" />
+                        <p:calendar id="amendmentDate" pattern="dd.MM.yyyy" value="#{pRCContractController.selected.amendmentDate}" title="#{bundlePRC2.EditPRCContractTitle_amendmentDate}"  showOn="button"/>
+                        <p:outputLabel value="#{bundlePRC2.CreatePRCContractLabel_orderDate}" for="orderDate" />
+                        <p:calendar id="orderDate" pattern="dd.MM.yyyy" value="#{pRCContractController.selected.orderDate}" title="#{bundlePRC2.EditPRCContractTitle_orderDate}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pRCContractController.create}" value="#{bundlePRC2.Save}" update="display,:PRCContractListForm:datalist,:growl" oncomplete="handleSubmit(args,'PRCContractCreateDialog');"/>
+                    <p:commandButton value="#{bundlePRC2.Cancel}" onclick="PRCContractCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

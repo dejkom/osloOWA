@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundleQSLog.ListQSLogTableTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="QSLogTableListForm">
+                <p:panel header="#{bundleQSLog.ListQSLogTableTitle}">
+                    <p:dataTable id="datalist" value="#{qSLogTableController.items}" var="item"
+                                 selectionMode="single" selection="#{qSLogTableController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.idRow}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_idRow}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idRow}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_customer}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.customer}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_plant}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.plant}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_project}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.project}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_HDLSWLBlendaAdapter}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.HDLSWLBlendaAdapter}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_team}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.team}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_month}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.month}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_defectdescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.defectdescription}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_shorterDefectDescription}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.shorterDefectDescription}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_shorterDefectDescriptionSLO}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.shorterDefectDescriptionSLO}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_causedByInt}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.causedByInt}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_status8D}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status8D}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_statusOfPartAfterTheComplaint}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.statusOfPartAfterTheComplaint}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_krajsiOpisReklamacije}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.krajsiOpisReklamacije}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_actionNonDetection}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actionNonDetection}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_actionOccurence}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actionOccurence}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_rootCauseOccurence}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rootCauseOccurence}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_rootCauseNonDetection}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rootCauseNonDetection}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_responseTime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.responseTime}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_DReportCompletedOn}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.DReportCompletedOn}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_reactivity3D}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reactivity3D}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_termin8DReport}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.termin8DReport}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_nr8DReport}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nr8DReport}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_DReportCompletedOn1}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.DReportCompletedOn1}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_status8DDoneOpen}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status8DDoneOpen}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_reactivity8D}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reactivity8D}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_causeBy}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.causeBy}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_supplierCaused}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.supplierCaused}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_odeloCaused}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.odeloCaused}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_rejected}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rejected}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_cleanPoint}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cleanPoint}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_statusKosaPoReklamaciji}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.statusKosaPoReklamaciji}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_supplierName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.supplierName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_supplierPB}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.supplierPB}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_dateOfWeiterbelastung}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateOfWeiterbelastung}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_debitDone}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.debitDone}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_teamLeader}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.teamLeader}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_terminPSReport}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.terminPSReport}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_remarks}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.remarks}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_claimedParts}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.claimedParts}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_PPMrelevantParts}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.PPMrelevantParts}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_XRepetitiveDefects}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.XRepetitiveDefects}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_claimDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.claimDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_CWWeek}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.CWWeek}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_productionDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.productionDate}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_recievingDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.recievingDate}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_claimNo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.claimNo}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_claimNoAdditionalMark}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.claimNoAdditionalMark}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleQSLog.ListQSLogTableTitle_commentForReport}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.commentForReport}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleQSLog.Create}" actionListener="#{qSLogTableController.prepareCreate}" update=":QSLogTableCreateForm" oncomplete="PF('QSLogTableCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleQSLog.View}" update=":QSLogTableViewForm" oncomplete="PF('QSLogTableViewDialog').show()" disabled="#{empty qSLogTableController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleQSLog.Edit}" update=":QSLogTableEditForm" oncomplete="PF('QSLogTableEditDialog').show()" disabled="#{empty qSLogTableController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleQSLog.Delete}" actionListener="#{qSLogTableController.destroy}" update=":growl,datalist" disabled="#{empty qSLogTableController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

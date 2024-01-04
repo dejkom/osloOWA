@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            odelo AI
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>odelo AI parametri</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <!-- Input for voiceParameter -->
+                                <p:outputLabel for="voiceInput" value="Voice Parameter:" />
+                                <p:inputText id="voiceInput" value="#{odeloAIBean.voiceParameter}" disabled="true"/>
+                                <br/><br/>
+
+                                <!-- Input for contentParameter -->
+                                <p:outputLabel for="contentInput" value="Content Parameter:" />
+                                <p:inputTextarea rows="5" cols="30" id="contentInput" value="#{odeloAIBean.contentParameter}" />
+                                <br/><br/>
+
+                                <!-- Input for contentParameter -->
+                                <p:outputLabel for="languageInput" value="Save path Parameter:" />
+                                <p:inputText id="languageInput" value="#{odeloAIBean.languageParameter}" disabled="true"/>
+                                <br/><br/>
+
+                                <p:audio id="audiop" value="#{odeloAIBean.createdFilePath}"
+                                         player="wav"
+                                         autoplay="true"                                         
+                                         controls="true">
+                                    Your browser does not support the audio element.
+                                    See: <h:outputLink value="https://www.w3schools.com/html/html5_audio.asp">HTML5 Audio</h:outputLink>
+                                </p:audio>
+
+                                <p:commandButton value="Run Exe" action="#{odeloAIBean.buttonAction()}" update="audiop" />
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            HR Courses - Course Types
+
+            <script type="text/javascript">
+                var currentEvent;
+
+                $(document).ready(function () {
+                    PrimeFaces.widget.ContextMenu.prototype.show = function (e) {
+                        //hide other contextmenus if any
+                        $(document.body).children('.ui-contextmenu:visible').hide();
+
+                        if (e) {
+                            currentEvent = e;
+                        }
+
+                        var win = $(window),
+                                left = e.pageX,
+                                top = e.pageY,
+                                width = this.jq.outerWidth(),
+                                height = this.jq.outerHeight();
+
+                        //collision detection for window boundaries
+                        if ((left + width) > (win.width()) + win.scrollLeft()) {
+                            left = left - width;
+                        }
+                        if ((top + height) > (win.height() + win.scrollTop())) {
+                            top = top - height;
+                        }
+
+                        if (this.cfg.beforeShow) {
+                            this.cfg.beforeShow.call(this);
+                        }
+
+                        this.jq.css({
+                            'left': left,
+                            'top': top,
+                            'z-index': ++PrimeFaces.zindex
+                        }).show();
+
+                        e.preventDefault();
+                    };
+                });
+            </script>
+
+            <style type="text/css">
+            .ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                } 
+                
+            body .ui-datatable .ui-datatable-data > tr.ui-state-highlight {
+                    background: #c5dced;
+                    color: #495057;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Here you can manage Course Types
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+        
+        <ui:define name="content">
+            <h:form id="HRCourseTypeListForm">
+                <p:dataTable id="datalist" value="#{hRCourseTypeController.items}" var="item"
+                             selectionMode="single" selection="#{hRCourseTypeController.selected}"
+                             paginator="true"
+                             rowKey="#{item.courseTypeID}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                    <p:column style="width: 110px">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.ListHRCourseTypeTitle_courseTypeID}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.courseTypeID}"/>
+                    </p:column>
+                    <p:column filterBy="#{item.courseTypeTitle}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.CreateHRCourseTypeTitle_courseTypeTitle}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.courseTypeTitle}"/>
+                    </p:column>
+                    <p:column style="width: 100px">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.CreateHRCourseTypeTitle_active}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.active}" disabled="true"/>
+                    </p:column>
+                    
+                    <p:column style="width: 100px">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.sendSurveyByMail}"/>
+                        </f:facet>
+                        <p:selectBooleanCheckbox value="#{item.sendSurveyByMail}" disabled="true"/>
+                    </p:column>
+                    
+                    <p:column filterBy="#{item.parent.courseTypeID} #{item.parent.courseTypeTitle}" filterMatchMode="contains">
+                        <f:facet name="header">
+                            <h:outputText value="#{bundleHRCourse.CreateHRCourseTypeTitle_parent}"/>
+                        </f:facet>
+                        <h:outputText value="(#{item.parent.courseTypeID}) #{item.parent.courseTypeTitle}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleHRCourse.Create}" actionListener="#{hRCourseTypeController.prepareCreate}" update=":HRCourseTypeCreateForm" oncomplete="PF('HRCourseTypeCreateDialog').show()"/>
+                        <p:commandButton id="viewButton" style="display: none"  icon="ui-icon-search" value="#{bundleHRCourse.View}" update=":HRCourseTypeViewForm" oncomplete="PF('HRCourseTypeViewDialog').show()" disabled="#{empty hRCourseTypeController.selected}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleHRCourse.Edit}" update=":HRCourseTypeEditForm" oncomplete="PF('HRCourseTypeEditDialog').show()" disabled="#{empty hRCourseTypeController.selected}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleHRCourse.Delete}" actionListener="#{hRCourseTypeController.destroy}" update=":growl,datalist" disabled="#{empty hRCourseTypeController.selected}"/>
+                    </f:facet>
+                </p:dataTable>
+
+                <br/>
+
+                <p:multiSelectListbox id="mslb" value="#{hRCourseTypeController.selectedListBox}" converter="omnifaces.SelectItemsConverter" header="HR Course Types" showHeaders="true">
+                    <f:selectItems value="#{hRCourseTypeController.categories}"/>
+                </p:multiSelectListbox>
+
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

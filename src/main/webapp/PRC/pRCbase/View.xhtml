@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PRCbaseViewDlg" widgetVar="PRCbaseViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundlePRC.ViewPRCbaseTitle}">
+            <h:form id="PRCbaseViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pRCbaseController.selected != null}">
+                        <h:outputText value="#{bundlePRC.ViewPRCbaseLabel_id}"/>
+                        <h:outputText value="#{pRCbaseController.selected.id}" title="#{bundlePRC.ViewPRCbaseTitle_id}"/>
+                        <h:outputText value="#{bundlePRC.ViewPRCbaseLabel_dateFrom}"/>
+                        <h:outputText value="#{pRCbaseController.selected.dateFrom}" title="#{bundlePRC.ViewPRCbaseTitle_dateFrom}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC.ViewPRCbaseLabel_dateTo}"/>
+                        <h:outputText value="#{pRCbaseController.selected.dateTo}" title="#{bundlePRC.ViewPRCbaseTitle_dateTo}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundlePRC.ViewPRCbaseLabel_bmwProduct}"/>
+                        <h:outputText value="#{pRCbaseController.selected.bmwProduct}" title="#{bundlePRC.ViewPRCbaseTitle_bmwProduct}"/>
+                        <h:outputText value="#{bundlePRC.ViewPRCbaseLabel_bmwIndex}"/>
+                        <h:outputText value="#{pRCbaseController.selected.bmwIndex}" title="#{bundlePRC.ViewPRCbaseTitle_bmwIndex}"/>
+                        <h:outputText value="#{bundlePRC.ViewPRCbaseLabel_value}"/>
+                        <h:outputText value="#{pRCbaseController.selected.value}" title="#{bundlePRC.ViewPRCbaseTitle_value}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundlePRC.Close}" onclick="PRCbaseViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

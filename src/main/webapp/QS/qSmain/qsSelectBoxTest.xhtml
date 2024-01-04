@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            selectOneMenu QS examples
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+
+                .ui-datatable-resizable table {
+                    table-layout: auto!important;
+                }
+
+                .ui-datatable .ui-datatable-scrollable-body{
+                    overflow-y: hidden !important;
+                    overflow-x: hidden !important;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            <h:outputText value="Here you can see how selectBoxes look"/>
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+            <p:outputLabel for="@next" value="All in DB:"/>
+            <p:selectOneMenu id="group" value="#{qSoverviewController.selected}" filter="true" filterMatchMode="contains">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems value="#{qSoverviewController.itemsAvailableSelectOne}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso}"/>
+            </p:selectOneMenu>
+            
+            <p:outputLabel for="@next" value="All with parent 2 (customer):"/>
+            <p:selectOneMenu id="group2" value="#{qSoverviewController.selected}">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(2)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso}"/>
+            </p:selectOneMenu>
+            
+            <p:outputLabel for="@next" value="All with parent 4 (project):"/>
+            <p:selectOneMenu id="group3" value="#{qSoverviewController.selected}">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(4)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso}"/>
+            </p:selectOneMenu>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

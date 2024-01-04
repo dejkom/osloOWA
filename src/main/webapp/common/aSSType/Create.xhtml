@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSTypeCreateDlg" widgetVar="ASSTypeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateASSTypeTitle}">
+            <h:form id="ASSTypeCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSTypeController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundle.CreateASSTypeLabel_IDType}" for="IDType" />
+                        <p:inputText id="IDType" value="#{aSSTypeController.selected.IDType}" title="#{bundle.CreateASSTypeTitle_IDType}" required="true" requiredMessage="#{bundle.CreateASSTypeRequiredMessage_IDType}"/>
+                        -->
+                        <p:outputLabel value="#{bundle.CreateASSTypeLabel_typeDescription}" for="typeDescription" />
+                        <p:inputText id="typeDescription" value="#{aSSTypeController.selected.typeDescription}" title="#{bundle.CreateASSTypeTitle_typeDescription}" />
+                        <p:outputLabel value="#{bundle.CreateASSTypeLabel_typeDisable}" for="typeDisable" />
+                        <p:selectBooleanCheckbox id="typeDisable" value="#{aSSTypeController.selected.typeDisable}" />
+                        <p:outputLabel value="#{bundle.CreateASSTypeLabel_typeReturn}" for="typeReturn" />
+                        <p:selectBooleanCheckbox id="typeReturn" value="#{aSSTypeController.selected.typeReturn}" />
+                        <p:outputLabel value="#{bundle.CreateASSTypeLabel_IDTypeParent}" for="IDTypeParent" />
+                        <p:selectOneMenu id="IDTypeParent" value="#{aSSTypeController.selected.IDTypeParent}" >
+                            <f:selectItems value="#{aSSTypeController.itemsAvailableSelectOne}"
+                                           var="IDTypeParentItem"
+                                           itemValue="#{IDTypeParentItem}"
+                                           itemLabel="(#{IDTypeParentItem.IDType}) #{IDTypeParentItem.typeDescription}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aSSTypeController.create}" value="#{bundle.Save}" update="display,:ASSTypeListForm:datalist,:growl" oncomplete="handleSubmit(args,'ASSTypeCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ASSTypeCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

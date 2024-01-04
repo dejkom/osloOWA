@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ASSStatusCreateDlg" widgetVar="ASSStatusCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateASSStatusTitle}">
+            <h:form id="ASSStatusCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aSSStatusController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundle.CreateASSStatusLabel_IDStatus}" for="IDStatus" />
+                        <p:inputText id="IDStatus" value="#{aSSStatusController.selected.IDStatus}" title="#{bundle.CreateASSStatusTitle_IDStatus}" required="true" requiredMessage="#{bundle.CreateASSStatusRequiredMessage_IDStatus}"/>
+                        -->
+                        <p:outputLabel value="#{bundle.CreateASSStatusLabel_statusDescription}" for="statusDescription" />
+                        <p:inputText id="statusDescription" value="#{aSSStatusController.selected.statusDescription}" title="#{bundle.CreateASSStatusTitle_statusDescription}" />
+                        <p:outputLabel value="#{bundle.CreateASSStatusLabel_statusDisable}" for="statusDisable" />
+                        <p:selectBooleanCheckbox id="statusDisable" value="#{aSSStatusController.selected.statusDisable}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aSSStatusController.create}" value="#{bundle.Save}" update="display,:ASSStatusListForm:datalist,:growl" oncomplete="handleSubmit(args,'ASSStatusCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ASSStatusCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

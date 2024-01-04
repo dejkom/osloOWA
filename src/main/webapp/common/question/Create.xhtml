@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QuestionCreateDlg" widgetVar="QuestionCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQuestionnaire.CreateQuestionTitle}">
+            <h:form id="QuestionCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{questionController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_questionID}" for="questionID" />
+                        <p:inputText id="questionID" value="#{questionController.selected.questionID}" title="#{bundleQuestionnaire.CreateQuestionTitle_questionID}" required="true" requiredMessage="#{bundleQuestionnaire.CreateQuestionRequiredMessage_questionID}"/>
+                        -->
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_question}" for="question" />
+                        <p:inputText id="question" value="#{questionController.selected.question}" title="#{bundleQuestionnaire.CreateQuestionTitle_question}" />
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_answer}" for="answer" />
+                        <p:inputText id="answer" value="#{questionController.selected.answer}" title="#{bundleQuestionnaire.CreateQuestionTitle_answer}" />
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_sortColumn}" for="sortColumn" />
+                        <p:inputText id="sortColumn" value="#{questionController.selected.sortColumn}" title="#{bundleQuestionnaire.CreateQuestionTitle_sortColumn}" />
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_questionType}" for="questionType" />
+                        <p:inputText id="questionType" value="#{questionController.selected.questionType}" title="#{bundleQuestionnaire.CreateQuestionTitle_questionType}" />
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_options}" for="options" />
+                        <p:inputText id="options" value="#{questionController.selected.options}" title="#{bundleQuestionnaire.CreateQuestionTitle_options}" />
+                        <p:outputLabel value="#{bundleQuestionnaire.CreateQuestionLabel_questionnaireID}" for="questionnaireID" />
+                        <p:selectOneMenu id="questionnaireID" value="#{questionController.selected.questionnaireID}" >
+                            <f:selectItems value="#{questionnaireController.itemsAvailableSelectOne}"
+                                           var="questionnaireIDItem"
+                                           itemValue="#{questionnaireIDItem}"
+                                           itemLabel="#{questionnaireIDItem.title}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{questionController.create}" value="#{bundleQuestionnaire.Save}" update="display,:QuestionListForm:datalist,:growl" oncomplete="handleSubmit(args,'QuestionCreateDialog');"/>
+                    <p:commandButton value="#{bundleQuestionnaire.Cancel}" onclick="QuestionCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

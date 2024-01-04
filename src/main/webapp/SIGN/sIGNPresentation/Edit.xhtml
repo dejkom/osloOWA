@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="SIGNPresentationEditDlg" showEffect="drop" hideEffect="drop" widgetVar="SIGNPresentationEditDialog" modal="true" width="60vw" height="85vh" resizable="false" appendTo="@(body)" header="Uredi">
+            <h:form id="SIGNPresentationEditForm" style="display: inline;">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sIGNPresentationController.selected != null}">
+                        <p:outputLabel value="Ime:" for="name" />
+                        <p:inputText id="name" value="#{sIGNPresentationController.selected.name}" title="#{bundleSIGN.EditSIGNPresentationTitle_name}" />
+                    </p:panelGrid>
+                    <p:dataTable id="slides" var="item" value="#{sIGNPresentationController.selected.SIGNSlideListOrdered}" draggableRows="true"
+                                 selectionMode="single" lazy="false"
+                                 selection="#{sIGNPresentationController.selectedSlide}"
+                                 rowKey="#{item.idSlide}"
+                                 scrollable="true"
+                                 scrollHeight="500"
+                                 style="margin-top: 10px;border: grey solid 1px;border-radius: 2px;">
+                        <p:ajax event="rowReorder" listener="#{sIGNPresentationController.onRowReorder}"/>
+                        <f:facet name="header">
+                            Listi prezentacije
+                        </f:facet>
+
+                        <p:column headerText="Ime datoteke" width="40%" style="text-align: center;">
+                            <h:outputText value="#{item.fileName}" />
+                        </p:column>
+
+                        <p:column headerText="Datoteke" width="40%" style="text-align: center;">
+                            <h:graphicImage rendered="#{item.showTumbnail()}" value="#{item.sourceUrl}" height="100vh" width="100vw" />
+                            <h:graphicImage rendered="#{item.showTumbnail() eq false}"  height="100vh" width="100vw" library="img" name="vlc_logo.png"/>
+                        </p:column>
+                        <p:column headerText="Trajanje" width="20%" style="text-align: center;">
+                            <p:inputText value="#{item.timeOnDisplay}" title="#{bundleSIGN.EditSIGNPresentationTitle_name}" style="width: 85%;text-align: center;" rendered="#{item.showTumbnail()}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:contextMenu for="slides">
+                        <p:menuitem value="Izbriši" icon="ui-icon-trash" action="#{sIGNPresentationController.deleteSlide()}" update="slides"/>
+                    </p:contextMenu>
+                    <p:commandButton actionListener="#{sIGNPresentationController.update}" value="Posodobi" update="display,:SIGNPresentationListForm:datalist,:growl" oncomplete="handleSubmit(args, 'SIGNPresentationEditDialog');"/>
+                    <p:commandButton value="Prekliči" onclick="SIGNPresentationEditDialog.hide()"/>
+                </h:panelGroup>                
+            </h:form>
+            <h:form style="display: inline-block; float: right; width: 63%; height: 20%; margin-top: 10px">        
+                <p:fileUpload listener="#{sIGNPresentationController.handleFileUploadAddSlide}" label="Dodaj diapozitiv" auto="true" update=":SIGNPresentationEditForm:slides" accept=".jpg,.png,.jpeg,.bmp,.mp4,.wma,.wmv,.webm,.pdf"/>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        
+        <ui:define name="head">
+            <script type="text/javascript"></script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            Qlik Mails
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Qlik Mails
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="mailList">
+                <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+                <p:panel header="Select a report" style="margin-bottom:10px;" id="mailcomplete">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="report" value="Report: "/>
+                        <p:selectOneMenu id="report" value="#{qLIKmailReceiversController.selected}" style="width:150px">
+                            <p:ajax update="mailList" listener="#{qLIKmailReceiversController.updateMailList}"/>
+                            <f:selectItem itemLabel="Select Report" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{qLIKmailReceiversController.reports}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h5>Mail to:</h5>
+                    <p:autoComplete multiple="true" value="#{qLIKmailReceiversController.selectedMailTOList}"
+                                    completeMethod="#{vADUsersDirectController.completeTextMail}"
+                                    var="mailCompleteItem" itemLabel="#{mailCompleteItem}" itemValue="#{mailCompleteItem}"
+                                    forceSelection="true" scrollHeight="250">
+                        <p:column>
+                            <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{mailCompleteItem}"/>
+                        </p:column>
+                    </p:autoComplete>
+
+                    <h5>Mail CC:</h5>
+                    <p:autoComplete multiple="true" value="#{qLIKmailReceiversController.selectedMailCCList}"
+                                    completeMethod="#{vADUsersDirectController.completeTextMail}"
+                                    var="mailCompleteItem" itemLabel="#{mailCompleteItem}" itemValue="#{mailCompleteItem}"
+                                    forceSelection="true" scrollHeight="250">
+                        <p:column>
+                            <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{mailCompleteItem}"/>
+                        </p:column>
+                    </p:autoComplete>
+
+                    <h5>Mail BCC:</h5>
+                    <p:autoComplete multiple="true" value="#{qLIKmailReceiversController.selectedMailBCCList}"
+                                    completeMethod="#{vADUsersDirectController.completeTextMail}"
+                                    var="mailCompleteItem" itemLabel="#{mailCompleteItem}" itemValue="#{mailCompleteItem}"
+                                    forceSelection="true" scrollHeight="250">
+                        <p:column>
+                            <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{mailCompleteItem}"/>
+                        </p:column>
+                    </p:autoComplete>
+
+                    <p:commandButton value="Submit" icon="pi pi-check" action="#{qLIKmailReceiversController.updateMailReceiversToDatabase}"/>
+                </p:panel>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

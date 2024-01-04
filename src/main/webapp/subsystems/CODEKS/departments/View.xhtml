@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DepartmentsViewDlg" widgetVar="DepartmentsViewDialog" modal="true" height="60em" resizable="false" appendTo="@(body)" header="#{bundleCodeks.ViewDepartmentsTitle}">
+            <h:form id="DepartmentsViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{departmentsController.selected != null}">
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_id}"/>
+                        <h:outputText value="#{departmentsController.selected.id}" title="#{bundleCodeks.ViewDepartmentsTitle_id}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_deleted}"/>
+                        <p:selectBooleanCheckbox value="#{departmentsController.selected.deleted}" disabled="true"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_name}"/>
+                        <h:outputText value="#{departmentsController.selected.name}" title="#{bundleCodeks.ViewDepartmentsTitle_name}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_code}"/>
+                        <h:outputText value="#{departmentsController.selected.code}" title="#{bundleCodeks.ViewDepartmentsTitle_code}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_departmentHeadId}"/>
+                        <h:outputText value="#{departmentsController.selected.departmentHeadId}" title="#{bundleCodeks.ViewDepartmentsTitle_departmentHeadId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_departmentHeadDeputyId}"/>
+                        <h:outputText value="#{departmentsController.selected.departmentHeadDeputyId}" title="#{bundleCodeks.ViewDepartmentsTitle_departmentHeadDeputyId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_parentId}"/>
+                        <h:outputText value="#{departmentsController.selected.parentId}" title="#{bundleCodeks.ViewDepartmentsTitle_parentId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_type}"/>
+                        <h:outputText value="#{departmentsController.selected.type}" title="#{bundleCodeks.ViewDepartmentsTitle_type}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_lft}"/>
+                        <h:outputText value="#{departmentsController.selected.lft}" title="#{bundleCodeks.ViewDepartmentsTitle_lft}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_rgt}"/>
+                        <h:outputText value="#{departmentsController.selected.rgt}" title="#{bundleCodeks.ViewDepartmentsTitle_rgt}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_position}"/>
+                        <h:outputText value="#{departmentsController.selected.position}" title="#{bundleCodeks.ViewDepartmentsTitle_position}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_fullName}"/>
+                        <h:outputText value="#{departmentsController.selected.fullName}" title="#{bundleCodeks.ViewDepartmentsTitle_fullName}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_defaultPassageId}"/>
+                        <h:outputText value="#{departmentsController.selected.defaultPassageId}" title="#{bundleCodeks.ViewDepartmentsTitle_defaultPassageId}"/>
+                        <h:outputText value="#{bundleCodeks.ViewDepartmentsLabel_LAReplacementRequired}"/>
+                        <p:selectBooleanCheckbox value="#{departmentsController.selected.LAReplacementRequired}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleCodeks.Close}" onclick="DepartmentsViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseHRCourseInstructorCreateDlg" widgetVar="HRCourseHRCourseInstructorCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateHRCourseHRCourseInstructorTitle}">
+            <h:form id="HRCourseHRCourseInstructorCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseHRCourseInstructorController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseHRCourseInstructorLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{hRCourseHRCourseInstructorController.selected.id}" title="#{bundleHRCourse.CreateHRCourseHRCourseInstructorTitle_id}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseHRCourseInstructorRequiredMessage_id}"/>
+                        -->
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseHRCourseInstructorLabel_courseID}" for="courseID" />
+                        <p:selectOneMenu id="courseID" value="#{hRCourseHRCourseInstructorController.selected.courseID}" filter="true" filterMatchMode="contains" autoWidth="false" >
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" />
+                            <f:selectItems value="#{hRCourseController.itemsAvailableSelectOne}"
+                                           var="courseIDItem"
+                                           itemValue="#{courseIDItem}" itemLabel="#{courseIDItem.courseTitle}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseHRCourseInstructorLabel_instructorID}" for="instructorID" />
+                        <p:selectOneMenu id="instructorID" value="#{hRCourseHRCourseInstructorController.selected.instructorID}" filter="true" filterMatchMode="contains" >
+                            <f:selectItem itemLabel="Select One" itemValue="#{null}" />
+                            <f:selectItems value="#{hRCourseInstructorController.itemsAvailableSelectOne}"
+                                           var="instructorIDItem"
+                                           itemValue="#{instructorIDItem}" itemLabel="#{instructorIDItem.firstname} #{instructorIDItem.lastname} (#{instructorIDItem.company})"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseHRCourseInstructorController.create}" value="#{bundleHRCourse.Save}" update="display,:HRCourseHRCourseInstructorListForm:datalist,:growl" onclick="HRCourseHRCourseInstructorCreateDialog.hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="HRCourseHRCourseInstructorCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

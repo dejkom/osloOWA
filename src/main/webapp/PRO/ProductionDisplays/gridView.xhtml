@@ -1,0 +1,346 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template_agv.xhtml">
+
+        <ui:define name="PageHeader">
+            <h:form id="formh">
+                Production Display - <h:outputText value="List of workcenters"/> <h:outputText style="float: right" id="tor" value="#{prodDisplayDataGetterBean.timeOfDataReload}"> <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana" /></h:outputText>
+            </h:form>
+            <style type="text/css">
+                .pending {
+                    background-color: #EDEDED !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .submitted {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .processing {
+                    background-color: #FDFFBB !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .sent {
+                    background-color: #E9FFB9 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .delivered {
+                    background-color: #9AFF95 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .canceled {
+                    background-color: #FFA6A6 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .contact-box.center-version > a {
+                    display: block;
+                    background-color: transparent;
+                    padding: 20px 20px 5px 20px;
+                    text-align: center;
+                }
+
+                .contact-box .contact-box-footer {
+                    text-align: center;
+                    background-color: transparent;
+                    border-top: 0px solid #e7eaec !important;
+                    padding: 5px 20px 15px 20px;
+                }
+
+                .product .product-list-item {
+                    display: -ms-flexbox;
+                    display: flex;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    padding: 1rem;
+                }
+
+                .forum-item {
+                    margin: 0 0;
+                    padding: 0 0 0;
+                    border-bottom: 0px solid #f1f1f1;
+                }
+
+            </style>
+            <script type="text/javascript">
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+
+                function handleOpen(event) {
+                    console.log('Openning ', event);
+                }
+
+                function handleClose(code, channel, event) {
+                    console.log('Handle close: ' + code, channel, event);
+                    if (code == -1) {
+                        console.log('Websockets not supported by client')
+                    } else if (code == 1000) { // Normal close (as result of expired session or view)
+                        console.log('Normal close, will try to reconnect');
+                    } else {
+                        // Abnormal close reason (as result of an error)
+                        alert('Error during the reconnect! Please refresh WebPage')
+                    }
+                }
+
+                function handleMessage(message, channelName, event) {
+                    if (channelName === 'PROIDisplaysChannel') {
+                        //console.log('handleMessage - AGVchannel ', event);
+                        refresh(message, event);
+                    } else {
+                        alert('Unhandled channel: ' + channelName);
+                    }
+                }
+
+                function refresh(message, event) {
+                    const obj = JSON.parse(message);
+                    ion.sound.play("button_tiny");
+                    PF('PROIgrowl').renderMessage({summary: "Message from server", detail: obj.message + "", severity: obj.severity});
+                    updateDataView();
+                }
+
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <o:socket channel="PROIDisplaysChannel" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose" />
+            <h:form id="form">
+                <p:growl id="PROIgrowl" widgetVar="PROIgrowl" showDetail="true" life="5000" sticky="false"/>     
+                <p:remoteCommand name="updateDataView" update="dvcontainer :formh:tor" />
+
+                <div class="row">
+                    <div class="col-lg-12">     
+                    </div>
+                </div>
+
+
+                <p:dataView var="product" id="dvcontainer" value="#{prodDisplayDataGetterBean.employees}" rows="12"
+                            paginator="true" multiViewState="false" widgetVar="dataviewcontainer" layout="grid" 
+                            rowsPerPageTemplate="6,12,16,#{prodDisplayDataGetterBean.employees.size()}" 
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            gridIcon="pi pi-th-large" listIcon="pi pi-bars"> 
+
+                    <!--
+                    <p:dataViewGridItem>
+                        <div class="product-grid-item card border-1">
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"/>
+                                    <span class="product-category">#{product.workcenter}</span>
+                                </div>
+                                <span class="product-badge status-instock">IN STOCK</span>
+                            </div>
+                            <div class="product-grid-item-content">
+                                <div class="product-name">#{product.lineName}</div>
+                                <div class="product-description">#{product.numberOfWorkers}</div>
+                            </div>
+                            <div class="product-grid-item-bottom">
+                                <h:outputText value="47" styleClass="product-price"></h:outputText>
+                                <p:commandButton type="button"
+                                                 value="Poglej"
+                                                 icon="pi pi-info-circle"
+                                                 disabled="false">
+                                </p:commandButton>
+                            </div>
+                        </div>
+                    </p:dataViewGridItem>
+                    -->
+
+
+                    <!--RDEČA background-color: #ff000040 -->
+                    
+                    <p:dataViewGridItem columns="4">
+                        <div class="contact-box center-version" style="#{product.numberOfWorkers_int lt 1 ? 'background-color: white':'background-color: #00800038'}">
+
+                            <a href="profile.html">
+
+                                <h3 class="m-b-xs"><strong>#{product.workcenter}</strong></h3>
+
+                                <div class="font-bold">#{product.lineName}</div>
+                                <div><hr/></div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div>Good: <h4><h:outputText value="#{product.quantity_left_int+product.quantity_right_int}" style="color: green; font-weight: bold"/></h4> </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div>Scrap: <h4><h:outputText value="#{product.scrap_left_int+product.scrap_right_int}" style="color: red; font-weight: bold"/></h4> </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div>Planned: <h4><h:outputText value="#{product.plannedQuantity}" style="font-weight: bold"/></h4></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div>Production time: <h4><h:outputText value="#{product.totalTime_int}" style="font-weight: bold"/></h4></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div>Actual Workers: <h4><h:outputText value="#{product.numberOfWorkers_int}" style="font-weight: bold"/></h4></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div>Planned Workers: <h4><h:outputText value="UNKNOWN" style="font-weight: bold"/></h4></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div>Unplanned Downtime duration: <h4><h:outputText value="#{product.downtimeDurationUnplanned_int}" style="font-weight: bold"/></h4></div>
+                                    </div>
+                                </div>
+
+                                <hr style="margin-bottom:0px"/>
+
+                            </a>
+                            <div class="contact-box-footer">
+                                <div class="m-t-xs btn-group">                                                            
+                                    <a href="" class="btn btn-xs btn-white"><i class="fa fa-info-circle"></i> Podrobnosti</a>
+                                    <p:commandButton value="Submit" oncomplete="PF('dlg1').show();" actionListener="#{prodDisplaySingleWorkcenterBean.setSelectedWC(product)}" update=":form2:display" async="true" ajax="true"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </p:dataViewGridItem>
+                    
+
+                </p:dataView>
+
+
+
+
+            </h:form>
+
+            <p:dialog header="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.lineName}" id="dialogprijava" width="90%" widgetVar="dlg1"  maximizable="true" showEffect="fade" modal="true" appendTo="@(body)" >
+                <h:form id="form2">
+                    <h:panelGroup id="display">
+
+                        <div class="row" style="display: none">
+                            <div class="col-md-8">LEVO 8</div>
+                            <div class="col-md-4">DESNO 4</div>
+                        </div>   
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h2>
+                                    <h:outputLabel for="po" value="Planirani operaterji:"/>
+                                    <strong><h:outputText id="po" value="NE VEM" /></strong>
+                                </h2>
+                            </div>
+                            <div class="col-md-4">
+                                <h2>
+                                    <h:outputLabel for="ao" value="Dejanski operaterji:"/>
+                                    <strong><h:outputText id="ao" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.numberOfWorkers}" /></strong>
+                                </h2>
+                            </div>
+                            <div class="col-md-4">
+                                <h2>
+                                    <h:outputLabel for="am" value="Aktivni material:"/>
+                                    <strong><h:outputText id="am" value="NIMAM PODATKA" /></strong>
+                                </h2>
+                            </div>
+                        </div>  
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="sp" value="Začetek proizvodnje:"/>
+                                    <strong><h:outputText id="sp" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.shiftStart}" >
+                                            <f:convertDateTime pattern = "dd-MM-yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                        </h:outputText></strong>
+                                </h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="aq" value="Trenutna količina:"/>
+                                    <strong><h:outputText id="aq" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_left_int + prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_right_int}" /></strong>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="du" value="Trajanje:"/>
+                                    <strong><h:outputText id="du" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.totalTime}" /></strong>
+                                </h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="pq" value="Planirana količina:"/>
+                                    <strong><h:outputText id="pq" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.plannedQuantity}" /></strong>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="ct" value="SAP Cikel Čas:"/>
+                                    <strong><h:outputText id="ct" value="NE VEM" /></strong>
+                                </h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="sq" value="Izmet količina:"/>
+                                    <strong><h:outputText id="sq" value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_left_int + prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_right_int}" /></strong>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="lct" value="Čas zadnjega cikla:"/>
+                                    <strong><h:outputText id="lct" value="NE VEM" /></strong>
+                                </h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h2>
+                                    <h:outputLabel for="st" value="Čas zastojev:"/>
+                                    <strong><h:outputText id="st" value="NE VEM" /></strong>
+                                </h2>
+                            </div>
+                        </div>
+
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+
+        </ui:define>
+
+        <ui:define name="beforeEndOfBody">
+
+        </ui:define>
+
+
+    </ui:composition>
+</html>

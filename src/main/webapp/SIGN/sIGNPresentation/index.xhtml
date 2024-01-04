@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Prezentacijie
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+            Spodaj je mogoče dodajati nove prezentacije.
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="SIGNPresentationListForm">
+                   <p:dataTable id="datalist" value="#{sIGNPresentationController.items}" var="item"
+                                selectionMode="multiple" selection="#{sIGNPresentationController.selectedList}"
+                                paginator="true"
+                                rowKey="#{item.idPresentation}"
+                                rows="10"
+                                rowsPerPageTemplate="10,20,30,40,50"
+                                >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column headerText="Ime">
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column headerText="Ustvarjeno">
+                            <h:outputText value="#{item.stringDate}"/>
+                        </p:column>
+                        <p:column headerText="Posodobljeno">
+                            <h:outputText value="#{item.stringUpdatedAt}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="Dodaj" actionListener="#{sIGNPresentationController.prepareCreate}" update=":SIGNPresentationCreateForm" oncomplete="PF('SIGNPresentationCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-video"  value="Ogled" update=":SIGNPresentationViewForm" oncomplete="PF('SIGNPresentationViewDialog').show(); checkForPresentation(#{sIGNPresentationController.selected.idPresentation})" disabled="#{empty sIGNPresentationController.selectedList }"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="Uredi" update=":SIGNPresentationEditForm" oncomplete="PF('SIGNPresentationEditDialog').show();" disabled="#{empty sIGNPresentationController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="Izbriši" actionListener="#{sIGNPresentationController.destroy}" update=":growl,datalist" disabled="#{empty sIGNPresentationController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

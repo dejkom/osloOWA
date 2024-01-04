@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseInstructorViewDlg" widgetVar="HRCourseInstructorViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Izobraževalec">
+            <h:form id="HRCourseInstructorViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseInstructorController.selected != null}">
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseInstructorLabel_instructorID}"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.instructorID}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_instructorID}"/>
+                        
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseInstructorLabel_codeksID}"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.codeksID}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_codeksID}"/>
+                        
+                        <h:outputText value="Ime:"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.firstname}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_firstname}"/>
+                        
+                        <h:outputText value="Priimek:"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.lastname}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_lastname}"/>
+                        
+                        <h:outputText value="Podjetje:"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.company}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_company}"/>
+                        
+                        <h:outputText value="Telefon:"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.phone}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_phone}"/>
+                        
+                        <h:outputText value="#{bundleHRCourse.ViewHRCourseInstructorLabel_mail}"/>
+                        <h:outputText value="#{hRCourseInstructorController.selected.mail}" title="#{bundleHRCourse.ViewHRCourseInstructorTitle_mail}"/>
+                        
+                        <h:outputText value="Aktiven:"/>
+                        <p:selectBooleanCheckbox value="#{hRCourseInstructorController.selected.active}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleHRCourse.Close}" onclick="HRCourseInstructorViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

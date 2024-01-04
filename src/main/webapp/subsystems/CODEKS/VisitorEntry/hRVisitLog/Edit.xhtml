@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRVisitLogEditDlg" widgetVar="HRVisitLogEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleVisitorEntryLog.EditHRVisitLogTitle}">
+            <h:form id="HRVisitLogEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRVisitLogController.selected != null}">
+                        <p:outputLabel value="#{bundleVisitorEntryLog.EditHRVisitLogLabel_HRVisitLogPK_visitID}" for="HRVisitLogPK_visitID" />
+                        <p:inputText id="HRVisitLogPK_visitID" value="#{hRVisitLogController.selected.HRVisitLogPK.visitID}" title="#{bundleVisitorEntryLog.EditHRVisitLogTitle_HRVisitLogPK_visitID}" required="true" requiredMessage="#{bundleVisitorEntryLog.EditHRVisitLogRequiredMessage_HRVisitLogPK_visitID}"/>
+                        <p:outputLabel value="#{bundleVisitorEntryLog.EditHRVisitLogLabel_HRVisitLogPK_guest}" for="HRVisitLogPK_guest" />
+                        <p:inputText id="HRVisitLogPK_guest" value="#{hRVisitLogController.selected.HRVisitLogPK.guest}" title="#{bundleVisitorEntryLog.EditHRVisitLogTitle_HRVisitLogPK_guest}" required="true" requiredMessage="#{bundleVisitorEntryLog.EditHRVisitLogRequiredMessage_HRVisitLogPK_guest}"/>
+                        <p:outputLabel value="#{bundleVisitorEntryLog.EditHRVisitLogLabel_timeIn}" for="timeIn" />
+                        <p:calendar id="timeIn" pattern="MM/dd/yyyy HH:mm:ss" value="#{hRVisitLogController.selected.timeIn}" title="#{bundleVisitorEntryLog.EditHRVisitLogTitle_timeIn}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleVisitorEntryLog.EditHRVisitLogLabel_timeOut}" for="timeOut" />
+                        <p:calendar id="timeOut" pattern="MM/dd/yyyy HH:mm:ss" value="#{hRVisitLogController.selected.timeOut}" title="#{bundleVisitorEntryLog.EditHRVisitLogTitle_timeOut}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleVisitorEntryLog.EditHRVisitLogLabel_odeloPersonRecipient}" for="odeloPersonRecipient" />
+                        <p:inputText id="odeloPersonRecipient" value="#{hRVisitLogController.selected.odeloPersonRecipient}" title="#{bundleVisitorEntryLog.EditHRVisitLogTitle_odeloPersonRecipient}" />
+                        <p:outputLabel value="#{bundleVisitorEntryLog.EditHRVisitLogLabel_signature}" for="signature" />
+                        <p:inputText id="signature" value="#{hRVisitLogController.selected.signature}" title="#{bundleVisitorEntryLog.EditHRVisitLogTitle_signature}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRVisitLogController.update}" value="#{bundleVisitorEntryLog.Save}" update="display,:HRVisitLogListForm:datalist,:growl" oncomplete="handleSubmit(args, 'HRVisitLogEditDialog');"/>
+                    <p:commandButton value="#{bundleVisitorEntryLog.Cancel}" onclick="HRVisitLogEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

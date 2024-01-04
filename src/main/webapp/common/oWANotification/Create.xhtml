@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OWANotificationCreateDlg" widgetVar="OWANotificationCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleNotifications.CreateOWANotificationTitle}">
+            <h:form id="OWANotificationCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="4" rendered="#{oWANotificationController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{oWANotificationController.selected.id}" title="#{bundleNotifications.CreateOWANotificationTitle_id}" required="true" requiredMessage="#{bundleNotifications.CreateOWANotificationRequiredMessage_id}"/>
+                        -->
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_title}" for="title" />
+                        <p:inputText id="title" value="#{oWANotificationController.selected.title}" title="#{bundleNotifications.CreateOWANotificationTitle_title}" />
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_notificationContent}" for="notificationContent" />
+                        <p:inputTextarea id="notificationContent" value="#{oWANotificationController.selected.notificationContent}" rows="6" cols="33" title="#{bundleNotifications.CreateOWANotificationTitle_notificationContent}" />
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_isPinBoardNotification}" for="isPinBoardNotification" />
+                        <p:selectBooleanCheckbox id="isPinBoardNotification" value="#{oWANotificationController.selected.isPinBoardNotification}" />
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_isToastNotification}" for="isToastNotification" />
+                        <p:selectBooleanCheckbox id="isToastNotification" value="#{oWANotificationController.selected.isToastNotification}" />
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_visibleFrom}" for="visibleFrom" />
+                        <p:calendar id="visibleFrom" pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana" value="#{oWANotificationController.selected.visibleFrom}" title="#{bundleNotifications.EditOWANotificationTitle_visibleFrom}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_visibleTo}" for="visibleTo" />
+                        <p:calendar id="visibleTo" pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana" value="#{oWANotificationController.selected.visibleTo}" title="#{bundleNotifications.EditOWANotificationTitle_visibleTo}"  showOn="button"/>
+                        <!--
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_createdDateTime}" for="createdDateTime" />
+                        <p:calendar id="createdDateTime" pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana" value="#{oWANotificationController.selected.createdDateTime}" title="#{bundleNotifications.EditOWANotificationTitle_createdDateTime}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_creator}" for="creator" />
+                        <p:inputText id="creator" value="#{oWANotificationController.selected.creator}" title="#{bundleNotifications.CreateOWANotificationTitle_creator}" />
+                        -->
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_linkURL}" for="linkURL" />
+                        <p:inputText id="linkURL" value="#{oWANotificationController.selected.linkURL}" title="#{bundleNotifications.CreateOWANotificationTitle_linkURL}" />
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_showArea}" for="showArea" />
+                        <p:inputText id="showArea" value="#{oWANotificationController.selected.showArea}" title="#{bundleNotifications.CreateOWANotificationTitle_showArea}" />
+                        <p:outputLabel value="#{bundleNotifications.CreateOWANotificationLabel_severityStyle}" for="severityStyle" />
+                        <p:inputText id="severityStyle" value="#{oWANotificationController.selected.severityStyle}" title="#{bundleNotifications.CreateOWANotificationTitle_severityStyle}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oWANotificationController.create}" value="#{bundleNotifications.Save}" update="display,:OWANotificationListForm:datalist,:growl" oncomplete="handleSubmit(args,'OWANotificationCreateDialog');"/>
+                    <p:commandButton value="#{bundleNotifications.Cancel}" onclick="OWANotificationCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

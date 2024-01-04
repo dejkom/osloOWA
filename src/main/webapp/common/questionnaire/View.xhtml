@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QuestionnaireViewDlg" widgetVar="QuestionnaireViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQuestionnaire.ViewQuestionnaireTitle}">
+            <h:form id="QuestionnaireViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{questionnaireController.selected != null}">
+                        <h:outputText value="#{bundleQuestionnaire.ViewQuestionnaireLabel_questionnaireID}"/>
+                        <h:outputText value="#{questionnaireController.selected.questionnaireID}" title="#{bundleQuestionnaire.ViewQuestionnaireTitle_questionnaireID}"/>
+                        <h:outputText value="#{bundleQuestionnaire.ViewQuestionnaireLabel_title}"/>
+                        <h:outputText value="#{questionnaireController.selected.title}" title="#{bundleQuestionnaire.ViewQuestionnaireTitle_title}"/>
+                        <h:outputText value="#{bundleQuestionnaire.ViewQuestionnaireLabel_description}"/>
+                        <h:outputText value="#{questionnaireController.selected.description}" title="#{bundleQuestionnaire.ViewQuestionnaireTitle_description}"/>
+                        <h:outputText value="#{bundleQuestionnaire.ViewQuestionnaireLabel_active}"/>
+                        <p:selectBooleanCheckbox value="#{questionnaireController.selected.active}" disabled="true"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleQuestionnaire.Close}" onclick="QuestionnaireViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

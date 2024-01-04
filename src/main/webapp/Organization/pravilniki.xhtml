@@ -1,0 +1,263 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader" >
+            #{msg['InternalRegulations']}
+            <style type="text/css">
+                .btn-info{
+                    color: #fff;
+                    background-color: gray;
+                    border-color: gray;
+                }
+                .btn-info:hover, .btn-info:focus, .btn-info.focus {
+                    color: #fff;
+                    background-color: #1ab394;
+                    border-color: #1ab394;
+                }
+
+                .grid .ibox {
+                    margin-bottom: 0;
+                }
+
+                .grid-item {
+                    margin-bottom: 25px;
+                    width: 300px;
+                }
+
+            </style>
+            <script type="text/javascript">
+
+                jQuery(document).ready(function () {
+                    $('.grid').masonry({
+                        // options
+                        itemSelector: '.grid-item',
+                        columnWidth: 350,
+                        gutter: 25
+                    });
+
+                });
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+
+
+            <div class="grid">
+                
+                <a href='/osloWebApp/PublicPravilniki/O_AOSDM.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Akt o organizaciji in sistemizaciji delovnih mest</h1>
+                            <h3 class="font-bold no-margins">
+                                
+                            </h3>
+                            <small>28.7.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <a href='/osloWebApp/PublicPravilniki/MDB.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Merila za določanje bonusa</h1>
+                            <h3 class="font-bold no-margins">
+
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <a href='/osloWebApp/PublicPravilniki/PDC.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o delovnem času</h1>
+                            <h3 class="font-bold no-margins">
+
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <a href='/osloWebApp/PublicPravilniki/KOD.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Kriteriji za ocenjevanje delavcev</h1>
+                            <h3 class="font-bold no-margins">
+                                v primeru določanja in reševanja presežnih delavcev
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <a href='/osloWebApp/PublicPravilniki/PIK.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o izvajanju in kontroli</h1>
+                            <h3 class="font-bold no-margins">
+                                prisotnosti alkohola in trdih drog ter o kontroli odsotnosti z dela
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <a href='/osloWebApp/PublicPravilniki/PPSN.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o prepovedi spolnega in drugega nadlegovanja</h1>
+                            <h3 class="font-bold no-margins">
+                                ter trpinčenja na delovnem mestu
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+
+                <a href='/osloWebApp/PublicPravilniki/PVOP.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o varovanju osebnih podatkov</h1>
+                            <h3 class="font-bold no-margins">
+                                
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                
+                <a href='/osloWebApp/PublicPravilniki/O_MOBBING.pdf'>
+                <div class="grid-item">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Prijava mobinga (obrazec)</h1>
+                            <h3 class="font-bold no-margins">
+                                
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+                </div>
+                </a>
+                
+                
+                
+
+            </div>
+
+<!--
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Merila za določanje bonusa</h1>
+                            <h3 class="font-bold no-margins">
+
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o delovnem času</h1>
+                            <h3 class="font-bold no-margins">
+
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Kriteriji za ocenjevanje delavcev</h1>
+                            <h3 class="font-bold no-margins">
+                                v primeru določanja in reševanja presežnih delavcev
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o izvajanju in kontroli</h1>
+                            <h3 class="font-bold no-margins">
+                                prisotnosti alkohola in trdih drog ter o kontroli odsotnosti z dela
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Kriteriji za ocenjevanje delavcev</h1>
+                            <h3 class="font-bold no-margins">
+                                v primeru določanja in reševanja presežnih delavcev
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+
+                    <div class="widget navy-bg p-lg text-center">
+                        <div class="m-b-md">
+                            <i class="fa fa-file fa-4x"></i>
+                            <h1 class="m-xs">Pravilnik o izvajanju in kontroli</h1>
+                            <h3 class="font-bold no-margins">
+                                prisotnosti alkohola in trdih drog ter o kontroli odsotnosti z dela
+                            </h3>
+                            <small>14.2.2023</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+-->
+
+        </ui:define>
+
+
+    </ui:composition>
+</html>

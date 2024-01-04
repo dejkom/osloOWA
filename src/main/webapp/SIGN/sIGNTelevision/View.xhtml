@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SIGNTelevisionViewDlg" widgetVar="SIGNTelevisionViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Info">
+            <h:form id="SIGNTelevisionViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sIGNTelevisionController.selected != null}">
+                        <h:outputText value="IP naslov"/>
+                        <h:outputText value="#{sIGNTelevisionController.selected.ipAddress}" title="#{bundleSIGN.ViewSIGNTelevisionTitle_ipAddress}"/>
+                        <h:outputText value="V uporabi"/>
+                        <p:selectBooleanCheckbox value="#{sIGNTelevisionController.selected.active}" disabled="true"/>
+                        <h:outputText value="Lokacija"/>
+                        <h:outputText value="#{sIGNTelevisionController.selected.location}" title="#{bundleSIGN.ViewSIGNTelevisionTitle_location}"/>
+                        <h:outputText value="Prezentacija"/>
+                        <h:outputText value="#{sIGNTelevisionController.selected.idPresentation.name}" title="#{bundleSIGN.ViewSIGNTelevisionTitle_idPresentation}"/>
+                        <h:outputText value="Ime gostitelja"/>
+                        <h:outputText value="#{sIGNTelevisionController.selected.hostName}" title="#{bundleSIGN.ViewSIGNTelevisionTitle_hostName}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Zapri" onclick="SIGNTelevisionViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

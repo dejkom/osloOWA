@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRJobHRCourseCreateDlg" widgetVar="HRJobHRCourseCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateHRJobHRCourseTitle}">
+            <h:form id="HRJobHRCourseCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRJobHRCourseController.selected != null}">
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRJobHRCourseLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{hRJobHRCourseController.selected.id}" title="#{bundleHRCourse.CreateHRJobHRCourseTitle_id}" required="true" requiredMessage="#{bundleHRCourse.CreateHRJobHRCourseRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRJobHRCourseLabel_courseID}" for="courseID" />
+                        <p:selectOneMenu id="courseID" value="#{hRJobHRCourseController.selected.courseID}" >
+                            <f:selectItems value="#{hRCourseController.itemsAvailableSelectOne}"
+                                           var="courseIDItem"
+                                           itemValue="#{courseIDItem}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRJobHRCourseLabel_jobID}" for="jobID" />
+                        <p:selectOneMenu id="jobID" value="#{hRJobHRCourseController.selected.jobID}" >
+                            <f:selectItems value="#{hRJobController.itemsAvailableSelectOne}"
+                                           var="jobIDItem"
+                                           itemValue="#{jobIDItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRJobHRCourseController.create}" value="#{bundleHRCourse.Save}" update="display,:HRJobHRCourseListForm:datalist,:growl" oncomplete="handleSubmit(args,'HRJobHRCourseCreateDialog');"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="HRJobHRCourseCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

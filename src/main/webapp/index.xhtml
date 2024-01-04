@@ -1,0 +1,702 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      >
+    <ui:composition template="/templateIndexPage.xhtml">
+
+        <ui:define name="PageHeader" >
+            <!--To je glavna stran portala. Na levi strani lahko najdete njegove funkcije.-->
+            <style type="text/css">
+                .btn-info{
+                    color: #fff;
+                    background-color: gray;
+                    border-color: gray;
+                }
+                .btn-info:hover, .btn-info:focus, .btn-info.focus {
+                    color: #fff;
+                    background-color: #1ab394;
+                    border-color: #1ab394;
+                }
+
+                .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+                    border-top: 1px solid #e7eaec;
+                    line-height: 1.42857;
+                    padding: 8px;
+                    vertical-align: middle;
+                }
+
+                .dropdown-item:focus, .dropdown-item:hover {
+                    color: #16181b;
+                    text-decoration: none;
+                    background-color: transparent;
+                }
+
+                .btn-large-dim {
+                    width: 115px;
+                    height: 90px;
+                    font-size: 42px;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                }
+
+                .no-decoration, .no-decoration:hover{                   
+                    text-decoration: none;
+                    color: #676a6c;
+                }
+
+            </style>
+            
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h:panelGroup layout="block" rendered="#{!homeController.loggedIn}">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>#{msg['Shortcuts']}</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" oncomplete="">
+                                                <i class="fa fa-info"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                                <li>
+                                                    <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                                </li>                              
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content" style="">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+
+                                                <a href="/osloWebApp/faces/Organization/pravilniki.xhtml">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-file-circle-exclamation"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 9px">#{msg['InternalRegulations']}</h3></center>
+                                                    </div>
+
+                                                </a>
+                                                <a href="/osloWebApp/faces/HR/Courses/instructorsCourses.xhtml">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-user-graduate"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['Educations']}</h3></center>
+                                                    </div>
+
+                                                </a>
+                                                <a href="/osloWebApp/faces/HR/Courses/instructorsCommandments.xhtml">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-person-circle-exclamation"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['Commandments']}</h3></center>
+                                                    </div>
+
+                                                </a>
+                                                <a href="http://10.10.200.111/">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-computer"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['ITHelpdesk']}</h3></center>
+                                                    </div>
+
+                                                </a>
+                                                <a href="http://prjantar02:9090/">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-umbrella-beach"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['LeaveAnnounces']}</h3></center>
+                                                    </div>
+
+                                                </a>
+                                                <a href="https://spletnonarocanje.slorest.si/">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-utensils"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['LunchOrder']}</h3></center>
+                                                    </div>
+
+                                                </a>
+                                                <a href="https://akademija.mojedelo.com/odelo/">
+
+                                                    <div class="btn btn-info dim btn-large-dim">
+                                                        <i class="fa fa-graduation-cap"></i>
+                                                        <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">Akademija</h3></center>
+                                                    </div>
+
+                                                </a>
+
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <br/>
+
+            </h:panelGroup>
+
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <h:panelGroup layout="block" rendered="#{!homeController.loggedIn and oWANotificationController.getItemsByArea('indexAll').size() gt 0}">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['Notifications']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <!--
+                                TUKAJ PRIDEJO OBVESTILA
+                                -->
+
+                                <c:forEach var="notification" items="${oWANotificationController.getItemsByArea('indexAll')}" varStatus="loop">
+
+                                    <div class="alert alert-${notification.severityStyle}">
+                                        <strong>${notification.title}:</strong> <br/>${notification.notificationContent} 
+
+                                        <c:choose>
+                                            <c:when test="${notification.linkURL.length() gt 0}">
+                                                <a class="alert-link" target="_blank" href="${fn:escapeXml(notification.linkURL)}">#{msg['Link']}</a>.
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- No link to display -->
+                                            </c:otherwise>
+                                        </c:choose>
+
+
+                                    </div>
+
+                                </c:forEach>
+                                <c:if test = "${oWANotificationController.getItemsByArea('indexAll').size() lt 1}">
+                                    <tr>
+                                        <td>#{msg['NoNotifications']}</td>                                      
+                                    </tr>
+                                </c:if>
+
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" rendered="#{!homeController.loggedIn}">
+
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['CompanyPresentation']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" oncomplete="checkForPresentationIndexPage(285)">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                            <p:tag styleClass="mr-2" value="ID: 285 - PrezentacijaIntranet_Public" style="background:#1ab394 "></p:tag>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <div class="containerIndexPage"> </div>
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" rendered="#{homeController.loggedIn and oWANotificationController.getItemsByArea('indexAll').size() gt 0}">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['Notifications']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <!--
+                                TUKAJ PRIDEJO OBVESTILA
+                                -->
+
+                                <c:forEach var="notification" items="${oWANotificationController.getItemsByArea('indexAll')}" varStatus="loop">
+                                    <div class="alert alert-${notification.severityStyle}">
+                                        <strong>${notification.title}:</strong> <br/>${notification.notificationContent} 
+
+                                        <c:choose>
+                                            <c:when test="${notification.linkURL.length() gt 0}">
+                                                <a class="alert-link" target="_blank" href="${fn:escapeXml(notification.linkURL)}">#{msg['Link']}</a>.
+                                            </c:when>
+                                            <c:otherwise>
+                                                <!-- No link to display -->
+                                            </c:otherwise>
+                                        </c:choose>
+
+
+                                    </div>
+
+                                </c:forEach>
+                                <c:if test = "${oWANotificationController.getItemsByArea('indexAll').size() lt 1}">
+                                    <tr>
+                                        <td>#{msg['NoNotifications']}</td>                                      
+                                    </tr>
+                                </c:if>
+
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+
+                    <h:panelGroup layout="block" rendered="#{homeController.loggedIn}">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['HRCourse_indexPanelTitle_Yours']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start" style="position: absolute; top: 18px; left: 26px; will-change: top, left; width:100%">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <h:form id="formi">
+                            <div class="ibox-content" style="">
+                                <p>
+                                    <table id="table" class="table table-hover no-margins">
+                                        <thead>
+                                            <tr>
+                                                <th>#{msg['Title']}</th>
+                                                <th><i class="fa fa-calendar"></i> #{msg['Date']}</th>
+                                                <th><i class="fa fa-clock"></i> #{msg['Time']}</th>
+                                                <th><i class="fa fa-graduation-cap"></i> #{msg['Lecturer']}</th>
+                                                <th><i class="fa fa-link"></i></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="offering" items="${indexPageBean.nextUsersCourseOfferings}" varStatus="loop">
+                                                <tr id="row_#{loop.index}">
+                                                    <td><small>${offering.courseID.courseTitle} (${offering.meetingroomString})</small></td>
+                                                    <td>
+
+                                                        <h:outputText value="${offering.courseDate}" >
+                                                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+
+                                                    </td>
+                                                    <td>
+                                                        <h:outputText value="${offering.courseDate}" >
+                                                            <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td>${offering.instructorID.lastname} ${offering.instructorID.firstname}</td>
+                                                    <td>
+                                                        <c:if test = "${homeController.codeksid eq offering.instructorID.codeksID.toString()}">
+                                                            <a href="/osloWebApp/faces/HR/Courses/izvedbaIzobrazevanjaNov.xhtml?coid=${offering.courseOfferingID}">
+                                                                <span class="label label-success">Vstop predavatelja</span>
+                                                            </a>
+                                                        </c:if>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            <c:if test = "${indexPageBean.nextUsersCourseOfferings.size() lt 1}">
+                                                <tr>
+                                                    <td>#{msg['HRCourse_warning_noPlannedOfferings']}</td>                                      
+                                                </tr>
+                                            </c:if>
+                                        </tbody>
+                                    </table>
+                                </p>
+                            </div>
+                            </h:form>
+                        </div>
+                    </h:panelGroup>
+
+
+
+                    <h:panelGroup layout="block" rendered="#{homeController.isRoleCheck('OWA_EDUCATIONS_ADMIN')}">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['HRCourse_indexPanelTitle']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start" style="position: absolute; top: 18px; left: 26px; will-change: top, left; width:100%">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="OWA_EDUCATIONS_ADMIN" style="background:#1ab394 "></p:tag>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <p>
+                                    <table class="table table-hover no-margins">
+                                        <thead>
+                                            <tr>
+                                                <th>#{msg['Title']}</th>
+                                                <th><i class="fa fa-calendar"></i> #{msg['Date']}</th>
+                                                <th><i class="fa fa-clock"></i> #{msg['Time']}</th>
+                                                <th><i class="fa fa-graduation-cap"></i> #{msg['Lecturer']}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="offering" items="${indexPageBean.nextCourseOfferings}" varStatus="loop">
+                                                <tr>
+                                                    <td><small>${offering.courseID.courseTitle} (${offering.meetingroomString})</small></td>
+                                                    <td>
+
+                                                        <h:outputText value="${offering.courseDate}" >
+                                                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+
+                                                    </td>
+                                                    <td>
+
+                                                        <h:outputText value="${offering.courseDate}" >
+                                                            <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana"/>
+                                                        </h:outputText>
+
+                                                    </td>
+                                                    <td>${offering.instructorID.lastname} ${offering.instructorID.firstname}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </p>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <h:panelGroup layout="block" rendered="#{homeController.loggedIn}">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['SelfRegistrationEducations']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start" style="position: absolute; top: 18px; left: 26px; will-change: top, left; width:100%">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="OWA_EDUCATIONS_ADMIN" style="background:#1ab394 "></p:tag>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+                                <p>
+
+                                    <h:form id="form">
+                                        <table class="table table-hover no-margins">
+                                            <thead>
+                                                <tr>
+                                                    <th>#{msg['Title']}</th>
+                                                    <th><i class="fa fa-calendar"></i> #{msg['Date']}</th>
+                                                    <th><i class="fa fa-clock"></i> #{msg['Time']}</th>
+                                                    <th><i class="fa fa-graduation-cap"></i> #{msg['Lecturer']}</th>
+                                                    <th><!--#{msg['Actions']}--></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="offering" items="${indexPageBean.nextCourseOfferingsAllowingSelfRegistration}" varStatus="loop">
+                                                    <tr>
+                                                        <td><small>${offering.courseID.courseTitle} (${offering.meetingroomString})</small></td>
+                                                        <td>
+
+                                                            <h:outputText value="${offering.courseDate}" >
+                                                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="Europe/Ljubljana"/>
+                                                            </h:outputText>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <h:outputText value="${offering.courseDate}" >
+                                                                <f:convertDateTime pattern="HH:mm" timeZone="Europe/Ljubljana"/>
+                                                            </h:outputText>
+
+                                                        </td>
+                                                        <td>${offering.instructorID.lastname} ${offering.instructorID.firstname}</td>
+                                                        <td>
+                                                            <!--<a href="" class="btn btn-xs btn-white"><i class="fa fa-check"></i> Prijavi se </a>-->
+                                                            <!--
+                                                            <p:commandLink  onclick="$('#prijavaIzobrazevanje').modal('show')" update=":form2">
+                                                                <small class="label label-primary"><i class="fa fa-check"></i>#{msg['RegisterToCourse']}</small>
+                                                                <f:setPropertyActionListener value="#{offering}" target="#{indexPageBean.selectedForRegistration}"/>
+                                                            </p:commandLink>
+                                                            -->
+
+                                                            <p:commandButton styleClass="ui-button-secondary ui-button-outlined" action="#{indexPageBean.userIsRegisteringToCourse()}" disabled="#{indexPageBean.nextUsersCourseOfferings.contains(offering)}" value="#{msg['ApplyToCourse']}"  >
+                                                                <f:setPropertyActionListener value="#{offering}" target="#{indexPageBean.selectedForRegistration}"/>
+                                                                <p:confirm header="#{msg['ConfirmationOfApplication']}" escape="false" message="#{msg['RegisterCourseOfferingExplanation1']} #{offering.courseID.courseTitle} &lt;br/&gt; #{msg['RegisterCourseOfferingExplanation2']} #{offering.courseDateString} #{msg['RegisterCourseOfferingExplanation3']} #{offering.meetingroomString} &lt;br/&gt; &lt;br/&gt; #{msg['RegisterCourseOfferingExplanation4']}" />
+                                                            </p:commandButton>
+
+                                                            <p:confirmDialog severity="info" header="#{msg['ConfirmationOfApplication']}" global="true" showEffect="fade" hideEffect="fade" responsive="true" width="650">
+                                                                <p:commandButton value="#{msg['No']}" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                                                                <p:commandButton value="#{msg['Yes']}" type="button" styleClass="ui-confirmdialog-yes" />
+                                                            </p:confirmDialog>
+
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </h:form>
+
+                                </p>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <h:panelGroup layout="block" rendered="#{homeController.loggedIn}">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <h5>#{msg['Shortcuts']}</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" oncomplete="">
+                                                <i class="fa fa-info"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                                <li>
+                                                    <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                                </li>                              
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content" style="">
+
+                                        <div class="col-md-12">
+                                            <a href="/osloWebApp/faces/Organization/pravilniki.xhtml">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-file-circle-exclamation"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 9px">#{msg['InternalRegulations']}</h3></center>
+                                                </div>
+
+                                            </a>
+                                            <a href="/osloWebApp/faces/HR/Courses/instructorsCourses.xhtml">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-graduation-cap"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">Izobraževanja</h3></center>
+                                                </div>
+
+                                            </a>
+                                            <a href="/osloWebApp/faces/HR/Courses/instructorsCommandments.xhtml">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-person-circle-exclamation"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">Odredbe</h3></center>
+                                                </div>
+
+                                            </a>
+                                            <a href="http://10.10.200.111/">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-computer"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">IT Helpdesk</h3></center>
+                                                </div>
+
+                                            </a>
+                                            <a href="http://prjantar02:9090/">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-umbrella-beach"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['LeaveAnnounces']}</h3></center>
+                                                </div>
+
+                                            </a>
+                                            <a href="https://spletnonarocanje.slorest.si/">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-utensils"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">#{msg['LunchOrder']}</h3></center>
+                                                </div>
+
+                                            </a>
+                                            <a href="https://akademija.mojedelo.com/odelo/">
+
+                                                <div class="btn btn-info dim btn-large-dim">
+                                                    <i class="fa fa-graduation-cap"></i>
+                                                    <center><h3 class="font-bold no-margins" style="text-align: center;display:table-cell; margin: auto; font-size: 10px">Akademija</h3></center>
+                                                </div>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>#{msg['Calendar']}</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>                                
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                                    <i class="fa fa-info"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                    <li>
+                                        <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                    </li>                              
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ibox-content" style="">
+
+                            <ui:include src="calendar.xhtml"/> 
+
+                        </div>
+                    </div>
+
+                    <h:panelGroup layout="block" rendered="#{homeController.loggedIn}">
+                        <div class="ibox collapsed">
+                            <div class="ibox-title">
+                                <h5>Predstavitev podjetja</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" oncomplete="checkForPresentationIndexPage(285)">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                            <p:tag styleClass="mr-2" value="ID: 285 - PrezentacijaIntranet_Public" style="background:#1ab394 "></p:tag>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <div class="containerIndexPage"> </div>
+
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                </div>
+
+                <br/>
+
+
+
+
+
+            </div>
+
+            <h:form id="form2">
+                <div id="prijavaIzobrazevanje" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLinkModal3" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['Notification']}!</h4>
+                            </div>
+                            <div class="modal-body">
+                                #{msg['RegisterCourseOfferingExplanation1']} #{indexPageBean.selectedForRegistration.courseID.courseTitle}
+                                <br/>
+                                <br/>
+                            </div>
+                            <div class="modal-footer">                                           
+                                <p:commandButton id="prijavi" class="btn btn-primary" value="#{msg['RegisterToCourse']}" oncomplete="$('#prijavaIzobrazevanje').modal('hide')"/>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+        </ui:define>
+        
+        
+
+
+    </ui:composition>
+</html>

@@ -1,0 +1,278 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            EBV Price check
+
+            <style type="text/css">
+
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+
+                .thirty-percent {
+                    width: 30%;
+                }
+
+                .seventy-percent {
+                    width: 70%;
+                }
+
+                .noPadding{
+                    padding-left: 0px !important;
+                }
+
+                .ui-datatable-header.ui-widget-header.ui-corner-top{
+                    background-color: transparent !important;
+                    border-color: transparent !important;
+                    height: 0px;
+                }
+
+                .critical {
+                    background-color: #ffbbbb !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .warning {
+                    background-color: #FBFFA3 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .success {
+                    background-color: #a7ebb9 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+
+                .hiddenDTrow{
+                    visibility: collapse;
+                }
+            </style>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <script>
+                jQuery(document).ready(function () {
+                    //PF('xmldt').filter();
+                });
+            </script>
+            <h:form id="form1">
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>#{msg['SearchField']}</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div id="vm" class="ibox-content">
+
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label"><p:outputLabel for="pn" value="Part Number:"/></label>
+                                    <div class="col-sm-11"><p:chips id="pn" value="#{ebvPriceCheckBean.partnumbers_in}" style="display:block !important"/></div>
+                                </div>
+
+                                <!--
+                                <div class="form-group  row">
+                                    <label class="col-sm-2 col-form-label"><p:outputLabel for="df" value="dateFrom:"/></label>
+                                    <div class="col-sm-10"><p:datePicker id="df" value="#{bmwXMLDownloadBean.from}" pattern="dd.MM.yyyy" /></div>
+                                </div>
+
+                                <div class="form-group  row">
+                                    <label class="col-sm-2 col-form-label"><p:outputLabel for="dt" value="dateTo:"/></label>
+                                    <div class="col-sm-10"><p:datePicker id="dt" value="#{bmwXMLDownloadBean.to}" pattern="dd.MM.yyyy" /></div>
+                                </div>
+                                -->
+
+                                <!--
+                                <p:outputLabel for="df" value="dateFrom:"/>
+                                <p:datePicker id="df" value="#{bmwXMLDownloadBean.from}" pattern="dd.MM.yyyy" />
+                                
+                                <p:outputLabel for="dt" value="dateTo:"/>
+                                <p:datePicker id="dt" value="#{bmwXMLDownloadBean.to}" pattern="dd.MM.yyyy" />
+                                -->
+
+                                <p:commandButton id="getBtn" value="Get XML files" actionListener="#{ebvPriceCheckBean.callAPIButtonAction()}" update="jsonresponse gtTable"/>
+
+                                <p:blockUI block="getBtn" trigger="getBtn" widgetVar="buiBasic"/>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>    
+
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>API Response (Table)</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+                                <p:dataTable id="gtTable" value="#{ebvPriceCheckBean.responseEBV.responseLines}" lazy="false" var="gtRequestOut" 
+                                             resizableColumns="true" paginator="true" rows="10" multiViewState="true"
+                                             paginatorPosition="both"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records" rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                             widgetVar="gtTableWidget" emptyMessage="No data found">
+
+                                    <f:facet name="header">
+                                        <div class="flex justify-content-between align-items-center">
+                                            <div>
+                                                <p:commandButton id="toggler" type="button" value="#{bundleHRCourse.Columns}" icon="pi pi-align-justify"/>
+                                                <p:columnToggler datasource="gtTable" trigger="toggler" >
+                                                    <p:ajax />
+                                                </p:columnToggler>
+                                                <p:commandButton value="Excel Export" styleClass="mr-2 mb-2" style="margin-left: 5px">
+                                                    <p:dataExporter type="xlsxstream" target="gtTable" fileName="EBV_Prices"/>
+                                                </p:commandButton>
+                                            </div>
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column headerText="Original Line" visible="false" filterBy="#{gtRequestOut.originalLine}" filterMatchMode="exact">
+                                        <h:outputText value="#{gtRequestOut.originalLine}" />
+                                    </p:column>
+
+                                    <p:column headerText="Part Number" filterBy="#{gtRequestOut.partNumber}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.partNumber}" />
+                                    </p:column>
+
+                                    <p:column headerText="Manufacturer Name" visible="false" filterBy="#{gtRequestOut.manufacturerName}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.manufacturerName}" />
+                                    </p:column>
+
+                                    <p:column headerText="Manufacturer Name Out" filterBy="#{gtRequestOut.manufacturerNameOut}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.manufacturerNameOut}" />
+                                    </p:column>
+
+                                    <p:column headerText="Demand Qty" filterBy="#{gtRequestOut.demandQty}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.demandQty}" />
+                                    </p:column>
+
+                                    <p:column headerText="Demand Qty Out" sortBy="#{gtRequestOut.demandQtyOut}" filterBy="#{gtRequestOut.demandQtyOut}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.demandQtyOut}" />
+                                    </p:column>
+
+                                    <p:column headerText="Unit of Measure" filterBy="#{gtRequestOut.unitOfMeasure}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.unitOfMeasure}" />
+                                    </p:column>
+
+                                    <p:column headerText="Currency" visible="false" filterBy="#{gtRequestOut.currency}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.currency}" />
+                                    </p:column>
+
+                                    <p:column headerText="MAX Result" filterBy="#{gtRequestOut.maxResult}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.maxResult}" />
+                                    </p:column>
+
+                                    <p:column headerText="End Customer" visible="false" filterBy="#{gtRequestOut.endCustomer}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.endCustomer}" />
+                                    </p:column>
+
+                                    <p:column headerText="Part Number out" filterBy="#{gtRequestOut.partNumberOut}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.partNumberOut}" />
+                                    </p:column>
+
+                                    <p:column headerText="Free Stock" sortBy="#{gtRequestOut.freeStock}" filterBy="#{gtRequestOut.freeStock}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.freeStock}" />
+                                    </p:column>
+
+                                    <p:column headerText="Min Order Qty" sortBy="#{gtRequestOut.minOrderQty}" filterBy="#{gtRequestOut.minOrderQty}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.minOrderQty}" />
+                                    </p:column>
+
+                                    <p:column headerText="Package type" filterBy="#{gtRequestOut.packageType}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.packageType}" />
+                                    </p:column>
+
+                                    <p:column headerText="Pack Size" sortBy="#{gtRequestOut.packSize}" filterBy="#{gtRequestOut.packSize}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.packSize}" />
+                                    </p:column>
+
+                                    <p:column headerText="Material Status" filterBy="#{gtRequestOut.materialStatus}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.materialStatus}" />
+                                    </p:column>
+
+                                    <p:column headerText="EOL PCN" visible="false" filterBy="#{gtRequestOut.eolPcn}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.eolPcn}" />
+                                    </p:column>
+
+                                    <p:column headerText="ROHSL" filterBy="#{gtRequestOut.rohsl}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.rohsl}" />
+                                    </p:column>
+
+                                    <p:column headerText="Market Price" sortBy="#{gtRequestOut.marketPrice}" filterBy="#{gtRequestOut.marketPrice}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.marketPrice}" />
+                                    </p:column>
+
+                                    <p:column headerText="Currency Out" filterBy="#{gtRequestOut.currencyOut}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.currencyOut}" />
+                                    </p:column>
+
+                                    <p:column headerText="Lead Time" filterBy="#{gtRequestOut.leadTime}" filterMatchMode="equals">
+                                        <h:outputText value="#{gtRequestOut.leadTime}" />
+                                    </p:column>
+
+                                    <p:column headerText="PO Pipeline" visible="false" filterBy="#{gtRequestOut.poPipeline}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.poPipeline}" />
+                                    </p:column>
+
+                                    <p:column headerText="Departure Country" filterBy="#{gtRequestOut.departureCountry}" filterMatchMode="contains">
+                                        <h:outputText value="#{gtRequestOut.departureCountry}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox collapsed">
+                            <div class="ibox-title">
+                                <h5>API Response (JSON)</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+                                <pre><h:outputText id="jsonresponse" value="#{ebvPriceCheckBean.responseMessage}" /></pre>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

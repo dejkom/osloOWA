@@ -1,0 +1,248 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:fnc="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Courses Self Registration"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <script type="text/javascript">
+                //ta koda povzroči da se pred toggle eventom sproži še select event
+                PrimeFaces.widget.DataTable.prototype.toggleExpansion = (function () {
+                    var cached_function = PrimeFaces.widget.DataTable.prototype.toggleExpansion;
+                    return function () {
+                        var row = arguments[0].closest('tr');
+                        if (this.cfg.selectionMode === 'single') {
+                            this.unselectAllRows();
+                        }
+                        if (this.cfg.selectionMode) {
+                            this.selectRow(row, false);
+                        }
+                        var result = cached_function.apply(this, arguments);
+                        return result;
+                    };
+                })();
+            </script>
+            <script>
+                PrimeFaces.locales['en'] = {
+                    firstDay: 1
+                };
+                PrimeFaces.locales['sl'] = {
+                    firstDay: 1,
+                    monthNames: ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij',
+                        'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'],
+                    monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg',
+                        'Sep', 'Okt', 'Nov', 'Dec'],
+                    dayNames: ['Nedelja', 'Ponedeljek', 'Torek', 'Sreda', 'Četrtek', 'Petek',
+                        'Sobota'],
+                    dayNamesShort: ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'],
+                    dayNamesMin: ['N', 'P', 'T', 'S', 'Č', 'P', 'S'],
+                    timeText: 'Čas',
+                    hourText: 'Ura',
+                    minuteText: 'Minuta',
+                    secondText: 'Sekunda'
+                };
+            </script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            Samoregistracija
+            <style type="text/css">
+                body .ui-panel {
+                    padding: 0;
+                    margin-bottom: 50px;
+                }
+
+                .delButton:hover {
+                    background-color: red !important;
+                }
+
+                .ui-selectlistbox-listcontainer{
+                    height: 450px !important;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            Na tej strani lahko potrdite svojo udeležbo na eksternem izobraževanju
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p1" header="" toggleable="true" closable="true" collapsed="false">
+                            <f:facet name="header">
+                                <h:outputText value="Izobraževanje, za katerega morate potrditi prisotnost" />
+                            </f:facet>
+                            <f:facet name="actions">        
+                                <p:commandButton value="Potrdi prisotnost na izobraževanju (DA/NE)" styleClass="ui-button-success" action="#{hRCourseSelfRegistrationBean.confirmPresenceButtonAction()}" disabled="#{!hRCourseSelfRegistrationBean.personMatch}" update=":form2" oncomplete="$('#vpisKomentarja').modal('show');"/>
+                            </f:facet>
+                            <!--
+                            <h:outputText value="#{hRCourseSelfRegistrationBean.attid}" />
+                            -->
+
+
+                            <div class="row">
+
+                                <div class="col-md-4">
+
+                                    <h2>#{msg['HRCourse_CourseTitle']}:</h2><h3><h:outputText id="ctitle2" value = "#{hRCourseSelfRegistrationBean.find.courseOfferingID.courseID.courseTitle}" /></h3>
+                                    <br/>
+
+                                    <h2>#{msg['HRCourse_Lecturer']}:</h2><h3><h:outputText id="izobrazevalec2" value = "#{hRCourseSelfRegistrationBean.find.courseOfferingID.instructorID.firstname} #{hRCourseSelfRegistrationBean.find.courseOfferingID.instructorID.lastname}" /></h3>
+                                    <br/>
+
+                                    <h2>#{msg['Date']}: </h2><h3><h:outputText id="when2" value = "#{hRCourseSelfRegistrationBean.find.courseOfferingID.courseDate}">
+                                            <f:convertDateTime type="date" pattern="dd.MM.yyyy HH:mm"/>
+                                        </h:outputText></h3>
+                                    <br/>
+
+                                    <h2>#{msg['Place']}:</h2><h3><h:outputText id="lokacija2" value = "#{hRCourseSelfRegistrationBean.find.courseOfferingID.meetingroomString}" /></h3>
+                                    <br/>
+
+                                    <!--
+                                    <p:commandButton value="Potrdi prisotnost na izobraževanju" action="#{hRCourseSelfRegistrationBean.confirmPresenceButtonAction()}" style="width:95%"/>
+                                    -->
+
+                                </div>
+                                <div class="col-md-8">
+                                    <h1>#{msg['Remarks']}:</h1>
+                                    <br/>
+                                    <h:outputText id="courseNote" value = "#{hRCourseSelfRegistrationBean.find.courseOfferingID.courseID.courseNotes}" />
+                                    
+                                    <h1>Attendance Comment:</h1>
+                                    <br/>
+                                    <h:outputText id="courseNote2" value = "#{HRCourseSelfRegistrationBean.find.comment}" />
+
+                                    <h1>#{msg['Attachments']}:</h1>
+                                    <br/>
+
+                                    <ui:repeat value="#{hRCourseSelfRegistrationBean.find.courseOfferingID.fileattachments}" var="photo" varStatus="status">
+                                                        <!--DELA <p:graphicImage value="/#{photo.itemFileAttachmentSrc}" alt="#{photo.alt}" style="cursor: pointer" onclick="rc([{'name': 'index', 'value': #{status.index}}])" /> -->
+                                                        <!--<p:graphicImage alt="image" height="128px" width="128px" library="img" name="#{photo.thumbnailImageSrc}.png"/>-->
+
+                                        <div class="file-box">
+                                            <div class="file">
+                                                <a href="/osloWebApp#{photo.itemFileAttachmentSrc}" target="_blank">
+                                                    <span class="corner"></span>
+
+                                                    <div class="icon">
+                                                        <p:graphicImage alt="image" height="64px" width="64px" library="img" name="#{photo.thumbnailImageSrc}.png"/>
+                                                    </div>
+                                                    <div class="file-name">
+                                                        <h:outputText id="fname" value = "#{photo.title}" />
+                                                        <br/>
+                                                        <small><h:outputText id="cdate" value = "#{photo.creationdate}" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></small>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                    <ui:repeat value="#{hRCourseSelfRegistrationBean.find.courseOfferingID.courseID.fileattachments}" var="photo" varStatus="status">
+                                                        <!--DELA <p:graphicImage value="/#{photo.itemFileAttachmentSrc}" alt="#{photo.alt}" style="cursor: pointer" onclick="rc([{'name': 'index', 'value': #{status.index}}])" /> -->
+                                                        <!--<p:graphicImage alt="image" height="128px" width="128px" library="img" name="#{photo.thumbnailImageSrc}.png"/>-->
+
+                                        <div class="file-box">
+                                            <div class="file">
+                                                <a href="/osloWebApp#{photo.itemFileAttachmentSrc}" target="_blank">
+                                                    <span class="corner"></span>
+
+                                                    <div class="icon">
+                                                        <p:graphicImage alt="image" height="64px" width="64px" library="img" name="#{photo.thumbnailImageSrc}.png"/>
+                                                    </div>
+                                                    <div class="file-name">
+                                                        <h:outputText id="fname" value = "#{photo.title}" />
+                                                        <br/>
+                                                        <small><h:outputText id="cdate" value = "#{photo.creationdate}" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></small>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+
+                                </div>
+
+                                <!--
+                                <h:outputLabel for="title" value="Course Title" styleClass="col-md-6"/>
+                                <h:outputText id="title" styleClass="col-md-6" value="#{hRCourseSelfRegistrationBean.find.courseOfferingID.courseID.courseTitle}" />
+
+                                <h:outputLabel for="descr" value="Course Description" styleClass="col-md-12"/>
+                                <h:outputText id="descr" value="#{hRCourseSelfRegistrationBean.find.courseOfferingID.courseID.courseDescription}" />
+                                
+                                -->
+
+                            </div>
+
+                        </p:panel>
+                    </div>
+                </div>
+
+                <div id="zeZabelezen" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLinkModal" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">NAPAKA</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Na tem izobraževanju ste že zavedeni kot prisotni</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/osloWebApp/faces/index.xhtml" class="btn btn-outline" style="color: #333;background-color: #d4d4d4;border-color: #8c8c8c;" role="button" aria-pressed="true">
+                                    #{msg['Continue']}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+
+            
+                <div id="vpisKomentarja" class="modal" data-keyboard="false" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="myLinkModal2" aria-hidden="true" >
+                    <h:form id="form2">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Potrditev samoregistracije</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h2>Ste se udeležili izobraževanja? *</h2>
+                                <p:selectOneRadio id="line" required="true" requiredMessage="Zahtevan je vnos na vseh poljih označenih z zvezdico (*)" value="#{hRCourseSelfRegistrationBean.wasAttendedAnswer}" layout="lineDirection">
+                                    <f:selectItem itemLabel="Da" itemValue="1"/>
+                                    <f:selectItem itemLabel="Ne" itemValue="0"/>
+                                </p:selectOneRadio>
+                                <br/>
+                                <h2>Comment:</h2><h3><p:inputTextarea id="comment" rows="6" cols="60" value = "#{hRCourseSelfRegistrationBean.find.comment}" /></h3>
+                                <br/>
+                            </div>
+                            <div class="modal-footer">
+                                <p:commandButton id="shraniNeprijavljenega" class="btn btn-primary" actionListener="#{hRCourseSelfRegistrationBean.shraniKomentar}" update=":form:p1 :growl form2" process="@form" style="width:100%" value="#{msg['Save']}"/>                                
+                            </div>
+                        </div>
+                    </div>
+                    </h:form>
+                </div>
+            
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

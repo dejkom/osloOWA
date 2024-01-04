@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UsersEditDlg" widgetVar="UsersEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleCodeks.EditUsersTitle}">
+            <h:form id="UsersEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{usersController.selected != null}">
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{usersController.selected.id}" title="#{bundleCodeks.EditUsersTitle_id}" required="true" requiredMessage="#{bundleCodeks.EditUsersRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_deleted}" for="deleted" />
+                        <p:selectBooleanCheckbox id="deleted" value="#{usersController.selected.deleted}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_lastname}" for="lastname" />
+                        <p:inputText id="lastname" value="#{usersController.selected.lastname}" title="#{bundleCodeks.EditUsersTitle_lastname}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_firstname}" for="firstname" />
+                        <p:inputText id="firstname" value="#{usersController.selected.firstname}" title="#{bundleCodeks.EditUsersTitle_firstname}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_memo}" for="memo" />
+                        <p:inputText id="memo" value="#{usersController.selected.memo}" title="#{bundleCodeks.EditUsersTitle_memo}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_picture}" for="picture" />
+                        <p:inputText id="picture" value="#{usersController.selected.picture}" title="#{bundleCodeks.EditUsersTitle_picture}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_companyId}" for="companyId" />
+                        <p:inputText id="companyId" value="#{usersController.selected.companyId}" title="#{bundleCodeks.EditUsersTitle_companyId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_departmentId}" for="departmentId" />
+                        <p:inputText id="departmentId" value="#{usersController.selected.departmentId}" title="#{bundleCodeks.EditUsersTitle_departmentId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_subunitId}" for="subunitId" />
+                        <p:inputText id="subunitId" value="#{usersController.selected.subunitId}" title="#{bundleCodeks.EditUsersTitle_subunitId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_externalId}" for="externalId" />
+                        <p:inputText id="externalId" value="#{usersController.selected.externalId}" title="#{bundleCodeks.EditUsersTitle_externalId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_exportId}" for="exportId" />
+                        <p:inputText id="exportId" value="#{usersController.selected.exportId}" title="#{bundleCodeks.EditUsersTitle_exportId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_card}" for="card" />
+                        <p:inputText id="card" value="#{usersController.selected.card}" title="#{bundleCodeks.EditUsersTitle_card}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_cardProtected}" for="cardProtected" />
+                        <p:inputText id="cardProtected" value="#{usersController.selected.cardProtected}" title="#{bundleCodeks.EditUsersTitle_cardProtected}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_pin}" for="pin" />
+                        <p:inputText id="pin" value="#{usersController.selected.pin}" title="#{bundleCodeks.EditUsersTitle_pin}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_personalId}" for="personalId" />
+                        <p:inputText id="personalId" value="#{usersController.selected.personalId}" title="#{bundleCodeks.EditUsersTitle_personalId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_code}" for="code" />
+                        <p:inputText id="code" value="#{usersController.selected.code}" title="#{bundleCodeks.EditUsersTitle_code}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_validTill}" for="validTill" />
+                        <p:calendar id="validTill" pattern="MM/dd/yyyy HH:mm:ss" value="#{usersController.selected.validTill}" title="#{bundleCodeks.EditUsersTitle_validTill}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_useKeypad}" for="useKeypad" />
+                        <p:selectBooleanCheckbox id="useKeypad" value="#{usersController.selected.useKeypad}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_follow}" for="follow" />
+                        <p:selectBooleanCheckbox id="follow" value="#{usersController.selected.follow}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_hide}" for="hide" />
+                        <p:selectBooleanCheckbox id="hide" value="#{usersController.selected.hide}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_master}" for="master" />
+                        <p:selectBooleanCheckbox id="master" value="#{usersController.selected.master}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_linkCode}" for="linkCode" />
+                        <p:inputText id="linkCode" value="#{usersController.selected.linkCode}" title="#{bundleCodeks.EditUsersTitle_linkCode}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_blocked}" for="blocked" />
+                        <p:selectBooleanCheckbox id="blocked" value="#{usersController.selected.blocked}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_dynamicAccess}" for="dynamicAccess" />
+                        <p:inputText id="dynamicAccess" value="#{usersController.selected.dynamicAccess}" title="#{bundleCodeks.EditUsersTitle_dynamicAccess}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_lastEventId}" for="lastEventId" />
+                        <p:inputText id="lastEventId" value="#{usersController.selected.lastEventId}" title="#{bundleCodeks.EditUsersTitle_lastEventId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_lastEventType}" for="lastEventType" />
+                        <p:inputText id="lastEventType" value="#{usersController.selected.lastEventType}" title="#{bundleCodeks.EditUsersTitle_lastEventType}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_lastEventPlaceId}" for="lastEventPlaceId" />
+                        <p:inputText id="lastEventPlaceId" value="#{usersController.selected.lastEventPlaceId}" title="#{bundleCodeks.EditUsersTitle_lastEventPlaceId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_lastEventTime}" for="lastEventTime" />
+                        <p:calendar id="lastEventTime" pattern="MM/dd/yyyy HH:mm:ss" value="#{usersController.selected.lastEventTime}" title="#{bundleCodeks.EditUsersTitle_lastEventTime}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_isTimeAttendance}" for="isTimeAttendance" />
+                        <p:selectBooleanCheckbox id="isTimeAttendance" value="#{usersController.selected.isTimeAttendance}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_isLoginAllowed}" for="isLoginAllowed" />
+                        <p:selectBooleanCheckbox id="isLoginAllowed" value="#{usersController.selected.isLoginAllowed}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_username}" for="username" />
+                        <p:inputText id="username" value="#{usersController.selected.username}" title="#{bundleCodeks.EditUsersTitle_username}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_password}" for="password" />
+                        <p:inputText id="password" value="#{usersController.selected.password}" title="#{bundleCodeks.EditUsersTitle_password}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_language}" for="language" />
+                        <p:inputText id="language" value="#{usersController.selected.language}" title="#{bundleCodeks.EditUsersTitle_language}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_email}" for="email" />
+                        <p:inputText id="email" value="#{usersController.selected.email}" title="#{bundleCodeks.EditUsersTitle_email}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_cardType}" for="cardType" />
+                        <p:inputText id="cardType" value="#{usersController.selected.cardType}" title="#{bundleCodeks.EditUsersTitle_cardType}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_TAStartDate}" for="TAStartDate" />
+                        <p:calendar id="TAStartDate" pattern="MM/dd/yyyy HH:mm:ss" value="#{usersController.selected.TAStartDate}" title="#{bundleCodeks.EditUsersTitle_TAStartDate}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_calendarId}" for="calendarId" />
+                        <p:inputText id="calendarId" value="#{usersController.selected.calendarId}" title="#{bundleCodeks.EditUsersTitle_calendarId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_validFrom}" for="validFrom" />
+                        <p:calendar id="validFrom" pattern="MM/dd/yyyy HH:mm:ss" value="#{usersController.selected.validFrom}" title="#{bundleCodeks.EditUsersTitle_validFrom}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_lostCard}" for="lostCard" />
+                        <p:selectBooleanCheckbox id="lostCard" value="#{usersController.selected.lostCard}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_mobileCard}" for="mobileCard" />
+                        <p:selectBooleanCheckbox id="mobileCard" value="#{usersController.selected.mobileCard}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_editOwnTA}" for="editOwnTA" />
+                        <p:selectBooleanCheckbox id="editOwnTA" value="#{usersController.selected.editOwnTA}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_editOwnYearData}" for="editOwnYearData" />
+                        <p:selectBooleanCheckbox id="editOwnYearData" value="#{usersController.selected.editOwnYearData}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_processOwnAbsences}" for="processOwnAbsences" />
+                        <p:selectBooleanCheckbox id="processOwnAbsences" value="#{usersController.selected.processOwnAbsences}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_processOwnPermits}" for="processOwnPermits" />
+                        <p:selectBooleanCheckbox id="processOwnPermits" value="#{usersController.selected.processOwnPermits}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_customField1}" for="customField1" />
+                        <p:inputText id="customField1" value="#{usersController.selected.customField1}" title="#{bundleCodeks.EditUsersTitle_customField1}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_customField2}" for="customField2" />
+                        <p:inputText id="customField2" value="#{usersController.selected.customField2}" title="#{bundleCodeks.EditUsersTitle_customField2}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_customField3}" for="customField3" />
+                        <p:inputText id="customField3" value="#{usersController.selected.customField3}" title="#{bundleCodeks.EditUsersTitle_customField3}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_viewOwnTimeAndAttendance}" for="viewOwnTimeAndAttendance" />
+                        <p:selectBooleanCheckbox id="viewOwnTimeAndAttendance" value="#{usersController.selected.viewOwnTimeAndAttendance}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_allowPlaceReservations}" for="allowPlaceReservations" />
+                        <p:selectBooleanCheckbox id="allowPlaceReservations" value="#{usersController.selected.allowPlaceReservations}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_allowGuests}" for="allowGuests" />
+                        <p:selectBooleanCheckbox id="allowGuests" value="#{usersController.selected.allowGuests}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_isAlternativeActionActive}" for="isAlternativeActionActive" />
+                        <p:selectBooleanCheckbox id="isAlternativeActionActive" value="#{usersController.selected.isAlternativeActionActive}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_userReferenceId}" for="userReferenceId" />
+                        <p:inputText id="userReferenceId" value="#{usersController.selected.userReferenceId}" title="#{bundleCodeks.EditUsersTitle_userReferenceId}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_paysForLunch}" for="paysForLunch" />
+                        <p:selectBooleanCheckbox id="paysForLunch" value="#{usersController.selected.paysForLunch}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_card3ProKeyStatus}" for="card3ProKeyStatus" />
+                        <p:inputText id="card3ProKeyStatus" value="#{usersController.selected.card3ProKeyStatus}" title="#{bundleCodeks.EditUsersTitle_card3ProKeyStatus}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_card3ProKeyStatusChangedAt}" for="card3ProKeyStatusChangedAt" />
+                        <p:calendar id="card3ProKeyStatusChangedAt" pattern="MM/dd/yyyy HH:mm:ss" value="#{usersController.selected.card3ProKeyStatusChangedAt}" title="#{bundleCodeks.EditUsersTitle_card3ProKeyStatusChangedAt}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_FDAnnounceVisitors}" for="FDAnnounceVisitors" />
+                        <p:selectBooleanCheckbox id="FDAnnounceVisitors" value="#{usersController.selected.FDAnnounceVisitors}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_FDProccessOwnVisitorAnnounces}" for="FDProccessOwnVisitorAnnounces" />
+                        <p:selectBooleanCheckbox id="FDProccessOwnVisitorAnnounces" value="#{usersController.selected.FDProccessOwnVisitorAnnounces}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_editOwnUserEditableStatistics}" for="editOwnUserEditableStatistics" />
+                        <p:selectBooleanCheckbox id="editOwnUserEditableStatistics" value="#{usersController.selected.editOwnUserEditableStatistics}" />
+                        <p:outputLabel value="#{bundleCodeks.EditUsersLabel_automaticLunchOrdering}" for="automaticLunchOrdering" />
+                        <p:selectBooleanCheckbox id="automaticLunchOrdering" value="#{usersController.selected.automaticLunchOrdering}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{usersController.update}" value="#{bundleCodeks.Save}" update="display,:UsersListForm:datalist,:growl" oncomplete="handleSubmit(args, 'UsersEditDialog');"/>
+                    <p:commandButton value="#{bundleCodeks.Cancel}" onclick="UsersEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

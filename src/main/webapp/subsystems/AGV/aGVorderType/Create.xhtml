@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVorderTypeCreateDlg" widgetVar="AGVorderTypeCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.CreateAGVorderTypeTitle}">
+            <h:form id="AGVorderTypeCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVorderTypeController.selected != null}">
+                        <p:outputLabel value="#{bundleAGV.CreateAGVorderTypeLabel_orderTypeId}" for="orderTypeId" />
+                        <p:inputText id="orderTypeId" value="#{aGVorderTypeController.selected.orderTypeId}" title="#{bundleAGV.CreateAGVorderTypeTitle_orderTypeId}" required="true" requiredMessage="#{bundleAGV.CreateAGVorderTypeRequiredMessage_orderTypeId}"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVorderTypeLabel_orderName}" for="orderName" />
+                        <p:inputText id="orderName" value="#{aGVorderTypeController.selected.orderName}" title="#{bundleAGV.CreateAGVorderTypeTitle_orderName}" required="true" requiredMessage="#{bundleAGV.CreateAGVorderTypeRequiredMessage_orderName}"/>
+                        <p:outputLabel value="#{bundleAGV.CreateAGVorderTypeLabel_disabled}" for="disabled" />
+                        <p:selectBooleanCheckbox id="disabled" value="#{aGVorderTypeController.selected.disabled}" required="true" requiredMessage="#{bundleAGV.EditAGVorderTypeRequiredMessage_disabled}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{aGVorderTypeController.create}" value="#{bundleAGV.Save}" update="display,:AGVorderTypeListForm:datalist,:growl" oncomplete="handleSubmit(args,'AGVorderTypeCreateDialog');"/>
+                    <p:commandButton value="#{bundleAGV.Cancel}" onclick="AGVorderTypeCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

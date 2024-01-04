@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="OSECLineCreateDlg" widgetVar="OSECLineCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOSECZastoji.CreateOSECLineTitle}">
+            <h:form id="OSECLineCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{oSECLineController.selected != null}">
+                        <!--
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECLineLabel_lineID}" for="lineID" />
+                        <p:inputText id="lineID" value="#{oSECLineController.selected.lineID}" title="#{bundleOSECZastoji.CreateOSECLineTitle_lineID}" required="true" requiredMessage="#{bundleOSECZastoji.CreateOSECLineRequiredMessage_lineID}"/>
+                        -->
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECLineLabel_lineName}" for="lineName" />
+                        <p:inputText id="lineName" value="#{oSECLineController.selected.lineName}" title="#{bundleOSECZastoji.CreateOSECLineTitle_lineName}" />
+                        <p:outputLabel value="#{bundleOSECZastoji.CreateOSECLineLabel_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{oSECLineController.selected.active}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{oSECLineController.create}" value="#{bundleOSECZastoji.Save}" update="display,:OSECLineListForm:datalist,:growl" oncomplete="handleSubmit(args,'OSECLineCreateDialog');"/>
+                    <p:commandButton value="#{bundleOSECZastoji.Cancel}" onclick="OSECLineCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

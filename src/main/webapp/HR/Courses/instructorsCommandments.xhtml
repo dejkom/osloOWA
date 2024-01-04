@@ -1,0 +1,749 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="title">
+            <h:outputText value="oslo - HR Commandments"></h:outputText>
+        </ui:define>
+
+        <ui:define name="head">
+            <script type="text/javascript">
+                //ta koda povzroči da se pred toggle eventom sproži še select event
+                PrimeFaces.widget.DataTable.prototype.toggleExpansion = (function () {
+                    var cached_function = PrimeFaces.widget.DataTable.prototype.toggleExpansion;
+                    return function () {
+                        var row = arguments[0].closest('tr');
+                        if (this.cfg.selectionMode === 'single') {
+                            this.unselectAllRows();
+                        }
+                        if (this.cfg.selectionMode) {
+                            this.selectRow(row, false);
+                        }
+                        var result = cached_function.apply(this, arguments);
+                        return result;
+                    };
+                })();
+            </script>
+            <script>
+                PrimeFaces.locales['en'] = {
+                    firstDay: 1
+                };
+                PrimeFaces.locales['sl'] = {
+                    firstDay: 1,
+                    monthNames: ['Januar', 'Februar', 'Marec', 'April', 'Maj', 'Junij',
+                        'Julij', 'Avgust', 'September', 'Oktober', 'November', 'December'],
+                    monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Avg',
+                        'Sep', 'Okt', 'Nov', 'Dec'],
+                    dayNames: ['Nedelja', 'Ponedeljek', 'Torek', 'Sreda', 'Četrtek', 'Petek',
+                        'Sobota'],
+                    dayNamesShort: ['Ned', 'Pon', 'Tor', 'Sre', 'Čet', 'Pet', 'Sob'],
+                    dayNamesMin: ['N', 'P', 'T', 'S', 'Č', 'P', 'S'],
+                    timeText: 'Čas',
+                    hourText: 'Ura',
+                    minuteText: 'Minuta',
+                    secondText: 'Sekunda'
+                };
+            </script>
+        </ui:define>
+
+        <ui:define name="PageHeader">
+            Moje odredbe
+            <style type="text/css">
+                body .ui-panel {
+                    padding: 0;
+                    margin-bottom: 50px;
+                }
+
+                .delButton:hover {
+                    background-color: red !important;
+                }
+
+                .ui-selectlistbox-listcontainer{
+                    height: 450px !important;
+                }
+            </style>
+        </ui:define>
+
+        <ui:define name="PageHeaderSubtitle">
+            Na tej strani lahko kreirate sezname za odrejanje dela, na kreirane sezname se zaposleni "podpišejo" z RFID ključkom zaposlenega.
+        </ui:define>
+
+        <ui:define name="PageHeaderHelpLink">
+            <button class="btn btn-primary btn-large-dim" onclick="window.open('/osloWebApp/faces/HR/Courses/navodilaHRIzobrazevanja.xhtml', '_blank')" style="float:right"  type="button"><i class="fa-regular fa-question-circle"></i></button>
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form">
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p1" header="" toggleable="true" closable="true" collapsed="true">
+                            <f:facet name="header">
+                                <h:outputText value="Odredbe, ki jih izvajam ali organiziram" /><span class="label" style="margin-left: 5px"><h:outputText value="#{hRCourseInstructorCommandmendsViewBean.allCoursesInstructorCanTeach.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">                                
+                            </f:facet>
+                            <p:dataTable id="usersCourses" var="course" value="#{hRCourseInstructorCommandmendsViewBean.allCoursesInstructorCanTeach}"
+                                         selectionMode="single" rowKey="#{course.courseID}" selection="#{hRCourseInstructorCommandmendsViewBean.selectedCourse}">
+                                <p:ajax event="rowSelect"  update="usersCourses HRCourseOfferingCreateForm"/>
+                                <p:ajax event="rowUnselect" update="usersCourses HRCourseOfferingCreateForm"/>
+
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseTitle}" filterBy="#{course.courseTitle}" filterMatchMode="contains">
+                                    <h:outputText value="#{course.courseTitle}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseDescription}">
+                                    <h:outputText value="#{course.courseDescription}" />
+                                </p:column>
+                                <!--
+                                <p:column headerText="Active">
+                                    <p:selectBooleanCheckbox value="#{course.active}" />
+                                </p:column>
+                                -->
+                                <p:column headerText="#{bundleHRCourse.CreateHRCourseTitle_courseTypeID}">
+                                    <h:outputText value="#{course.courseTypeID.parent.parent.courseTypeTitle} / #{course.courseTypeID.parent.courseTypeTitle} / #{course.courseTypeID.courseTypeTitle}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_primaryInstructors}">
+                                    <h:outputText value="#{course.primaryInstructors}" />
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:contextMenu for="usersCourses" style="width: 300px">
+                                <p:menuitem value="#{bundleHRCourse.CreateHRCommandmentTitle}" action="#{hRCourseInstructorCommandmendsViewBean.courseSelectedForCreatingOffering}" update="form HRCourseOfferingCreateForm" icon="fa fa-plus" onclick="PF('HRCourseOfferingCreateDialog').show()"/>
+                            </p:contextMenu>
+                        </p:panel>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p2" header="" toggleable="true" closable="true" collapsed="true">
+                            <f:facet name="header">
+                                <h:outputText value="Prihajajoče odredbe" /><span class="label" style="margin-left: 5px"><h:outputText value="#{hRCourseInstructorCommandmendsViewBean.instructorsNextOfferings.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">                                
+                            </f:facet>
+                            <p:dataTable id="usersNextCourses" lazy="false" var="course" value="#{hRCourseInstructorCommandmendsViewBean.instructorsNextOfferings}"
+                                         selectionMode="single" rowKey="#{course.courseOfferingID}" selection="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants}">
+
+                                <!--<p:ajax event="rowToggle" listener="#{hRCourseInstructorCommandmendsViewBean.onRowToggle}" update=":form:usersNextCourses" />-->
+
+                                <p:column style="width:2rem">
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseTitle}">
+                                    <h:outputText value="#{course.courseID.courseTitle}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseDescription}">
+                                    <h:outputText value="#{course.courseID.courseDescription}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CreateHRCourseOfferingTitle_creator}">
+                                    <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.creator).lastname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.creator).firstname}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CourseInstructor}">
+                                    <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.instructorID.codeksID).lastname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.instructorID.codeksID).firstname}" />                               
+                                </p:column>
+                                <p:column headerText="PIN">
+                                    <h:outputText value="#{course.accessPIN}" />                               
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CreateHRCourseOfferingTitle_courseDate}">
+                                    <h:outputText value="#{course.courseDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.numberOfAttendees}">
+                                    <h:outputText value="#{course.HRCourseAttendanceList.size()}" />
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <p:dataTable id="usersNextCoursesExpansion" var="udelezenci" value="#{course.HRCourseAttendanceList}">
+                                        <p:column headerText="#{msg['Firstname']} #{msg['Lastname']}">
+                                            <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).firstname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).lastname}" />
+
+                                        </p:column>
+                                        <p:column headerText="#{msg['Mail']}">
+                                            <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).email}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['Actions']}">
+                                            <p:commandButton update=":growl :form:usersNextCourses" class="delButton" icon="fa fa-trash-can" title="#{msg['Delete']}" action="#{hRCourseInstructorCommandmendsViewBean.brisiUdelezenca}">
+                                                <f:setPropertyActionListener value="#{udelezenci}" target="#{hRCourseInstructorCommandmendsViewBean.udelezenecZaBrisanje}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:rowExpansion>
+
+                            </p:dataTable>
+                            <p:contextMenu for="usersNextCourses" style="width: 350px">
+                                <p:menuitem value="#{bundleHRCourse.AddCommandmentParticipants}" onclick="$('#izbiraOseb').modal('show');" update=":formIzbiraOseb:advanced" icon="fa fa-plus"/>
+                                <p:menuitem value="#{bundleHRCourse.EditCommandment}" onclick="PF('HRCourseOfferingEditDialog').show()" action="#{hRCourseInstructorCommandmendsViewBean.courseSelectedForEditingOffering}" update="form HRCourseOfferingEditForm HRCourseOfferingEditForm:display HRCourseOfferingEditForm:pguir" icon="fa fa-pen-to-square"/>
+                                <p:menuitem value="#{bundleHRCourse.CancelCommandment}" oncomplete="$('#deleteCourse').modal('show');" update=":formDeleteCourse"  icon="fa fa-trash-can"/>                                
+                            </p:contextMenu>
+                        </p:panel>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p3" header="" toggleable="true" closable="true" collapsed="true">
+                            <f:facet name="header">
+                                <h:outputText value="Pretekle odredbe (60 dni nazaj)" /><span class="label" style="margin-left: 5px"><h:outputText value="#{hRCourseInstructorCommandmendsViewBean.instructorsOfferingsHistory.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">                                
+                            </f:facet>
+                            <p:dataTable id="usersPastCourses" lazy="false" var="course" value="#{hRCourseInstructorCommandmendsViewBean.instructorsOfferingsHistory}"
+                                         selectionMode="single" rowKey="#{course.courseOfferingID}" selection="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingFromHistory}">
+                                
+                                <p:column style="width:2rem">
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseTitle}" filterBy="#{course.courseID.courseTitle}" filterMatchMode="contains">
+                                    <h:outputText value="#{course.courseID.courseTitle}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseDescription}">
+                                    <h:outputText value="#{course.courseID.courseDescription}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CreateHRCourseOfferingTitle_creator}">
+                                    <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.creator).lastname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.creator).firstname}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CourseInstructor}">
+                                    <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.instructorID.codeksID).lastname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(course.instructorID.codeksID).firstname}" />                               
+                                </p:column>
+                                <p:column headerText="PIN">
+                                    <h:outputText value="#{course.accessPIN}" />                               
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CreateHRCourseOfferingTitle_courseDate}" sortable="true" sortBy="#{course.courseDate}">
+                                    <h:outputText value="#{course.courseDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.numberOfAttendees}">
+                                    <h:outputText value="#{course.HRCourseAttendanceList.size()}" />
+                                </p:column>
+                                <p:column style="width:3rem;text-align: center">
+                                    <p:commandButton update="usersPastCourses :form:dialog1" oncomplete="PF('ex').show()"
+                                                     icon="fa fa-print" title="#{bundleHRCourse.PrintListOfParticipants}">
+                                        <f:setPropertyActionListener value="#{course}"
+                                                                     target="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForPrint}"/>
+                                    </p:commandButton>
+                                    <p:commandButton update="usersPastCourses" icon="fa fa-trash-can" title="Briši" disabled="#{course.HRCourseAttendanceList.size() gt 0}" action="#{hRCourseInstructorCommandmendsViewBean.deleteCourseOfferingNoNotification(course)}"/>
+                                </p:column>
+
+                                <p:rowExpansion>
+                                    <p:dataTable id="usersPastCoursesExpansion" var="udelezenci" value="#{course.HRCourseAttendanceList}">
+                                        <p:column headerText="#{msg['Firstname']} #{msg['Lastname']}"
+                                                  filterBy="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).firstname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).lastname}"
+                                                  filterMatchMode="contains">
+                                            <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).firstname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).lastname}" />
+
+                                        </p:column>
+                                        <p:column headerText="#{msg['Mail']}">
+                                            <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(udelezenci.codeksID).email}" />
+                                        </p:column>
+                                        <p:column headerText="#{bundleHRCourse.CreateHRCourseAttendanceTitle_comment}">
+                                            <p:inplace editor="true" emptyLabel="Tukaj lahko vnesete komentar..." widgetVar="inplace_#{udelezenci.attendanceID}">
+                                                <p:ajax event="save"  listener="#{hRCourseInstructorCommandmendsViewBean.handleCommentSave(udelezenci.attendanceID)}" update="form:usersPastCourses" />
+                                                <p:inputText value="#{udelezenci.comment}" valueChangeListener="#{hRCourseInstructorCommandmendsViewBean.commentValueChangeListener}" onkeydown="if (event.keyCode == 27) {
+                                                            PF('inplace_#{udelezenci.attendanceID}').cancel();
+                                                            return false;
+                                                        }
+                                                        if (event.keyCode == 13) {
+                                                            PF('inplace_#{udelezenci.attendanceID}').save();
+                                                            return false;
+                                                        }" />
+                                            </p:inplace>                                           
+                                        </p:column>
+                                        <p:column headerText="#{msg['Actions']}" visible="false">
+                                            <p:commandButton update=":growl :form:usersPastCourses" class="delButton" icon="fa fa-trash-can" title="#{msg['Delete']}" action="#{hRCourseInstructorCommandmendsViewBean.brisiUdelezenca}">
+                                                <f:setPropertyActionListener value="#{udelezenci}" target="#{hRCourseInstructorCommandmendsViewBean.udelezenecZaBrisanje}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:rowExpansion>
+
+                            </p:dataTable>
+                            <p:contextMenu for="usersPastCourses" style="width: 350px">
+                                <p:menuitem value="Izobrazi/informiraj dodatnega zaposlenega" disabled="true" action="#{hRCourseInstructorCommandmendsViewBean.izobraziDodatnegaZaposlenega}" update="form HRCourseOfferingCreateForm" icon="fa fa-user-plus" onclick="PF('HRCourseOfferingCreateDialog').show()" />                               
+                                <p:menuitem value="#{bundleHRCourse.FileAttachments}" disabled="false" actionListener="#{hRCourseInstructorCommandmendsViewBean.fileUploadAction}" update=":HRCourseAttachmentsViewForm :HRCourseAttachmentsViewForm:attachmentPanel" icon="pi pi-search"/>
+                            </p:contextMenu>
+                        </p:panel>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p4" header="" toggleable="true" closable="true" collapsed="true">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleHRCourse.PrintListOfParticipants}" /><span class="label" style="margin-left: 5px"><h:outputText value="#{hRCourseInstructorCommandmendsViewBean.instructorsPastOfferings.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">
+                                <!--
+                                <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{agvBean.printAvailableMaterialsForSupplying()}">
+                                    <h:outputText styleClass="ui-icon pi pi-print"/>
+                                </p:commandLink>
+                                -->
+                            </f:facet>
+                            <p:dataTable id="instructorsOfferings" var="offering" value="#{hRCourseInstructorCommandmendsViewBean.instructorsPastOfferings}"
+                                         selectionMode="single" rowKey="#{offering.courseOfferingID}" selection="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForPrint}">
+                                <p:ajax event="rowSelect"  update="instructorsOfferings"/>
+                                <p:ajax event="rowUnselect" update="instructorsOfferings"/>
+
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseTitle}" filterBy="#{offering.courseID.courseTitle}" filterMatchMode="contains">
+                                    <h:outputText value="#{offering.courseID.courseTitle}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseOfferingTitle_courseDate}" sortBy="#{offering.courseDate}">
+                                    <h:outputText value="#{offering.courseDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.LocationOfCourseOffering}">
+                                    <h:outputText value="#{offering.meetingroomString}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.numberOfAttendees}">
+                                    <h:outputText value="#{offering.HRCourseAttendanceList.size()}" />
+                                </p:column>
+                                <p:column style="width:3rem;text-align: center">
+                                    <p:commandButton update="instructorsOfferings :form:dialog1" oncomplete="PF('ex').show()"
+                                                     icon="fa fa-print" title="Print">
+                                        <f:setPropertyActionListener value="#{offering}"
+                                                                     target="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForPrint}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg">
+                        <p:panel id="p5" header="" toggleable="true" closable="true" collapsed="true">
+                            <f:facet name="header">
+                                <h:outputText value="Odredbe ki so jih izvedli moji podrejeni (zgodovina 60 dni)" /><span class="label" style="margin-left: 5px"><h:outputText value="#{hRCourseInstructorCommandmendsViewBean.podrejeniPastOfferingsHistory.size()}" /></span>
+                            </f:facet>
+                            <f:facet name="actions">
+                                <!--
+                                <p:commandLink styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" actionListener="#{agvBean.printAvailableMaterialsForSupplying()}">
+                                    <h:outputText styleClass="ui-icon pi pi-print"/>
+                                </p:commandLink>
+                                -->
+                            </f:facet>
+                            <p:dataTable id="podrejeniOfferings" var="offering" value="#{hRCourseInstructorCommandmendsViewBean.podrejeniPastOfferingsHistory}"
+                                         selectionMode="single" rowKey="#{offering.courseOfferingID}" selection="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForPrint}">
+                                <p:ajax event="rowSelect"  update="podrejeniOfferings"/>
+                                <p:ajax event="rowUnselect" update="podrejeniOfferings"/>
+
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseTitle_courseTitle}" filterBy="#{offering.courseID.courseTitle}" filterMatchMode="contains">
+                                    <h:outputText value="#{offering.courseID.courseTitle}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.ListHRCourseOfferingTitle_courseDate}" sortBy="#{offering.courseDate}">
+                                    <h:outputText value="#{offering.courseDate}" >
+                                        <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.CourseInstructor}" filterBy="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(offering.instructorID.codeksID).lastname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(offering.instructorID.codeksID).firstname}" filterMatchMode="contains">
+                                    <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(offering.instructorID.codeksID).lastname} #{hRCourseInstructorCommandmendsViewBean.selectedEmployeesHM.get(offering.instructorID.codeksID).firstname}" />                               
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.LocationOfCourseOffering}">
+                                    <h:outputText value="#{offering.meetingroomString}" />
+                                </p:column>
+                                <p:column headerText="#{bundleHRCourse.numberOfAttendees}">
+                                    <h:outputText value="#{offering.HRCourseAttendanceList.size()}" />
+                                </p:column>
+                                <p:column style="width:3rem;text-align: center">
+                                    <p:commandButton update="podrejeniOfferings :form:dialog1" oncomplete="PF('ex').show()"
+                                                     icon="fa fa-print" title="Print">
+                                        <f:setPropertyActionListener value="#{offering}"
+                                                                     target="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForPrint}"/>
+                                    </p:commandButton>
+                                    <p:commandButton update="podrejeniOfferings" icon="fa fa-trash-can" title="Briši" disabled="#{offering.HRCourseAttendanceList.size() gt 0}" action="#{hRCourseInstructorCommandmendsViewBean.deleteCourseOfferingNoNotification(offering)}"/>
+
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                </div>
+
+
+                <p:dialog id="dialog1"  widgetVar="ex" dynamic="true">
+                    <iframe frameborder="0" align="left"
+                            src="/osloWebApp/faces/HR/Courses/printCommandmentAttendanceList.xhtml?cofid=#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForPrint.courseOfferingID}"
+                            name="someName" id="someId" scrolling="auto" width="750"
+                            height="500" marginheight="5" marginwidth="10">
+                    </iframe>
+                </p:dialog>
+
+
+            </h:form>
+            
+            <p:dialog id="HRCourseAttachmentsViewDlg" widgetVar="HRCourseAttachmentsViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Datotečne priloge">
+                <h:form id="HRCourseAttachmentsViewForm">
+                    <p:outputPanel id="attachmentPanel">     
+                        <br/>
+                        <c:forEach id="uir1" items="#{hRCourseInstructorCommandmendsViewBean.getPriloge()}" var="at" varStatus="status" rendered="true">
+                            <div class="file-box">
+                                <div class="file">
+                                    <a href="/osloWebApp${at.itemFileAttachmentSrc}" target="_blank">
+                                        <span class="corner"></span>
+
+                                        <div class="icon">
+                                            <p:graphicImage alt="image" height="64px" width="64px" library="img" name="${at.thumbnailImageSrc}.png"/>
+                                        </div>
+                                        <div class="file-name">
+                                            <h:outputText id="fname" value = "${at.title}" />
+                                            <br/>
+                                            <small><h:outputText id="cdate" value = "${at.creationdate}" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" timeZone="Europe/Ljubljana"/></h:outputText></small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                        <br/>
+                        <p:commandButton value="#{bundleHRCourse.Close}" style="float: right" onclick="PF('HRCourseAttachmentsViewDialog').hide()"/>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <h:form id="formIzbiraOseb">
+
+                <div id="izbiraOseb" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLOModal" aria-hidden="true" >
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">#{msg['HRCourse_AddAttendee']}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+
+                                    <p:selectManyMenu id="advanced" style="width: 100%; height:100%"  value="#{hRCourseInstructorCommandmendsViewBean.selectedEmployees}" converter="omnifaces.SelectItemsConverter" var="t" filter="true" filterMatchMode="contains" showCheckbox="true">                           
+                                        <f:selectItems value="#{hRCourseInstructorCommandmendsViewBean.currentlyEmployed}" var="theme" itemLabel="#{theme.firstname} #{theme.lastname} #{departmentsController.map.get(theme.departmentId).name}" itemValue="#{theme}" />
+                                        <p:column>
+                                            <h:outputText value="#{t.firstname}" />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{t.lastname}" />
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{departmentsController.map.get(t.departmentId).name}" />
+                                        </p:column>
+                                        <!-- <p:ajax update="dv"  partialSubmit="true"/>  -->
+
+                                    </p:selectManyMenu>
+
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">#{msg['Cancel']}</button>
+                                <p:commandButton id="submitButtonOsebe" class="btn btn-primary" actionListener="#{hRCourseInstructorCommandmendsViewBean.shraniIzbraneOsebe}" update=":growl :form:usersNextCourses :form:instructorsOfferings :form:usersCourses" value="#{msg['Save']}" oncomplete="$('#izbiraOseb').modal('hide');"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+            <h:form id="formDeleteCourse">
+                <div id="deleteCourse" class="modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myLOModal2" aria-hidden="true" >
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Brisanje odredbe</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Izbrisali boste izvedbo odrejanja <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.courseID.courseTitle}" style="font-weight: bold;"/>
+                                    ki je bila planirana za izvedbo <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.courseDate}" style="font-weight: bold;" ><f:convertDateTime pattern="dd.MM.yyyy HH:mm" /></h:outputText>.
+                                    Na odredbo je vezanih <h:outputText value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.HRCourseAttendanceList.size()}" style="font-weight: bold;"/> zaposlenih.
+
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">#{msg['Cancel']}</button>                             
+                                <p:commandButton id="deleteButton" class="btn btn-primary" actionListener="#{hRCourseInstructorCommandmendsViewBean.deleteCourseOffering}" update=":growl :form:usersNextCourses :form:instructorsOfferings :form:p1 :form:p2 :form:p3 :form:p4" value="#{msg['Save']}" oncomplete="$('#deleteCourse').modal('hide');"/>                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+
+
+            <p:dialog id="HRCourseOfferingCreateDlg" widgetVar="HRCourseOfferingCreateDialog" modal="true" height="600" width="900" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateHRCommandmentTitle}">
+                <h:form id="HRCourseOfferingCreateForm">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" rendered="#{hRCourseInstructorCommandmendsViewBean.selectedCourse != null}" style="width: 100%">
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_courseOfferingID}" for="courseOfferingID" />
+                            <p:inputText id="courseOfferingID" value="#{hRCourseOfferingController.selected.courseOfferingID}" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_courseOfferingID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseOfferingRequiredMessage_courseOfferingID}"/>
+                            -->
+                            <p:outputLabel value="#{bundleHRCourse.DateOfCommandment}" for="courseDate" />
+                            <p:calendar id="courseDate" pattern="dd.MM.yyyy HH:mm" showTodayButton="true" required="true" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.courseDate}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_courseDate}"  showOn="button" style="width: 100%"/>
+
+                            <p:outputLabel value="#{bundleHRCourse.LocationOfCommandment}" for="meetingroomID" />
+                            <p:inputText id="meetingroomID" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.meetingroomString}" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_meetingroomID}" style="width: 100%"/>
+
+                            <p:outputLabel value="#{bundleHRCourse.Course}:" for="courseID" />
+                            <p:selectOneMenu id="courseID" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.courseID}" disabled="true" style="width: 100%" converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{hRCourseInstructorCommandmendsViewBean.allCoursesInstructorCanTeach}"
+                                               var="courseIDItem"
+                                               itemValue="#{courseIDItem}" itemLabel="#{courseIDItem.courseTitle}"/>
+                                <p:ajax listener="#{hRCourseInstructorCommandmendsViewBean.courseSelectedForCreatingOffering}" update="instructorID" process="@this" partialSubmit="true" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundleHRCourse.CommandmentPerson}:" for="instructorID" />
+                            <p:selectOneMenu id="instructorID" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.instructorID}" style="width: 100%" filter="true" required="true"  filterMatchMode="contains">                           
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" />                   
+                                <f:selectItems value="#{hRCourseInstructorCommandmendsViewBean.instruktorjiNaVoljo}" var="instructorIDItem" itemValue="#{instructorIDItem}" itemLabel="#{instructorIDItem.lastname} #{instructorIDItem.firstname}"/>                     
+                            </p:selectOneMenu>
+
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_active}" for="active" />
+                            <p:selectBooleanCheckbox id="active" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.active}" />
+                            -->
+
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.AddCourseToExchangeCalendar}?" for="exc" />
+                            <p:selectBooleanCheckbox id="exc" value="#{hRCourseOfferingController.kreiramDogodekExchange}" /> 
+                            -->
+
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.OfferingComment}" for="komentarIzvedbe" />
+                            <p:inputText id="komentarIzvedbe" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.komentarIzvedbe}" disabled="false" title="Komentar Izvedbe" />
+                            -->
+
+                            <p:outputLabel value="Za katero izmeno velja odredba?" for="odredbaIzmena" />
+                            <!--<p:inputText id="odredbaIzmena" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.odredbaIzmena}" disabled="false" title="Odredba izmena" />-->
+                            <p:selectOneMenu id="odredbaIzmena" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.odredbaIzmena}" required="true" style="width: 100%">
+                                <f:selectItem itemLabel="Izberite izmeno" itemValue=""/>
+                                <f:selectItem itemLabel="Izmena 1" itemValue="1"/>
+                                <f:selectItem itemLabel="Izmena 2" itemValue="2"/>
+                                <f:selectItem itemLabel="Izmena 3" itemValue="3"/>
+                                <p:ajax event="change" update="odredbaUraOd odredbaUraDo" listener="#{hRCourseInstructorCommandmendsViewBean.shiftSelected}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Od katere ure?" for="odredbaUraOd" />
+                            <p:calendar id="odredbaUraOd" required="true" timeOnly="true" pattern="HH:mm" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.odredbaDatumOd}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_courseDate}"  showOn="button"/>
+
+                            <p:outputLabel value="Do katere ure?" for="odredbaUraDo" />
+                            <p:calendar id="odredbaUraDo" required="true" timeOnly="true" pattern="HH:mm" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.odredbaDatumDo}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_courseDate}"  showOn="button"/>
+
+
+                            <p:outputLabel value="#{bundleHRCourse.FileAttachments}" for="courseAttachments" />
+                            <p:fileUpload id="courseAttachments" listener="#{hRCourseInstructorCommandmendsViewBean.handleFileUploadNewCO}" mode="advanced" dragDropSupport="false"
+                                          multiple="true" update="growl pguir" sizeLimit="10000000" fileLimit="50"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|xls|xlsx|pdf)$/"
+                                          maxChunkSize="1000000">
+                                <p:panelGrid id="pguir" columns="1" rendered="#{hRCourseInstructorCommandmendsViewBean.newOffering != null}" style="width:100% !important">
+                                    <ui:repeat id="uir2"  value="#{hRCourseInstructorCommandmendsViewBean.newOffering.courseID.files}" var="photo" varStatus="status">
+                                        <div class="file-box">
+                                            <div class="file">
+                                                <span class="corner"></span>
+                                                <div class="icon">
+                                                    <!--<p:graphicImage alt="image" height="64px" width="64px" stream="false" value="#{photo.content}"/>-->
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('pdf')}" library="img" name="pdf.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('word')}" library="img" name="doc.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('jpeg')}" library="img" name="jpg.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('excel') || photo.contentType.contains('spreadsheetml')}" library="img" name="xls.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('powerpoint')}" library="img" name="ppt.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('png')}" library="img" name="png.png"/>
+                                                </div>
+                                                <div class="file-name" style="overflow: hidden">
+                                                    <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                    <ui:repeat id="uir"  value="#{hRCourseInstructorCommandmendsViewBean.newOffering.files}" var="photo" varStatus="status">
+
+                                        <div class="file-box">
+                                            <div class="file">
+                                                <span class="corner"></span>
+
+                                                <div class="icon">
+                                                    <!--<p:graphicImage alt="image" height="64px" width="64px" stream="false" value="#{photo.content}"/>-->
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('pdf')}" library="img" name="pdf.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('word')}" library="img" name="doc.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('jpeg')}" library="img" name="jpg.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('excel') || photo.contentType.contains('spreadsheetml')}" library="img" name="xls.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('powerpoint')}" library="img" name="ppt.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('png')}" library="img" name="png.png"/>
+
+                                                </div>
+                                                <div class="file-name" style="overflow: hidden">
+                                                    <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </ui:repeat>
+                                </p:panelGrid>
+                            </p:fileUpload>
+
+                            <p:outputLabel value="#{bundleHRCourse.AccessPIN}" for="accessPIN" />
+                            <p:inputText id="accessPIN" required="true" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.accessPIN}" disabled="false" title="#{bundleHRCourse.AccessPIN}" style="width: 100%"/>
+
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_creator}" for="creator" />
+                            <p:inputText id="creator" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.creator}" disabled="true" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_creator}" />
+
+
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_dateCreated}" for="dateCreated" />
+                            <p:calendar id="dateCreated" disabled="true" pattern="dd.MM.yyyy HH:mm:ss" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.dateCreated}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_dateCreated}"  showOn="button"/>
+                            -->
+                        </p:panelGrid>
+
+                        <p:commandButton actionListener="#{hRCourseInstructorCommandmendsViewBean.createCO}" value="#{bundleHRCourse.Save}" update=":growl :form:usersNextCourses :form:instructorsOfferings :form:usersPastCourses :form:p1 :form:p2 :form:p3 :form:p4" onclick="PF('HRCourseOfferingCreateDialog').hide()"/>
+                        <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PF('HRCourseOfferingCreateDialog').hide()"/>
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="HRCourseOfferingEditDlg" widgetVar="HRCourseOfferingEditDialog" modal="true" height="600" width="900" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.EditHRCourseOfferingTitle}">
+                <h:form id="HRCourseOfferingEditForm">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" rendered="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants != null}" style="width: 100%">
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_courseOfferingID}" for="courseOfferingID" />
+                            <p:inputText id="courseOfferingID" value="#{hRCourseOfferingController.selected.courseOfferingID}" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_courseOfferingID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseOfferingRequiredMessage_courseOfferingID}"/>
+                            -->
+
+                            <p:outputLabel value="#{bundleHRCourse.DateOfOffering}" for="courseDate" />
+                            <p:calendar id="courseDate" pattern="dd.MM.yyyy HH:mm" 
+                                        value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.courseDate}" 
+                                        title="#{bundleHRCourse.EditHRCourseOfferingTitle_courseDate}" style="width: 100%" showOn="button"/>
+
+
+
+                            <p:outputLabel value="#{bundleHRCourse.LocationOfCourseOffering}" for="meetingroomID" />
+                            <p:inputText id="meetingroomID" 
+                                         value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.meetingroomString}" 
+                                         title="#{bundleHRCourse.CreateHRCourseOfferingTitle_meetingroomID}" style="width: 100%"/>
+
+
+                            <p:outputLabel value="#{bundleHRCourse.Course}:" for="courseID" />
+                            <p:selectOneMenu id="courseID" value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.courseID}" 
+                                             disabled="true" converter="omnifaces.SelectItemsConverter" style="width: 100%">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItems value="#{hRCourseInstructorCommandmendsViewBean.allCoursesInstructorCanTeach}"
+                                               var="courseIDItem"
+                                               itemValue="#{courseIDItem}" itemLabel="#{courseIDItem.courseTitle}"/>
+                                <p:ajax listener="#{hRCourseInstructorCommandmendsViewBean.courseSelectedForCreatingOffering}" update="instructorID" process="@this" partialSubmit="true" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundleHRCourse.CourseInstructor}:" for="instructorID" />
+                            <p:selectOneMenu id="instructorID" value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.instructorID}" 
+                                             filter="true" filterMatchMode="contains" style="width: 100%">                           
+                                <f:selectItem itemLabel="Select One" itemValue="#{null}" />                   
+                                <f:selectItems value="#{hRCourseInstructorCommandmendsViewBean.instruktorjiNaVoljo}" 
+                                               var="instructorIDItem" itemValue="#{instructorIDItem}" 
+                                               itemLabel="#{instructorIDItem.firstname} #{instructorIDItem.lastname}"/>                     
+                            </p:selectOneMenu>
+
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_active}" for="active" />
+                            <p:selectBooleanCheckbox id="active" value="#{hRCourseInstructorCommandmendsViewBean.newOffering.active}" />
+                            -->
+
+                            <!--
+                            <p:outputLabel value="#{bundleHRCourse.AddCourseToExchangeCalendar}?" for="exc" />
+                            <p:selectBooleanCheckbox id="exc" value="#{hRCourseOfferingController.kreiramDogodekExchange}" /> 
+                            -->
+
+                            <p:outputLabel value="#{bundleHRCourse.OfferingComment}" for="komentarIzvedbe" />
+                            <p:inputText id="komentarIzvedbe" value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.komentarIzvedbe}" 
+                                         disabled="false" title="Komentar Izvedbe" style="width: 100%"/>
+
+                            <p:outputLabel value="#{bundleHRCourse.FileAttachments}" for="courseAttachments" />
+                            <p:fileUpload id="courseAttachments" listener="#{hRCourseInstructorCommandmendsViewBean.handleFileUpload}" 
+                                          mode="advanced" dragDropSupport="false"
+                                          multiple="true" update="growl pguir" sizeLimit="10000000" fileLimit="50"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|xls|xlsx|pdf)$/"
+                                          maxChunkSize="1000000">
+                                <p:panelGrid id="pguir" columns="1" rendered="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants != null}" style="width:100% !important">
+
+                                    <ui:repeat id="uir2"  value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.courseID.files}" var="photo" varStatus="status">
+                                        <div class="file-box">
+                                            <div class="file">
+                                                <span class="corner"></span>
+                                                <div class="icon">
+                                                    <!--<p:graphicImage alt="image" height="64px" width="64px" stream="false" value="#{photo.content}"/>-->
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('pdf')}" library="img" name="pdf.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('word')}" library="img" name="doc.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('jpeg')}" library="img" name="jpg.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('excel') || photo.contentType.contains('spreadsheetml')}" library="img" name="xls.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('powerpoint')}" library="img" name="ppt.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('png')}" library="img" name="png.png"/>
+                                                </div>
+                                                <div class="file-name" style="overflow: hidden">
+                                                    <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                    <ui:repeat id="uir"  value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.files}" var="photo" varStatus="status">
+
+                                        <div class="file-box">
+                                            <div class="file">
+                                                <span class="corner"></span>
+
+                                                <div class="icon">
+                                                    <!--<p:graphicImage alt="image" height="64px" width="64px" stream="false" value="#{photo.content}"/>-->
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('pdf')}" library="img" name="pdf.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('word')}" library="img" name="doc.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('jpeg')}" library="img" name="jpg.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('excel') || photo.contentType.contains('spreadsheetml')}" library="img" name="xls.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('powerpoint')}" library="img" name="ppt.png"/>
+                                                    <p:graphicImage alt="image" height="64px" width="64px" stream="false" rendered="#{photo.contentType.contains('png')}" library="img" name="png.png"/>
+
+                                                </div>
+                                                <div class="file-name" style="overflow: hidden">
+                                                    <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </ui:repeat>
+
+                                </p:panelGrid>
+                            </p:fileUpload>
+
+
+
+                            <p:outputLabel value="#{bundleHRCourse.AccessPIN}" for="accessPIN" />
+                            <p:inputText id="accessPIN" value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.accessPIN}" disabled="false" title="#{bundleHRCourse.AccessPIN}" />
+
+
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_creator}" for="creator" />
+                            <p:inputText id="creator" value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.creator}" disabled="true" title="#{bundleHRCourse.CreateHRCourseOfferingTitle_creator}" />
+
+
+                            <p:outputLabel value="#{bundleHRCourse.CreateHRCourseOfferingLabel_dateCreated}" for="dateCreated" />
+                            <p:calendar id="dateCreated" disabled="true" pattern="dd.MM.yyyy HH:mm:ss" value="#{hRCourseInstructorCommandmendsViewBean.selectedCourseOfferingForAddingParticipants.dateCreated}" title="#{bundleHRCourse.EditHRCourseOfferingTitle_dateCreated}"  showOn="button"/>
+
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:commandButton actionListener="#{hRCourseInstructorCommandmendsViewBean.editCO}" value="#{bundleHRCourse.Save}" update=":growl :form:usersNextCourses :form:instructorsOfferings :form:p1 :form:p2 :form:p3 :form:p4" onclick="PF('HRCourseOfferingEditDialog').hide()"/>
+                        <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PF('HRCourseOfferingEditDialog').hide()"/>
+
+
+
+                    </h:panelGroup>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+
+        <ui:define name="scriptsendbody">
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

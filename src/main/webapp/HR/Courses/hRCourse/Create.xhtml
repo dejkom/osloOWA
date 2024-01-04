@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseCreateDlg" widgetVar="HRCourseCreateDialog" modal="true" height="600" width="1200" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.CreateCourseTitle}">
+            <h:form id="HRCourseCreateForm" enctype="multipart/form-data">
+                <h:panelGroup id="display" style="width:1000px !important">
+                    <p:panelGrid columns="2" rendered="#{hRCourseController.selected != null}" style="width:100% !important" >
+                        <!--
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseLabel_courseID}" for="courseID" />
+                        <p:inputText id="courseID" value="#{hRCourseController.selected.courseID}" title="#{bundleHRCourse.CreateHRCourseTitle_courseID}" required="true" requiredMessage="#{bundleHRCourse.CreateHRCourseRequiredMessage_courseID}"/>
+                        -->
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseTitle_courseTitle}" for="courseTitle" />
+                        <p:inputText id="courseTitle" maxlength="100" required="true" value="#{hRCourseController.selected.courseTitle}" title="#{bundleHRCourse.CreateHRCourseTitle_courseTitle}" style="width: 100%" />
+                        
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseLabel_courseDescription}" for="courseDescription" />
+                        <p:inputTextarea id="courseDescription" value="#{hRCourseController.selected.courseDescription}" autoResize="false" cols="100" rows="6" title="#{bundleHRCourse.CreateHRCourseTitle_courseDescription}" />
+                        
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseLabel_duration}" for="duration" />
+                        <p:inputText id="duration" required="true" value="#{hRCourseController.selected.duration}" title="#{bundleHRCourse.CreateHRCourseTitle_duration}" />
+                    <!--</p:panelGrid>-->
+                    
+                    <!--
+                    <p:panelGrid columns="3" rendered="#{hRCourseController.selected != null}" style="width:100% !important; display: none">
+                        <p:outputLabel value="Primarni izobraževalec:" for="primaryInstructors" />
+                        <p:inputText id="primaryInstructors" value="#{hRCourseController.selected.primaryInstructors}" title="#{bundleHRCourse.CreateHRCourseTitle_primaryInstructors}" />                    
+                        <p:commandButton  value="TEST" actionListener="#{hRCourseController.testMethod()}" >
+
+                        </p:commandButton>
+                    </p:panelGrid>
+                    
+                    <p:panelGrid columns="2" rendered="#{hRCourseController.selected != null}" style="width:100% !important">
+                    -->
+                        <!--
+                        <p:outputLabel value="Tip izobraževanja:" for="courseTypeID" />
+                        <p:selectOneMenu id="courseTypeID" value="#{hRCourseController.selected.courseTypeID}" >
+                            <f:selectItems value="#{hRCourseTypeController.itemsAvailableSelectOne}"
+                                           var="courseTypeIDItem"
+                                           itemValue="#{courseTypeIDItem}" itemLabel="#{courseTypeIDItem.courseTypeTitle}"/>
+                        </p:selectOneMenu>
+                        -->
+
+                        <!--
+                        <p:outputLabel value="Tip izobraževanja nov:" for="courseTypeIDn" />
+                        <p:multiSelectListbox id="courseTypeIDn" value="#{hRCourseController.coursetypeselection}"  header="Categories"  showHeaders="true">
+                                <f:selectItems value="#{hRCourseController.coursetypesSelectItems}"/>
+                        </p:multiSelectListbox>
+                        -->
+                        <p:outputLabel value="#{bundleHRCourse.CreateHRCourseLabel_courseTypeID}" for="mslb" />
+                        <p:multiSelectListbox id="mslb" value="#{hRCourseController.selected.courseTypeID}" converter="omnifaces.SelectItemsConverter" header="Tipi izobraževanj"  showHeaders="true">
+                            <f:selectItems value="#{hRCourseTypeController.categories}" var="courseTypeIDItem" itemValue="#{courseTypeIDItem.value}" itemLabel="#{courseTypeIDItem.label}"/>
+                        </p:multiSelectListbox>
+
+                        <p:outputLabel value="#{bundleHRCourse.NotesTitle}" for="courseNotes" />
+                        <p:inputTextarea id="courseNotes" value="#{hRCourseController.selected.courseNotes}" autoResize="false" cols="100" rows="6"/>
+
+                        <p:outputLabel value="#{bundleHRCourse.FileAttachmentsTitle}" for="courseAttachments" />
+                        <p:fileUpload id="courseAttachments" listener="#{hRCourseController.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                      multiple="true" update="growl pguir" sizeLimit="10000000" fileLimit="50"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|ppt|pptx|xls|xlsx|pdf)$/"
+                                      maxChunkSize="1000000">
+
+                            <p:panelGrid id="pguir" columns="1" rendered="#{hRCourseController.selected != null}" style="width:100% !important">
+                                <ui:repeat id="uir"  value="#{hRCourseController.selected.files}" var="photo" varStatus="status">
+
+                                    <div class="file-box">
+                                        <div class="file">
+                                            <span class="corner"></span>
+
+                                            <div class="icon">
+                                                <p:graphicImage alt="image" height="64px" width="64px" stream="false" value="#{photo.content}"/>
+                                            </div>
+                                            <div class="file-name" style="overflow: hidden">
+                                                <h:outputText id="fname2" value = "#{photo.fileName}" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </ui:repeat>
+                            </p:panelGrid>
+
+                        </p:fileUpload>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.selfRegistrationLabel}" for="selfRegistration" />
+                        <p:selectBooleanCheckbox id="selfRegistration" value="#{hRCourseController.selected.selfRegistration}"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.educationAssesmentRequiredLabel}" for="educationAssesmentRequired" />
+                        <p:selectBooleanCheckbox id="educationAssesmentRequired" value="#{hRCourseController.selected.educationAssesmentRequired}"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.performanceEvaluationRequiredLabel}" for="performanceEvaluationRequired" />
+                        <p:selectBooleanCheckbox id="performanceEvaluationRequired" value="#{hRCourseController.selected.performanceEvaluationRequired}"/>
+
+                    </p:panelGrid>
+
+                    <p:commandButton actionListener="#{hRCourseController.create}" value="#{bundleHRCourse.Save}" update="display,:HRCourseListForm:datalist,:growl" onclick="HRCourseCreateDialog.hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="HRCourseCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

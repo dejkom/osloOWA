@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseAttendanceEditDlg" widgetVar="HRCourseAttendanceEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.EditHRCourseAttendanceTitle}">
+            <h:form id="HRCourseAttendanceEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseAttendanceController.selected != null}">
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseAttendanceLabel_attendanceID}" for="attendanceID" />
+                        <p:inputText id="attendanceID" disabled="true" value="#{hRCourseAttendanceController.selected.attendanceID}" title="#{bundleHRCourse.EditHRCourseAttendanceTitle_attendanceID}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseAttendanceRequiredMessage_attendanceID}"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseAttendanceLabel_codeksID}" for="codeksID" />
+                        <p:inputText id="codeksID" disabled="true" value="#{hRCourseAttendanceController.selected.codeksID}" title="#{bundleHRCourse.EditHRCourseAttendanceTitle_codeksID}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseAttendanceRequiredMessage_codeksID}"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseAttendanceTitle_wasAttended}" for="wasAttended" />
+                        <p:selectBooleanCheckbox id="wasAttended" value="#{hRCourseAttendanceController.selected.wasAttended}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseAttendanceRequiredMessage_wasAttended}"/>
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseAttendanceLabel_comment}" for="comment" />
+                        <p:inputText id="comment" value="#{hRCourseAttendanceController.selected.comment}" title="#{bundleHRCourse.EditHRCourseAttendanceTitle_comment}" />
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseAttendanceLabel_rate}" for="rate" />
+                        <p:inputText id="rate" value="#{hRCourseAttendanceController.selected.rate}" title="#{bundleHRCourse.EditHRCourseAttendanceTitle_rate}" />
+                        
+                        <p:outputLabel value="Samopotrdil" for="samopotrdil" />
+                        <p:selectBooleanCheckbox id="samopotrdil" value="#{hRCourseAttendanceController.selected.samopotrdil}" required="false"/>
+                        
+                        
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseAttendanceLabel_courseOfferingID}" for="courseOfferingID" />
+                        <p:selectOneMenu id="courseOfferingID" value="#{hRCourseAttendanceController.selected.courseOfferingID}" >
+                            <f:selectItem itemLabel="#{bundleHRCourse.SelectOneMessage}"/>
+                            <f:selectItems value="#{hRCourseOfferingController.itemsAvailableSelectOne}"
+                                           var="courseOfferingIDItem"
+                                           itemValue="#{courseOfferingIDItem}" itemLabel="#{courseOfferingIDItem.courseID.courseTitle} - #{courseOfferingIDItem.courseDate}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseAttendanceController.update}" value="#{bundleHRCourse.Save}" update="display,:HRCourseAttendanceListForm:datalist,:growl" onclick="PF('HRCourseAttendanceEditDialog').hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PF('HRCourseAttendanceEditDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

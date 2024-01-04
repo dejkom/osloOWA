@@ -1,0 +1,425 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template_PROI_PRIKAZOVALNIKI.xhtml">
+
+        <ui:define name="PageHeader">
+            Linija: <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.lineName}"/> <p:clock pattern="dd.MM.yyyy HH:mm:ss" mode="server"/>
+
+            <style type="text/css">
+                .wrapper-content {
+                    padding-top: 5px !important;
+                    padding: initial;
+                }
+                
+                .jqplot-meterGauge-tick {
+                    font-size: 1.5em;
+                    color: black !important;
+                    font-weight: bold;
+                }
+                
+                body .ui-clock {
+                    border: 0px solid transparent;
+                    background: #ffffff;
+                    color: #495057;
+                    padding:0;
+                    font-size: unset !important;
+                    float: right;
+                }
+
+                .dashboardText{
+                    //font-size: x-large;
+                    font-size: 35px;
+                    font-weight: bold;
+                }
+
+                .dashboardTitle{
+                    //font-size: x-large;
+                    font-size: 40px;
+                }
+
+                .ibox-title h5 {
+                    display: block;
+                    font-size: 14px;
+                    margin: 0 0 7px;
+                    padding: 0;
+                    text-overflow: ellipsis;
+                    float: none;
+                    text-align: center;
+                }
+
+                .ibox-content {
+                    text-align: left;
+                    background-color: #ffffff;
+                    color: inherit;
+                    padding: 15px 0px 20px 10px;
+                    border-color: #e7eaec;
+                    border-image: none;
+                    border-style: solid solid none;
+                    border-width: 1px 0;
+                }
+
+                .ibox-content-okvircek {
+                    text-align: center;
+                    background-color: #ffffff;
+                    color: inherit;
+                    //padding: 15px 0px 20px 10px;
+                    border-color: #e7eaec;
+                    border-image: none;
+                    border-style: solid solid none;
+                    border-width: 1px 0;
+
+                    width: 100%;
+                    height: 500px;
+                }
+
+                .ibox-title {
+                    padding: 15px 20px 8px 20px;
+                }
+
+                h1 {
+                    font-size: 150px;
+                }
+
+                h2{
+                    font-size: 3rem;
+                    font-weight: bold;
+                }
+
+                .ibox-title h2 {
+                    display: block;
+                    font-size: 34px;
+                    font-weight: bold;
+                    margin: 0 0 7px;
+                    padding: 0;
+                    text-overflow: ellipsis;
+                    float: none;
+                }
+
+                /* test */
+                #chartdiv {
+                    width: 100%;
+                    height: 400px;
+                }
+
+                #chartdivZastoji {
+                    width: 100%;
+                    height: 400px;
+                }
+
+                #chartdivIzmet {
+                    width: 100%;
+                    height: 400px;
+                }
+
+                highcharts-figure .chart-container {
+                    width: 300px;
+                    height: 200px;
+                    float: left;
+                }
+
+                .highcharts-figure,
+                .highcharts-data-table table {
+                    width: 600px;
+                    margin: 0 auto;
+                }
+
+                .highcharts-data-table table {
+                    font-family: Verdana, sans-serif;
+                    border-collapse: collapse;
+                    border: 1px solid #ebebeb;
+                    margin: 10px auto;
+                    text-align: center;
+                    width: 100%;
+                    max-width: 500px;
+                }
+
+                .highcharts-data-table caption {
+                    padding: 1em 0;
+                    font-size: 1.2em;
+                    color: #555;
+                }
+
+                .highcharts-data-table th {
+                    font-weight: 600;
+                    padding: 0.5em;
+                }
+
+                .highcharts-data-table td,
+                .highcharts-data-table th,
+                .highcharts-data-table caption {
+                    padding: 0.5em;
+                }
+
+                .highcharts-data-table thead tr,
+                .highcharts-data-table tr:nth-child(even) {
+                    background: #f8f8f8;
+                }
+
+                .highcharts-data-table tr:hover {
+                    background: #f1f7ff;
+                }
+
+                @media (max-width: 600px) {
+                    .highcharts-figure,
+                    .highcharts-data-table table {
+                        width: 100%;
+                    }
+
+                    .highcharts-figure .chart-container {
+                        width: 300px;
+                        float: none;
+                        margin: 0 auto;
+                    }
+                }
+
+            </style>
+
+
+            <script type="text/javascript">
+                function posodobiPodatke() {
+                    console.log('sem v posodobiPodatke:');
+                    axisDataItem.set("value", 50);
+                }
+
+                ion.sound({
+                    sounds: [
+                        {name: "bell_ring"
+                        },
+                        {
+                            name: "button_tiny"
+                        }
+                    ],
+                    // main config
+                    path: "/osloWebApp/sounds/",
+                    preload: true,
+                    multiplay: true,
+                    volume: 0.9
+                });
+
+                var oeeVarForChart = 99;
+                var zastojiVarForChart = 10;
+                var izmetVarForChart = 5;
+
+                function handleOpen(event) {
+                    console.log('Openning ', event);
+                }
+
+                function handleClose(code, channel, event) {
+                    console.log('Handle close: ' + code, channel, event);
+                    if (code == -1) {
+                        console.log('Websockets not supported by client')
+                    } else if (code == 1000) { // Normal close (as result of expired session or view)
+                        console.log('Normal close, will try to reconnect');
+                    } else {
+                        // Abnormal close reason (as result of an error)
+                        alert('Error during the reconnect! Please refresh WebPage')
+                    }
+                }
+
+                function handleMessage(message, channelName, event) {
+                    if (channelName === 'PROIDisplaysChannel') {
+                        //console.log('handleMessage - AGVchannel ', event);
+                        refresh(message, event);
+                    } else {
+                        alert('Unhandled channel: ' + channelName);
+                    }
+                }
+
+                function refresh(message, event) {
+                    const obj = JSON.parse(message);
+                    ion.sound.play("button_tiny");
+                    PF('PROIgrowl').renderMessage({summary: "Message from server", detail: obj.message + "", severity: obj.severity});
+                    updateDataView();
+                }
+
+            </script>
+
+
+
+        </ui:define>
+
+        <ui:define name="content">
+            <o:socket channel="PROIDisplaysChannel" onopen="handleOpen" onmessage="handleMessage" onclose="handleClose" />
+            <h:form id="form">
+                <p:growl id="PROIgrowl" widgetVar="PROIgrowl" showDetail="true" life="5000" sticky="false"/>     
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="gauge"></div>
+                    </div>
+                </div>
+
+                <!--
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <h:outputText value="Material(L):" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialLeft}" styleClass="dashboardText"/><br/>
+                        <h:outputText value="Proizvedeno(L):" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_left_int}" styleClass="dashboardText"/> <br/>
+                        <h:outputText value="Izmet(L):" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_left_int}" styleClass="dashboardText"/>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h:outputText value="Delovni nalog:" styleClass="dashboardText"/> <h:outputText value="NE VEM" styleClass="dashboardText"/> <br/>
+                        <h:outputText value="Prijavljenih operaterjev:" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.numberOfWorkers_int}" styleClass="dashboardText"/> <br/>
+                        <div class="row">
+                            <div class="col-md-6"><h:outputText value="Planirani zastoji:" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationPlanned}" styleClass="dashboardText"/> </div>
+                            <div class="col-md-6"><h:outputText value="Neplanirani zastoji:" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationUnplanned_int}" styleClass="dashboardText"/> </div>
+                        </div>                       
+                    </div>
+
+                    <div class="col-md-3">
+                        <h:outputText value="Material(D):" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialRight}" styleClass="dashboardText"/> <br/>
+                        <h:outputText value="Proizvedeno(D):" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_right_int}" styleClass="dashboardText"/> <br/>
+                        <h:outputText value="Izmet(D):" styleClass="dashboardText"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_right_int}" styleClass="dashboardText"/>
+                    </div>
+
+                </div>
+                <br/> 
+                -->
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h2><center>Levi</center></h2>
+                            </div>
+                            <div class="ibox-content">
+                                <h:outputText value="Izdelek:" styleClass="dashboardTitle"/> <h:outputText value="Tu je opis levega" styleClass="dashboardText"/><br/>
+                                <h:outputText value="Ident:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialLeft}" styleClass="dashboardText"/><br/>
+                                <h:outputText value="Proizvedeno:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_left_int}" styleClass="dashboardText"/> <br/>
+                                <h:outputText value="Izmet:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_left_int}" styleClass="dashboardText"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h2><center>Skupaj</center></h2>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+
+                                    <div class="col-md-6"><h:outputText value="Workcenter:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.workcenter}" styleClass="dashboardText"/> </div>
+                                    <div class="col-md-6"><h:outputText value="Delovni nalog:" styleClass="dashboardTitle"/> <h:outputText value="?" styleClass="dashboardText"/> </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"><h:outputText value="Prijavljenih operaterjev:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.numberOfWorkers_int}" styleClass="dashboardText"/> </div>
+                                    <div class="col-md-6"><h:outputText value="Planiranih operaterjev:" styleClass="dashboardTitle"/> <h:outputText value="?" styleClass="dashboardText"/> </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6"><h:outputText value="Planirani zastoji:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationPlanned} min" styleClass="dashboardText"/> </div>
+                                    <div class="col-md-6"><h:outputText value="Neplanirani zastoji:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeDurationUnplanned_int} min" styleClass="dashboardText"/> </div>
+
+                                </div>  
+                                <div class="row">
+
+                                    <div class="col-md-6"><h:outputText value="Downtime Rate:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.downtimeRate}" styleClass="dashboardText"/> </div>
+                                    <div class="col-md-6"><h:outputText value="Num of pcs in cycle:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.numberOfPcsInCycle}" styleClass="dashboardText"/> </div>
+
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h2><center>Desni</center></h2>
+                            </div>
+                            <div class="ibox-content">
+                                <h:outputText value="Izdelek:" styleClass="dashboardTitle"/> <h:outputText value="Tu je opis desnega" styleClass="dashboardText"/><br/>
+                                <h:outputText value="Ident:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.materialRight}" styleClass="dashboardText"/> <br/>
+                                <h:outputText value="Proizvedeno:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.quantity_right_int}" styleClass="dashboardText"/> <br/>
+                                <h:outputText value="Izmet:" styleClass="dashboardTitle"/> <h:outputText value="#{prodDisplaySingleWorkcenterBean.selectedWorkcenterDisplay.scrap_right_int}" styleClass="dashboardText"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h2><center>Realizacija</center></h2>
+                            </div>
+                            <div class="ibox-content-okvircek">
+                                <!--<h1 class="no-margins">95%</h1>-->
+                                <!--<div id="chartdiv"></div>-->
+                                <!--<p:chart id="gaugeREALIZACIJA" type="metergauge" model="#{prodDisplaySingleWorkcenterBean.meterGaugeModel}" style="width:100%;height:350px"/>-->
+
+                                <div class="col-12 md:col-6 lg:col-12 p-3" style="margin-top: -40px; width: 90% !important; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;height:100%">
+                                    <div class="p-3 text-center" style="border-radius: 12px; background-color: #6edb8b;height: 100%;display: flex;align-items: center;justify-content: center">
+                                        <div class="text-2xl font-medium mb-2" style="color: black; font-weight: bold !important; font-size: 7em !important">95 %</div>
+                                        <!--<span class="font-medium" style="color: black">Messages</span>-->
+                                    </div>
+                                </div>
+
+                                <!-- <p:commandButton value="Submit" actionListener="#{prodDisplaySingleWorkcenterBean.testirajGaugeRandomData()}" update="gaugeREALIZACIJA"/> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h2><center>Zastoji</center></h2>
+                            </div>
+                            <div class="ibox-content-okvircek">
+                                <!--<h1 class="no-margins">90%</h1>-->
+                                <!--<div id="chartdivZastoji"></div>-->
+                                <div class="col-12 md:col-6 lg:col-12 p-3" style="margin-top: -40px; width: 90% !important; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto; height:100%">
+                                    <div class="p-3 text-center" style="border-radius: 12px; background-color: #f75454; height: 100%;display: flex;align-items: center;justify-content: center">
+                                        <div class="text-2xl font-medium mb-2" style="color: black; font-weight: bold !important; font-size: 7em !important">400 min</div>
+                                        <!--<span class="font-medium" style="color: black">Messages</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h2><center>Izmet</center></h2>
+                            </div>
+                            <div class="ibox-content-okvircek">
+                                <!--<h1 class="no-margins">5%</h1>-->
+                                <!--<div id="chartdivIzmet"></div>-->
+                                <!--<p:chart id="gaugeREALIZACIJA2" type="metergauge" model="#{prodDisplaySingleWorkcenterBean.meterGaugeModel}" style="width:100%;height:350px"/>-->
+                                <div class="col-12 md:col-6 lg:col-12 p-3" style="margin-top: -40px; width: 90% !important; margin-top: 0px; margin-right: auto; margin-bottom: 0px; margin-left: auto;height:100%">
+                                    <div class="p-3 text-center" style="border-radius: 12px; background-color: #ebed4e; height: 100%;display: flex;align-items: center;justify-content: center">
+                                        <div class="text-2xl font-medium mb-2" style="color: black; font-weight: bold !important; font-size: 7em !important">0,95 %</div>
+                                        <!--<span class="font-medium" style="color: black">Messages</span>-->
+                                    </div>
+                                </div>                              
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </h:form>
+
+
+        </ui:define>
+
+        <ui:define name="beforeEndOfBody">
+
+        </ui:define>
+
+
+    </ui:composition>
+</html>

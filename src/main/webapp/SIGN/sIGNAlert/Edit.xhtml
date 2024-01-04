@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SIGNAlertEditDlg" widgetVar="SIGNAlertEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditSIGNAlertTitle}">
+            <h:form id="SIGNAlertEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{sIGNAlertController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditSIGNAlertLabel_idAlert}" for="idAlert" />
+                        <p:inputText id="idAlert" value="#{sIGNAlertController.selected.idAlert}" title="#{bundle.EditSIGNAlertTitle_idAlert}" required="true" requiredMessage="#{bundle.EditSIGNAlertRequiredMessage_idAlert}"/>
+                        <p:outputLabel value="#{bundle.EditSIGNAlertLabel_innerHTML}" for="innerHTML" />
+                        <p:inputText id="innerHTML" value="#{sIGNAlertController.selected.innerHTML}" title="#{bundle.EditSIGNAlertTitle_innerHTML}" />
+                        <p:outputLabel value="#{bundle.EditSIGNAlertLabel_date}" for="date" />
+                        <p:calendar id="date" pattern="MM/dd/yyyy" value="#{sIGNAlertController.selected.date}" title="#{bundle.EditSIGNAlertTitle_date}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{sIGNAlertController.update}" value="#{bundle.Save}" update="display,:SIGNAlertListForm:datalist,:growl" oncomplete="handleSubmit(args, 'SIGNAlertEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SIGNAlertEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="HRCourseInstructorEditDlg" widgetVar="HRCourseInstructorEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleHRCourse.EditHRCourseInstructorTitle}">
+            <h:form id="HRCourseInstructorEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{hRCourseInstructorController.selected != null}">
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorLabel_instructorID}" for="instructorID" />
+                        <p:inputText id="instructorID" disabled="true" value="#{hRCourseInstructorController.selected.instructorID}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_instructorID}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseInstructorRequiredMessage_instructorID}"/>
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorLabel_codeksID}" for="codeksID" />
+                        <p:inputText id="codeksID" value="#{hRCourseInstructorController.selected.codeksID}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_codeksID}" />
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorTitle_firstname}" for="firstname" />
+                        <p:inputText id="firstname" value="#{hRCourseInstructorController.selected.firstname}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_firstname}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseInstructorRequiredMessage_firstname}"/>
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorTitle_lastname}" for="lastname" />
+                        <p:inputText id="lastname" value="#{hRCourseInstructorController.selected.lastname}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_lastname}" />
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorTitle_company}" for="company" />
+                        <p:inputText id="company" value="#{hRCourseInstructorController.selected.company}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_company}" />
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorTitle_phone}" for="phone" />
+                        <p:inputText id="phone" value="#{hRCourseInstructorController.selected.phone}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_phone}" />
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorLabel_mail}" for="mail" />
+                        <p:inputText id="mail" value="#{hRCourseInstructorController.selected.mail}" title="#{bundleHRCourse.EditHRCourseInstructorTitle_mail}" />
+                        <p:outputLabel value="#{bundleHRCourse.EditHRCourseInstructorTitle_active}" for="active" />
+                        <p:selectBooleanCheckbox id="active" value="#{hRCourseInstructorController.selected.active}" required="true" requiredMessage="#{bundleHRCourse.EditHRCourseInstructorRequiredMessage_active}"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{hRCourseInstructorController.update}" value="#{bundleHRCourse.Save}" update="display,:HRCourseInstructorListForm:datalist,:growl" onclick="PR('HRCourseInstructorEditDialog').hide()"/>
+                    <p:commandButton value="#{bundleHRCourse.Cancel}" onclick="PR('HRCourseInstructorEditDialog').hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundleAGV.ListAGVstatusTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="AGVstatusListForm">
+                <p:panel header="#{bundleAGV.ListAGVstatusTitle}">
+                    <p:dataTable id="datalist" value="#{aGVstatusController.items}" var="item"
+                                 selectionMode="single" selection="#{aGVstatusController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.statusId}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
+                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVstatusTitle_statusId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.statusId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVstatusTitle_statusName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.statusName}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVstatusTitle_disabled}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.disabled}" disabled="true"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVstatusTitle_statusOrder}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.statusOrder}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundleAGV.ListAGVstatusTitle_orderTypeId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.orderTypeId}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundleAGV.Create}" actionListener="#{aGVstatusController.prepareCreate}" update=":AGVstatusCreateForm" oncomplete="PF('AGVstatusCreateDialog').show()"/>
+                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundleAGV.View}" update=":AGVstatusViewForm" oncomplete="PF('AGVstatusViewDialog').show()" disabled="#{empty aGVstatusController.selected}"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundleAGV.Edit}" update=":AGVstatusEditForm" oncomplete="PF('AGVstatusEditDialog').show()" disabled="#{empty aGVstatusController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundleAGV.Delete}" actionListener="#{aGVstatusController.destroy}" update=":growl,datalist" disabled="#{empty aGVstatusController.selected}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

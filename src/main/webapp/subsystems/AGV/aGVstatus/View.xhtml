@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AGVstatusViewDlg" widgetVar="AGVstatusViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleAGV.ViewAGVstatusTitle}">
+            <h:form id="AGVstatusViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{aGVstatusController.selected != null}">
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLabel_statusId}"/>
+                        <h:outputText value="#{aGVstatusController.selected.statusId}" title="#{bundleAGV.ViewAGVstatusTitle_statusId}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLabel_statusName}"/>
+                        <h:outputText value="#{aGVstatusController.selected.statusName}" title="#{bundleAGV.ViewAGVstatusTitle_statusName}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLabel_disabled}"/>
+                        <p:selectBooleanCheckbox value="#{aGVstatusController.selected.disabled}" disabled="true"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLabel_statusOrder}"/>
+                        <h:outputText value="#{aGVstatusController.selected.statusOrder}" title="#{bundleAGV.ViewAGVstatusTitle_statusOrder}"/>
+                        <h:outputText value="#{bundleAGV.ViewAGVstatusLabel_orderTypeId}"/>
+                        <h:outputText value="#{aGVstatusController.selected.orderTypeId}" title="#{bundleAGV.ViewAGVstatusTitle_orderTypeId}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundleAGV.Close}" onclick="AGVstatusViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

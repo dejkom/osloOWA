@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Ocenitev izobraževanja - seminarja
+
+            <style type="text/css">
+                .ui-selectonelistbox, .ui-selectmanymenu,.ui-multiselectlistbox-listcontainer{
+                    width:30% !important;
+                }
+            </style>
+
+        </ui:define>
+
+
+        <ui:define name="PageHeaderSubtitle">
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+                <p:panel id="pnl" header="">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <p:outputLabel for="@next" value="Naziv seminarja/tečaja: " style="font-size: large !important"/> 
+                            <h:outputText value=" #{hRCourseSurveyBean.coffering.courseID.courseTitle}" style="font-weight: bold; font-size: large !important"/>
+                        </div>                    
+                        <div class="col-md-6">
+                            <p:outputLabel for="@next" value="Izvajalec izobraževanja: " style="font-size: large !important"/>
+                            <h:outputText value=" #{hRCourseSurveyBean.coffering.instructorID.lastname} " style="font-weight: bold; font-size: large !important" /> <h:outputText value="#{hRCourseSurveyBean.coffering.instructorID.firstname}" style="font-weight: bold; font-size: large !important" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <p:outputLabel for="@next" value="Datum izobraževanja: " style="font-size: large !important"/>
+                            <h:outputText value="#{hRCourseSurveyBean.coffering.courseDate}" style="font-weight: bold; font-size: large !important">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="Europe/Ljubljana"/>
+                            </h:outputText>
+                        </div>
+                        <div class="col-md-6">
+                            <p:outputLabel for="@next" value="Priimek in ime udeleženca:  " style="font-size: large !important"/>
+                            <h:outputText style="font-weight: bold; font-size: large !important" value=" #{hRCourseSurveyBean.user.lastname} #{hRCourseSurveyBean.user.firstname}" />
+                        </div>
+
+                    </div>
+
+
+                    <br/>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover no-margins">
+                                <thead>
+                                    <tr>
+                                        <th>Št</th>
+                                        <th>Trditve, ki merijo učinkovito izvedbo seminarja</th>
+                                        <th></th>
+                                        <th><i class="fa fa-star"></i> Ocena</th>
+                                        <th><i class="fa fa-file-pen"></i> Opomba</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <c:forEach var="question" items="#{hRCourseSurveyBean.vprasanja}"  varStatus="status" >
+
+                                        <c:choose>
+                                            <c:when test="${question.zapSt == 6}">
+                                                <tr>
+                                                    <td>${question.zapSt}</td>
+                                                    <td><h:outputText value="${question.vprasanje}"/></td>
+                                                    <td>
+                                                        <p:selectOneMenu id="option" value="${question.comment}">
+                                                            <f:selectItem itemLabel="Dodatne opombe" itemValue=""/>
+                                                            <f:selectItem itemLabel="Gradiva nismo prejeli" itemValue="#NIGRADIVA#"/>
+                                                            <p:ajax event="change" update="comment6Text rating6" listener="#{hRCourseSurveyBean.gradivoSelectOneMenuListener}"/>
+                                                        </p:selectOneMenu>
+                                                    </td>
+                                                    <td>
+                                                        <p:rating id="rating6" value="${question.odgovor}" disabled="#{hRCourseSurveyBean.rating6Disabled}" stars="4"/> 
+                                                    </td>
+                                                    <td>
+                                                        <p:inputTextarea id="comment6Text" value="${question.comment}" disabled="#{hRCourseSurveyBean.rating6Disabled}" rows="1" cols="33"/>
+                                                    </td>
+                                                </tr>
+                                            </c:when>
+                                            <c:when test="${question.zapSt == 8}">
+                                                <tr>
+                                                    <td>${question.zapSt}</td>
+                                                    <td><h:outputText value="${question.vprasanje}"/></td>
+                                                    <td>
+                                                        <p:selectOneMenu id="option" value="${question.comment}">
+                                                            <f:selectItem itemLabel="Dodatne opombe" itemValue=""/>
+                                                            <f:selectItem itemLabel="Izobraževanje je potekalo na daljavo" itemValue="#NADALJAVO#"/>
+                                                            <p:ajax event="change" update="comment8Text rating8" listener="#{hRCourseSurveyBean.prostorSelectOneMenuListener}"/>
+                                                        </p:selectOneMenu>
+                                                    </td>
+                                                    <td>
+                                                        <p:rating id="rating8" value="${question.odgovor}" disabled="#{hRCourseSurveyBean.rating8Disabled}" stars="4"/> 
+                                                    </td>
+                                                    <td>
+                                                        <p:inputTextarea id="comment8Text" value="${question.comment}" disabled="#{hRCourseSurveyBean.rating8Disabled}" rows="1" cols="33"/>
+                                                    </td>
+                                                </tr>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr>
+                                                    <td>${question.zapSt}</td>
+                                                    <td><h:outputText value="${question.vprasanje}"/></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <p:rating value="${question.odgovor}" stars="4"/> 
+                                                    </td>
+                                                    <td>
+                                                        <p:inputTextarea value="${question.comment}" rows="1" cols="33"/>
+                                                    </td>
+                                                </tr>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <!--
+                                        <tr>
+                                            <td>${question.zapSt}</td>
+                                            <td><h:outputText value="${question.vprasanje}"/></td>
+                                            <td>
+                                                <p:rating value="${question.odgovor}" stars="4"/> 
+                                            </td>
+                                            <td>
+                                                <p:inputTextarea value="${question.comment}" rows="1" cols="33"/>
+                                            </td>
+                                        </tr>
+                                        -->
+
+                                    </c:forEach>   
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+
+                    <p:commandButton id="submitButton" disabled="#{!empty hRCourseSurveyBean.answers}" style="width:100%; height: 60px" update="growl :form1:submitButton" class="btn btn-primary" actionListener="#{hRCourseSurveyBean.saveResponse}" value="Shrani"/>
+
+
+
+
+
+
+                </p:panel>
+
+                <p:blockUI block="pnl" trigger="submitButton" widgetVar="buiBasic"/>
+
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

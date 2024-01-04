@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="QSLogTableEditDlg" widgetVar="QSLogTableEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleQSLog.EditQSLogTableTitle}">
+            <h:form id="QSLogTableEditForm">
+                <p:panel styleClass="scrollable-panel">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" rendered="#{qSLogTableController.selected != null}" style="width:100%">
+                            
+                            <!--
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_idRow}" for="idRow" />
+                            <p:inputText id="idRow" value="#{qSLogTableController.selected.idRow}" title="#{bundleQSLog.CreateQSLogTableTitle_idRow}" required="true" requiredMessage="#{bundleQSLog.CreateQSLogTableRequiredMessage_idRow}"/>
+                            -->
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_customer}" for="customer" />
+                            <!--<p:inputText id="customer" value="#{qSLogTableController.selected.customer}" title="#{bundleQSLog.CreateQSLogTableTitle_customer}" />-->
+                            <p:selectOneMenu id="customer" value="#{qSLogTableController.selected.customer}" required="true">
+                                <f:selectItem itemLabel="Select One Customer" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(2)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_plant}" for="plant"/>
+                            <!--<p:inputText id="plant" value="#{qSLogTableController.selected.plant}" title="#{bundleQSLog.CreateQSLogTableTitle_plant}" />-->
+                            <p:selectOneMenu id="plant" required="true" value="#{qSLogTableController.selected.plant}">
+                                <f:selectItem itemLabel="Select One Plant" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(3)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_project}" for="project"/>
+                            <!--<p:inputText id="project" value="#{qSLogTableController.selected.project}" title="#{bundleQSLog.CreateQSLogTableTitle_project}" />-->
+                            <p:selectOneMenu id="project" required="true" value="#{qSLogTableController.selected.project}">
+                                <f:selectItem itemLabel="Select One Project" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(4)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <!--TUKAJ PRIDE CUSTOMER PART NUMBER -->
+                             <p:outputLabel value="Customer Part Number" for="customerPartNumber" />
+                             <p:inputText id="customerPartNumber" required="false" value="#{qSLogTableController.selected.customerPartNumber}" title="Customer Part Number" />
+
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_HDLSWLBlendaAdapter}" for="HDLSWLBlendaAdapter"/>
+                            <!--<p:inputText id="HDLSWLBlendaAdapter" value="#{qSLogTableController.selected.HDLSWLBlendaAdapter}" title="#{bundleQSLog.CreateQSLogTableTitle_HDLSWLBlendaAdapter}" />-->
+                            <p:selectOneMenu id="HDLSWLBlendaAdapter" required="true" value="#{qSLogTableController.selected.HDLSWLBlendaAdapter}">
+                                <f:selectItem itemLabel="Select One Project" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(5)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_team}" for="team" />
+                            <!--<p:inputText id="team" value="#{qSLogTableController.selected.team}" title="#{bundleQSLog.CreateQSLogTableTitle_team}" />-->
+                            <p:selectOneMenu id="team" value="#{qSLogTableController.selected.team}">
+                                <f:selectItem itemLabel="Select One Team" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(6)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_claimedParts}" for="claimedParts" />
+                            <p:inputText id="claimedParts" required="true" value="#{qSLogTableController.selected.claimedParts}" title="#{bundleQSLog.CreateQSLogTableTitle_claimedParts}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_PPMrelevantParts}" for="PPMrelevantParts" />
+                            <p:inputText id="PPMrelevantParts" required="true" value="#{qSLogTableController.selected.PPMrelevantParts}" title="#{bundleQSLog.CreateQSLogTableTitle_PPMrelevantParts}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_XRepetitiveDefects}" for="XRepetitiveDefects" />
+                            <p:inputText id="XRepetitiveDefects" value="#{qSLogTableController.selected.XRepetitiveDefects}" title="#{bundleQSLog.CreateQSLogTableTitle_XRepetitiveDefects}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_claimDate}" for="claimDate" />
+                            <p:calendar id="claimDate" pattern="dd.MM.yyyy" value="#{qSLogTableController.selected.claimDate}" title="#{bundleQSLog.EditQSLogTableTitle_claimDate}"  showOn="button"/>
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_CWWeek}" for="CWWeek" />
+                            <p:inputText id="CWWeek" value="#{qSLogTableController.selected.CWWeek}" title="#{bundleQSLog.CreateQSLogTableTitle_CWWeek}" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_productionDate}" for="productionDate" />
+                            <p:inputText id="productionDate" value="#{qSLogTableController.selected.productionDate}" title="#{bundleQSLog.CreateQSLogTableTitle_productionDate}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_recievingDate}" for="recievingDate" />
+                            <p:inputText id="recievingDate" value="#{qSLogTableController.selected.recievingDate}" title="#{bundleQSLog.CreateQSLogTableTitle_recievingDate}" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_month}" for="month" />
+                            <!--<p:inputText id="month" value="#{qSLogTableController.selected.month}" title="#{bundleQSLog.CreateQSLogTableTitle_month}" />-->
+                            <p:selectOneMenu id="month" value="#{qSLogTableController.selected.month}">
+                                <f:selectItem itemLabel="Select One Month" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(1)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_claimNo}" for="claimNo" />
+                            <p:inputText id="claimNo" value="#{qSLogTableController.selected.claimNo}" title="#{bundleQSLog.CreateQSLogTableTitle_claimNo}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_claimNoAdditionalMark}" for="claimNoAdditionalMark" />
+                            <p:inputText id="claimNoAdditionalMark" value="#{qSLogTableController.selected.claimNoAdditionalMark}" title="#{bundleQSLog.CreateQSLogTableTitle_claimNoAdditionalMark}" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_defectdescription}" for="defectdescription" />
+                            <!--<p:inputText id="defectdescription" value="#{qSLogTableController.selected.defectdescription}" title="#{bundleQSLog.CreateQSLogTableTitle_defectdescription}" />-->
+                            <p:selectOneMenu id="defectdescription" required="true" value="#{qSLogTableController.selected.defectdescription}" >
+                                <f:selectItem itemLabel="Select One Defect Description" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(7)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_shorterDefectDescription}" for="shorterDefectDescription" />
+                            <!--<p:inputText id="shorterDefectDescription" value="#{qSLogTableController.selected.shorterDefectDescription}" title="#{bundleQSLog.CreateQSLogTableTitle_shorterDefectDescription}" />-->
+                            <p:selectOneMenu id="shorterDefectDescription" value="#{qSLogTableController.selected.shorterDefectDescription}">
+                                <f:selectItem itemLabel="Select One short Defect Description" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(8)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_shorterDefectDescriptionSLO}" for="shorterDefectDescriptionSLO" />
+                            <!--<p:inputText id="shorterDefectDescriptionSLO" value="#{qSLogTableController.selected.shorterDefectDescriptionSLO}" title="#{bundleQSLog.CreateQSLogTableTitle_shorterDefectDescriptionSLO}" />-->
+                            <p:selectOneMenu id="shorterDefectDescriptionSLO" value="#{qSLogTableController.selected.shorterDefectDescriptionSLO}">
+                                <f:selectItem itemLabel="Select One short Defect Description SLO" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(9)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_rootCauseOccurence}" for="rootCauseOccurence" />
+                            <!--<p:inputText id="rootCauseOccurence" value="#{qSLogTableController.selected.rootCauseOccurence}" title="#{bundleQSLog.CreateQSLogTableTitle_rootCauseOccurence}" />-->
+                            <p:selectOneMenu id="rootCauseOccurence" value="#{qSLogTableController.selected.rootCauseOccurence}">
+                                <f:selectItem itemLabel="Select One Root Cause Occurence" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(17)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_rootCauseNonDetection}" for="rootCauseNonDetection" />
+                            <!--<p:inputText id="rootCauseNonDetection" value="#{qSLogTableController.selected.rootCauseNonDetection}" title="#{bundleQSLog.CreateQSLogTableTitle_rootCauseNonDetection}" />-->
+                            <p:selectOneMenu id="rootCauseNonDetection" value="#{qSLogTableController.selected.rootCauseNonDetection}">
+                                <f:selectItem itemLabel="Select One Root Cause Occurence non detection" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(18)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_termin8DReport}" for="termin8DReport" />
+                            <p:inputText id="termin8DReport" value="#{qSLogTableController.selected.termin8DReport}" title="#{bundleQSLog.CreateQSLogTableTitle_termin8DReport}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_nr8DReport}" for="nr8DReport" />
+                            <p:inputText id="nr8DReport" value="#{qSLogTableController.selected.nr8DReport}" title="#{bundleQSLog.CreateQSLogTableTitle_nr8DReport}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_DReportCompletedOn1}" for="DReportCompletedOn1" />
+                            <p:inputText id="DReportCompletedOn1" value="#{qSLogTableController.selected.DReportCompletedOn1}" title="#{bundleQSLog.CreateQSLogTableTitle_DReportCompletedOn1}" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_status8DDoneOpen}" for="status8DDoneOpen" />
+                            <!--<p:inputText id="status8DDoneOpen" value="#{qSLogTableController.selected.status8DDoneOpen}" title="#{bundleQSLog.CreateQSLogTableTitle_status8DDoneOpen}" />-->
+                            <p:selectOneMenu id="status8DDoneOpen" value="#{qSLogTableController.selected.status8DDoneOpen}">
+                                <f:selectItem itemLabel="Select One 8D status" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(11)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_reactivity8D}" for="reactivity8D" />
+                            <p:inputText id="reactivity8D" value="#{qSLogTableController.selected.reactivity8D}" title="#{bundleQSLog.CreateQSLogTableTitle_reactivity8D}" />
+                            
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_causedByInt}" for="causedByInt" />
+                            <!--<p:inputText id="causedByInt" value="#{qSLogTableController.selected.causedByInt}" title="#{bundleQSLog.CreateQSLogTableTitle_causedByInt}" />-->
+                            <p:selectOneMenu id="causedByInt" value="#{qSLogTableController.selected.causedByInt}">
+                                <f:selectItem itemLabel="Select One CausedByInt" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(10)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>                                                                              
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_supplierCaused}" for="supplierCaused" />
+                            <p:inputText id="supplierCaused" value="#{qSLogTableController.selected.supplierCaused}" title="#{bundleQSLog.CreateQSLogTableTitle_supplierCaused}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_odeloCaused}" for="odeloCaused" />
+                            <p:inputText id="odeloCaused" value="#{qSLogTableController.selected.odeloCaused}" title="#{bundleQSLog.CreateQSLogTableTitle_odeloCaused}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_rejected}" for="rejected" />
+                            <p:inputText id="rejected" value="#{qSLogTableController.selected.rejected}" title="#{bundleQSLog.CreateQSLogTableTitle_rejected}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_cleanPoint}" for="cleanPoint" />
+                            <p:inputText id="cleanPoint" value="#{qSLogTableController.selected.cleanPoint}" title="#{bundleQSLog.CreateQSLogTableTitle_cleanPoint}" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_statusOfPartAfterTheComplaint}" for="statusOfPartAfterTheComplaint" />
+                            <!--<p:inputText id="statusOfPartAfterTheComplaint" value="#{qSLogTableController.selected.statusOfPartAfterTheComplaint}" title="#{bundleQSLog.CreateQSLogTableTitle_statusOfPartAfterTheComplaint}" />-->
+                            <p:selectOneMenu id="statusOfPartAfterTheComplaint" value="#{qSLogTableController.selected.statusOfPartAfterTheComplaint}">
+                                <f:selectItem itemLabel="Select One Status of part after complaint" itemValue=""/>
+                                <f:selectItems value="#{qSoverviewController.getItemsAvailableByParentID(13)}" var="qso" itemLabel="#{qso.name}" itemValue="#{qso.id}"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_supplierName}" for="supplierName" />
+                            <p:inputText id="supplierName" value="#{qSLogTableController.selected.supplierName}" title="#{bundleQSLog.CreateQSLogTableTitle_supplierName}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_supplierPB}" for="supplierPB" />
+                            <p:inputText id="supplierPB" value="#{qSLogTableController.selected.supplierPB}" title="#{bundleQSLog.CreateQSLogTableTitle_supplierPB}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_dateOfWeiterbelastung}" for="dateOfWeiterbelastung" />
+                            <p:inputText id="dateOfWeiterbelastung" value="#{qSLogTableController.selected.dateOfWeiterbelastung}" title="#{bundleQSLog.CreateQSLogTableTitle_dateOfWeiterbelastung}" />
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_debitDone}" for="debitDone" />
+                            <p:inputText id="debitDone" value="#{qSLogTableController.selected.debitDone}" title="#{bundleQSLog.CreateQSLogTableTitle_debitDone}" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.CreateQSLogTableLabel_remarks}" for="remarks" />
+                            <p:inputText id="remarks" value="#{qSLogTableController.selected.remarks}" title="#{bundleQSLog.CreateQSLogTableTitle_remarks}" style="width:100%"/>
+                                     
+                            
+                            <!--
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_idRow}" for="idRow" />
+                            <p:inputText id="idRow" value="#{qSLogTableController.selected.idRow}" title="#{bundleQSLog.EditQSLogTableTitle_idRow}" required="true" requiredMessage="#{bundleQSLog.EditQSLogTableRequiredMessage_idRow}"/>
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_customer}" for="customer" />
+                            <p:inputText id="customer" value="#{qSLogTableController.selected.customer}" title="#{bundleQSLog.EditQSLogTableTitle_customer}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_plant}" for="plant" />
+                            <p:inputText id="plant" value="#{qSLogTableController.selected.plant}" title="#{bundleQSLog.EditQSLogTableTitle_plant}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_project}" for="project" />
+                            <p:inputText id="project" value="#{qSLogTableController.selected.project}" title="#{bundleQSLog.EditQSLogTableTitle_project}" />
+                            
+                             <p:outputLabel value="Customer Part Number" for="customerPartNumber" />
+                             <p:inputText id="customerPartNumber" required="false" value="#{qSLogTableController.selected.customerPartNumber}" title="Customer Part Number" />
+                            
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_HDLSWLBlendaAdapter}" for="HDLSWLBlendaAdapter" />
+                            <p:inputText id="HDLSWLBlendaAdapter" value="#{qSLogTableController.selected.HDLSWLBlendaAdapter}" title="#{bundleQSLog.EditQSLogTableTitle_HDLSWLBlendaAdapter}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_team}" for="team" />
+                            <p:inputText id="team" value="#{qSLogTableController.selected.team}" title="#{bundleQSLog.EditQSLogTableTitle_team}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_month}" for="month" />
+                            <p:inputText id="month" value="#{qSLogTableController.selected.month}" title="#{bundleQSLog.EditQSLogTableTitle_month}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_defectdescription}" for="defectdescription" />
+                            <p:inputText id="defectdescription" value="#{qSLogTableController.selected.defectdescription}" title="#{bundleQSLog.EditQSLogTableTitle_defectdescription}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_shorterDefectDescription}" for="shorterDefectDescription" />
+                            <p:inputText id="shorterDefectDescription" value="#{qSLogTableController.selected.shorterDefectDescription}" title="#{bundleQSLog.EditQSLogTableTitle_shorterDefectDescription}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_shorterDefectDescriptionSLO}" for="shorterDefectDescriptionSLO" />
+                            <p:inputText id="shorterDefectDescriptionSLO" value="#{qSLogTableController.selected.shorterDefectDescriptionSLO}" title="#{bundleQSLog.EditQSLogTableTitle_shorterDefectDescriptionSLO}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_causedByInt}" for="causedByInt" />
+                            <p:inputText id="causedByInt" value="#{qSLogTableController.selected.causedByInt}" title="#{bundleQSLog.EditQSLogTableTitle_causedByInt}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_status8D}" for="status8D" />
+                            <p:inputText id="status8D" value="#{qSLogTableController.selected.status8D}" title="#{bundleQSLog.EditQSLogTableTitle_status8D}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_statusOfPartAfterTheComplaint}" for="statusOfPartAfterTheComplaint" />
+                            <p:inputText id="statusOfPartAfterTheComplaint" value="#{qSLogTableController.selected.statusOfPartAfterTheComplaint}" title="#{bundleQSLog.EditQSLogTableTitle_statusOfPartAfterTheComplaint}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_krajsiOpisReklamacije}" for="krajsiOpisReklamacije" />
+                            <p:inputText id="krajsiOpisReklamacije" value="#{qSLogTableController.selected.krajsiOpisReklamacije}" title="#{bundleQSLog.EditQSLogTableTitle_krajsiOpisReklamacije}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_actionNonDetection}" for="actionNonDetection" />
+                            <p:inputText id="actionNonDetection" value="#{qSLogTableController.selected.actionNonDetection}" title="#{bundleQSLog.EditQSLogTableTitle_actionNonDetection}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_actionOccurence}" for="actionOccurence" />
+                            <p:inputText id="actionOccurence" value="#{qSLogTableController.selected.actionOccurence}" title="#{bundleQSLog.EditQSLogTableTitle_actionOccurence}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_rootCauseOccurence}" for="rootCauseOccurence" />
+                            <p:inputText id="rootCauseOccurence" value="#{qSLogTableController.selected.rootCauseOccurence}" title="#{bundleQSLog.EditQSLogTableTitle_rootCauseOccurence}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_rootCauseNonDetection}" for="rootCauseNonDetection" />
+                            <p:inputText id="rootCauseNonDetection" value="#{qSLogTableController.selected.rootCauseNonDetection}" title="#{bundleQSLog.EditQSLogTableTitle_rootCauseNonDetection}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_responseTime}" for="responseTime" />
+                            <p:inputText id="responseTime" value="#{qSLogTableController.selected.responseTime}" title="#{bundleQSLog.EditQSLogTableTitle_responseTime}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_DReportCompletedOn}" for="DReportCompletedOn" />
+                            <p:inputText id="DReportCompletedOn" value="#{qSLogTableController.selected.DReportCompletedOn}" title="#{bundleQSLog.EditQSLogTableTitle_DReportCompletedOn}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_reactivity3D}" for="reactivity3D" />
+                            <p:inputText id="reactivity3D" value="#{qSLogTableController.selected.reactivity3D}" title="#{bundleQSLog.EditQSLogTableTitle_reactivity3D}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_termin8DReport}" for="termin8DReport" />
+                            <p:inputText id="termin8DReport" value="#{qSLogTableController.selected.termin8DReport}" title="#{bundleQSLog.EditQSLogTableTitle_termin8DReport}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_nr8DReport}" for="nr8DReport" />
+                            <p:inputText id="nr8DReport" value="#{qSLogTableController.selected.nr8DReport}" title="#{bundleQSLog.EditQSLogTableTitle_nr8DReport}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_DReportCompletedOn1}" for="DReportCompletedOn1" />
+                            <p:inputText id="DReportCompletedOn1" value="#{qSLogTableController.selected.DReportCompletedOn1}" title="#{bundleQSLog.EditQSLogTableTitle_DReportCompletedOn1}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_status8DDoneOpen}" for="status8DDoneOpen" />
+                            <p:inputText id="status8DDoneOpen" value="#{qSLogTableController.selected.status8DDoneOpen}" title="#{bundleQSLog.EditQSLogTableTitle_status8DDoneOpen}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_reactivity8D}" for="reactivity8D" />
+                            <p:inputText id="reactivity8D" value="#{qSLogTableController.selected.reactivity8D}" title="#{bundleQSLog.EditQSLogTableTitle_reactivity8D}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_causeBy}" for="causeBy" />
+                            <p:inputText id="causeBy" value="#{qSLogTableController.selected.causeBy}" title="#{bundleQSLog.EditQSLogTableTitle_causeBy}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_supplierCaused}" for="supplierCaused" />
+                            <p:inputText id="supplierCaused" value="#{qSLogTableController.selected.supplierCaused}" title="#{bundleQSLog.EditQSLogTableTitle_supplierCaused}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_odeloCaused}" for="odeloCaused" />
+                            <p:inputText id="odeloCaused" value="#{qSLogTableController.selected.odeloCaused}" title="#{bundleQSLog.EditQSLogTableTitle_odeloCaused}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_rejected}" for="rejected" />
+                            <p:inputText id="rejected" value="#{qSLogTableController.selected.rejected}" title="#{bundleQSLog.EditQSLogTableTitle_rejected}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_cleanPoint}" for="cleanPoint" />
+                            <p:inputText id="cleanPoint" value="#{qSLogTableController.selected.cleanPoint}" title="#{bundleQSLog.EditQSLogTableTitle_cleanPoint}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_statusKosaPoReklamaciji}" for="statusKosaPoReklamaciji" />
+                            <p:inputText id="statusKosaPoReklamaciji" value="#{qSLogTableController.selected.statusKosaPoReklamaciji}" title="#{bundleQSLog.EditQSLogTableTitle_statusKosaPoReklamaciji}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_supplierName}" for="supplierName" />
+                            <p:inputText id="supplierName" value="#{qSLogTableController.selected.supplierName}" title="#{bundleQSLog.EditQSLogTableTitle_supplierName}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_supplierPB}" for="supplierPB" />
+                            <p:inputText id="supplierPB" value="#{qSLogTableController.selected.supplierPB}" title="#{bundleQSLog.EditQSLogTableTitle_supplierPB}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_dateOfWeiterbelastung}" for="dateOfWeiterbelastung" />
+                            <p:inputText id="dateOfWeiterbelastung" value="#{qSLogTableController.selected.dateOfWeiterbelastung}" title="#{bundleQSLog.EditQSLogTableTitle_dateOfWeiterbelastung}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_debitDone}" for="debitDone" />
+                            <p:inputText id="debitDone" value="#{qSLogTableController.selected.debitDone}" title="#{bundleQSLog.EditQSLogTableTitle_debitDone}" />
+                            
+                            
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_teamLeader}" for="teamLeader" />
+                            <p:inputText id="teamLeader" value="#{qSLogTableController.selected.teamLeader}" title="#{bundleQSLog.EditQSLogTableTitle_teamLeader}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_terminPSReport}" for="terminPSReport" />
+                            <p:inputText id="terminPSReport" value="#{qSLogTableController.selected.terminPSReport}" title="#{bundleQSLog.EditQSLogTableTitle_terminPSReport}" />
+                            
+                            
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_remarks}" for="remarks" />
+                            <p:inputText id="remarks" value="#{qSLogTableController.selected.remarks}" title="#{bundleQSLog.EditQSLogTableTitle_remarks}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_claimedParts}" for="claimedParts" />
+                            <p:inputText id="claimedParts" value="#{qSLogTableController.selected.claimedParts}" title="#{bundleQSLog.EditQSLogTableTitle_claimedParts}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_PPMrelevantParts}" for="PPMrelevantParts" />
+                            <p:inputText id="PPMrelevantParts" value="#{qSLogTableController.selected.PPMrelevantParts}" title="#{bundleQSLog.EditQSLogTableTitle_PPMrelevantParts}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_XRepetitiveDefects}" for="XRepetitiveDefects" />
+                            <p:inputText id="XRepetitiveDefects" value="#{qSLogTableController.selected.XRepetitiveDefects}" title="#{bundleQSLog.EditQSLogTableTitle_XRepetitiveDefects}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_claimDate}" for="claimDate" />
+                            <p:calendar id="claimDate" pattern="MM/dd/yyyy" value="#{qSLogTableController.selected.claimDate}" title="#{bundleQSLog.EditQSLogTableTitle_claimDate}"  showOn="button"/>
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_CWWeek}" for="CWWeek" />
+                            <p:inputText id="CWWeek" value="#{qSLogTableController.selected.CWWeek}" title="#{bundleQSLog.EditQSLogTableTitle_CWWeek}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_productionDate}" for="productionDate" />
+                            <p:inputText id="productionDate" value="#{qSLogTableController.selected.productionDate}" title="#{bundleQSLog.EditQSLogTableTitle_productionDate}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_recievingDate}" for="recievingDate" />
+                            <p:inputText id="recievingDate" value="#{qSLogTableController.selected.recievingDate}" title="#{bundleQSLog.EditQSLogTableTitle_recievingDate}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_claimNo}" for="claimNo" />
+                            <p:inputText id="claimNo" value="#{qSLogTableController.selected.claimNo}" title="#{bundleQSLog.EditQSLogTableTitle_claimNo}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_claimNoAdditionalMark}" for="claimNoAdditionalMark" />
+                            <p:inputText id="claimNoAdditionalMark" value="#{qSLogTableController.selected.claimNoAdditionalMark}" title="#{bundleQSLog.EditQSLogTableTitle_claimNoAdditionalMark}" />
+                            <p:outputLabel value="#{bundleQSLog.EditQSLogTableLabel_commentForReport}" for="commentForReport" />
+                            <p:inputText id="commentForReport" value="#{qSLogTableController.selected.commentForReport}" title="#{bundleQSLog.EditQSLogTableTitle_commentForReport}" />
+                        -->
+                            
+                            </p:panelGrid>
+                        <p:commandButton actionListener="#{qSLogTableController.update}" value="#{bundleQSLog.Save}" update="display,:QSLogTableListForm:datalist,:growl" oncomplete="handleSubmit(args, 'QSLogTableEditDialog');"/>
+                        <p:commandButton value="#{bundleQSLog.Cancel}" onclick="QSLogTableEditDialog.hide()"/>
+                    </h:panelGroup>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

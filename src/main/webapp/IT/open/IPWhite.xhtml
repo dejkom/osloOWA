@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            Predstavitev Informacijska Varnost (za napredne uporabnike)
+
+            <script>
+                window.onload = (event) => {
+                    console.log('The page has fully loaded');
+                    checkForPresentationIndexPage(287);
+                    //checkForPresentationDean(287);
+                };
+            </script>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="form1">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>Informacijska Varnost (WHITECOLLAR)</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="fullscreen-link">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" oncomplete="checkForPresentationIndexPage(287)">
+                                        <i class="fa fa-info"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user" x-placement="bottom-start">
+                                        <li>
+                                            <p:tag styleClass="mr-2" value="ANON" style="background:#1ab394 "></p:tag><br/>
+                                            <p:tag styleClass="mr-2" value="ID: 287 - InformationSecurityAwareness_WHITE_V3_SL" style="background:#1ab394 "></p:tag>
+                                        </li>                              
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ibox-content" style="">
+
+                                <div class="containerIndexPage"> </div>
+
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                    
+                </div>
+
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="TempOSECtableEditDlg" widgetVar="TempOSECtableEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundleOsecSpea.EditTempOSECtableTitle}">
+            <h:form id="TempOSECtableEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="4" rendered="#{tempOSECtableController.selected != null}">
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{tempOSECtableController.selected.id}" title="#{bundleOsecSpea.EditTempOSECtableTitle_id}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitSN}" for="unitSN" />
+                        <p:inputText id="unitSN" value="#{tempOSECtableController.selected.unitSN}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitSN}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_unitSN}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_firstTestDatetime}" for="firstTestDatetime" />
+                        <p:calendar id="firstTestDatetime" pattern="dd.MM.yyyy HH:mm:ss" value="#{tempOSECtableController.selected.firstTestDatetime}" title="#{bundleOsecSpea.EditTempOSECtableTitle_firstTestDatetime}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_firstTestDatetime}" showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitLN}" for="unitLN" />
+                        <p:inputText id="unitLN" value="#{tempOSECtableController.selected.unitLN}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitLN}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_unitLN}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitName}" for="unitName" />
+                        <p:inputText id="unitName" value="#{tempOSECtableController.selected.unitName}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitName}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_unitName}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitType}" for="unitType" />
+                        <p:inputText id="unitType" value="#{tempOSECtableController.selected.unitType}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitType}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitID}" for="unitID" />
+                        <p:inputText id="unitID" value="#{tempOSECtableController.selected.unitID}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitID}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_unitID}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitPN}" for="unitPN" />
+                        <p:inputText id="unitPN" value="#{tempOSECtableController.selected.unitPN}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitPN}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitPanel}" for="unitPanel" />
+                        <p:inputText id="unitPanel" value="#{tempOSECtableController.selected.unitPanel}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitPanel}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_unitIndex}" for="unitIndex" />
+                        <p:inputText id="unitIndex" value="#{tempOSECtableController.selected.unitIndex}" title="#{bundleOsecSpea.EditTempOSECtableTitle_unitIndex}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_unitIndex}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_stationName}" for="stationName" />
+                        <p:inputText id="stationName" value="#{tempOSECtableController.selected.stationName}" title="#{bundleOsecSpea.EditTempOSECtableTitle_stationName}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_stationName}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_stationOS}" for="stationOS" />
+                        <p:inputText id="stationOS" value="#{tempOSECtableController.selected.stationOS}" title="#{bundleOsecSpea.EditTempOSECtableTitle_stationOS}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_testDatetime}" for="testDatetime" />
+                        <p:calendar id="testDatetime" pattern="dd.MM.yyyy HH:mm:ss" value="#{tempOSECtableController.selected.testDatetime}" title="#{bundleOsecSpea.EditTempOSECtableTitle_testDatetime}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_testDatetime}" showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_status}" for="status" />
+                        <p:inputText id="status" value="#{tempOSECtableController.selected.status}" title="#{bundleOsecSpea.EditTempOSECtableTitle_status}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_remark}" for="remark" />
+                        <p:inputText id="remark" value="#{tempOSECtableController.selected.remark}" title="#{bundleOsecSpea.EditTempOSECtableTitle_remark}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_processID}" for="processID" />
+                        <p:inputText id="processID" value="#{tempOSECtableController.selected.processID}" title="#{bundleOsecSpea.EditTempOSECtableTitle_processID}" required="true" requiredMessage="#{bundleOsecSpea.EditTempOSECtableRequiredMessage_processID}"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_operatorName}" for="operatorName" />
+                        <p:inputText id="operatorName" value="#{tempOSECtableController.selected.operatorName}" title="#{bundleOsecSpea.EditTempOSECtableTitle_operatorName}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_prenosVBaan}" for="prenosVBaan" />
+                        <p:selectBooleanCheckbox id="prenosVBaan" value="#{tempOSECtableController.selected.prenosVBaan}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_sprostilVBaan}" for="sprostilVBaan" />
+                        <p:inputText id="sprostilVBaan" disabled="true" value="#{tempOSECtableController.selected.sprostilVBaan}" title="#{bundleOsecSpea.EditTempOSECtableTitle_sprostilVBaan}" />
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_sprostilTimestamp}" for="sprostilTimestamp" />
+                        <p:calendar id="sprostilTimestamp" pattern="dd.MM.yyyy HH:mm:ss" disabled="true" value="#{tempOSECtableController.selected.sprostilTimestamp}" title="#{bundleOsecSpea.EditTempOSECtableTitle_sprostilTimestamp}"  showOn="button"/>
+                        <p:outputLabel value="#{bundleOsecSpea.EditTempOSECtableLabel_prenosVBaanTimestamp}" for="prenosVBaanTimestamp" />
+                        <p:calendar id="prenosVBaanTimestamp" pattern="dd.MM.yyyy HH:mm:ss" disabled="true" value="#{tempOSECtableController.selected.prenosVBaanTimestamp}" title="#{bundleOsecSpea.EditTempOSECtableTitle_prenosVBaanTimestamp}"  showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{tempOSECtableController.update}" value="#{bundleOsecSpea.Save}" update="display,:TempOSECtableListForm:datalist,:growl" onclick="TempOSECtableEditDialog.hide()"/>
+                    <p:commandButton value="#{bundleOsecSpea.Cancel}" onclick="TempOSECtableEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

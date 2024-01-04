@@ -1,0 +1,197 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition template="/template.xhtml">
+
+        <ui:define name="PageHeader">
+            BMW XML Downloader 2
+
+            <style type="text/css">
+
+                .noBorders tr, .noBorders td {
+                    background: none !important;
+                    border: none !important;
+                }
+
+                .thirty-percent {
+                    width: 30%;
+                }
+
+                .seventy-percent {
+                    width: 70%;
+                }
+
+                .noPadding{
+                    padding-left: 0px !important;
+                }
+
+                .critical {
+                    background-color: #ffbbbb !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .warning {
+                    background-color: #FBFFA3 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+                .success {
+                    background-color: #a7ebb9 !important;
+                    background-image: none !important;
+                    color: #000000 !important;
+                }
+
+
+                .hiddenDTrow{
+                    visibility: collapse;
+                }
+            </style>
+
+        </ui:define>
+
+        <ui:define name="content">
+            <script>
+                jQuery(document).ready(function () {
+                    //PF('xmldt').filter();
+                });
+            </script>
+            <h:form id="form1">
+                <div class="row">                    
+                    <div class="col-md-12">
+                        <div class="ibox collapsed">
+                            <div class="ibox-title">
+                                <h5>Pridobivanje datotek iz BMW portala</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div id="vm" class="ibox-content">
+
+                                <div class="form-group  row">
+                                    <label class="col-sm-2 col-form-label"><p:outputLabel for="df" value="dateFrom:"/></label>
+                                    <div class="col-sm-10"><p:datePicker id="df" value="#{bmwXMLDownload2DBBean.from}" pattern="dd.MM.yyyy" /></div>
+                                </div>
+
+                                <div class="form-group  row">
+                                    <label class="col-sm-2 col-form-label"><p:outputLabel for="dt" value="dateTo:"/></label>
+                                    <div class="col-sm-10"><p:datePicker id="dt" value="#{bmwXMLDownload2DBBean.to}" pattern="dd.MM.yyyy" /></div>
+                                </div>
+
+                                <!--
+                                <p:outputLabel for="df" value="dateFrom:"/>
+                                <p:datePicker id="df" value="#{bmwXMLDownloadBean.from}" pattern="dd.MM.yyyy" />
+                                
+                                <p:outputLabel for="dt" value="dateTo:"/>
+                                <p:datePicker id="dt" value="#{bmwXMLDownloadBean.to}" pattern="dd.MM.yyyy" />
+                                -->
+
+                                <p:commandButton id="getBtn" value="Get XML files" actionListener="#{bmwXMLDownload2DBBean.testAction()}"/>
+
+                                <!--<p:blockUI block="dtt" trigger="getBtn" widgetVar="buiBasic"/>-->
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>                        
+            </h:form>      
+
+            <h:form id="form">
+
+                <p:menubar>
+                    <p:submenu label="File" icon="pi pi-fw pi-file">
+                        <p:submenu label="New" icon="pi pi-fw pi-plus">
+                            <p:menuitem value="Directory" icon="fa fa-folder" onclick="PF('createDirDialog').show()" />
+                            <p:menuitem value="File" icon="fa fa-file" onclick="PF('uploadDialog').show()" />
+                        </p:submenu>                        
+                    </p:submenu>
+                    <p:divider layout="vertical"/>
+                    <p:menuitem value="Back one level" icon="fa fa-backward" actionListener="#{fileManagerBean.goBack}" update="@form"/>
+                </p:menubar>
+                <br/>
+
+                
+                <!--<p:commandButton value="Back one level" actionListener="#{fileManagerBean.goBack}" update="@form"/>-->
+
+                <p:dataTable var="file" value="#{fileManagerBean.files}">
+                    <f:facet name="header">
+                        Current Directory: #{fileManagerBean.currentDirectory}
+                    </f:facet>
+                    <p:column headerText="File Name">
+                        <div class="d-flex align-items-center">
+                            <i class="#{file.directory ? 'fa fa-folder-open' : 'fa-regular fa-file'}" style="margin-right: 5px;"></i>
+                            <p:commandLink value="#{file.name}" 
+                                           action="#{fileManagerBean.handleFileOrDirectory(file)}" style="width:50%"
+                                           oncomplete="#{!file.directory ? 'PF(\'previewDialog\').show()' : ''}" 
+                                           rendered="#{!file.directory}" update="form:previewDialog"
+                                           ajax="true" />
+                            <p:commandLink value="#{file.name}" 
+                                           actionListener="#{fileManagerBean.setCurrentDirectory(file.absolutePath)}" style="width:50%"
+                                           rendered="#{file.directory}"
+                                           update="@form"
+                                           ajax="true" />
+                        </div>
+
+                    </p:column>
+                    <p:column headerText="Actions">
+                        <p:commandButton value="Delete" actionListener="#{fileManagerBean.deleteFile(file)}" 
+                                         rendered="#{!file.directory}" update="@form"/>
+                        <p:commandButton value="Rename" onclick="PF('renameDialog').show();" 
+                                         actionListener="#{fileManagerBean.setSelectedFile(file)}" 
+                                         rendered="#{!file.directory}" />
+                        <p:commandButton value="Open" actionListener="#{fileManagerBean.setCurrentDirectory(file.absolutePath)}" 
+                                         rendered="#{file.directory}" update="@form" />
+                    </p:column>
+                </p:dataTable>
+
+                <p:dialog widgetVar="renameDialog" modal="false">
+                    <h:outputText value="New name: " />
+                    <p:inputText value="#{fileManagerBean.newName}" />
+                    <p:commandButton value="Rename" actionListener="#{fileManagerBean.renameFile}" onclick="PF('renameDialog').hide();" update="@form" />
+                </p:dialog>
+
+                <p:dialog id="previewDialog" widgetVar="previewDialog" dynamic="true" modal="false" width="80%" height="600px">                   
+                    <p:media value="http://prapps02.pr.lighting.int:7070/osloWebApp#{fileManagerBean.getModifiedPath(fileManagerBean.selectedFile)}" 
+                             rendered="#{!fileManagerBean.isImage &amp;&amp; !fileManagerBean.isXML}" player="pdf" cache="false" width="100%" height="600px"/>
+                    <p:graphicImage value="http://prapps02.pr.lighting.int:7070/osloWebApp#{fileManagerBean.getModifiedPath(fileManagerBean.selectedFile)}" 
+                                    rendered="#{fileManagerBean.isImage}" width="100%" height="100%"/>
+
+                    <p:outputPanel id="xmlDisplay" rendered="#{fileManagerBean.isXML}">
+                        <pre><h:outputText value="#{fileManagerBean.getXmlContent(fileManagerBean.selectedFile)}" /></pre>
+                    </p:outputPanel>
+
+                </p:dialog>
+                
+                <p:dialog id="uploadDialog" header="Upload Files" widgetVar="uploadDialog" dynamic="true" modal="false" width="80%" height="300px">                   
+                    <p:fileUpload listener="#{fileManagerBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                  multiple="true" update="messages @form" sizeLimit="3000000" fileLimit="10" oncomplete="PF('uploadDialog').hide()"
+                      allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|xls|xlsx|ppt|pptx)$/"/>
+                    <p:growl id="messages" showDetail="true" keepAlive="true"/>
+                </p:dialog>
+                
+                <p:dialog id="createDirDialog" widgetVar="createDirDialog" header="Create new Directory" dynamic="true" modal="false" width="350px" height="130px"> 
+                    <p:outputLabel for="ndi" value="Directory Name: " style="margin-right:5px"/>
+                    <p:inputText id="ndi" value="#{fileManagerBean.newDirName}" style="width:95%"/>
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Create" onclick="PF('createDirDialog').hide();" style="width:95%" actionListener="#{fileManagerBean.createDirectory(fileManagerBean.newDirName)}" update="@form"/>
+                </p:dialog>
+
+            </h:form>
+            
+            <br/>
+            <br/>
+
+        </ui:define>
+
+    </ui:composition>
+</html>
